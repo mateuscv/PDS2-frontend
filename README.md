@@ -1,6 +1,6 @@
 # Frontend YouToba
 
-Frontend do trabalho de um sistema clone do Youtube para disciplina de AIC 4 da Universidade Federal De Rio Grande
+Frontend do trabalho de um sistema clone do Youtube para disciplina de AIC 4 da Universidade Federal De Rio Grande.
 
 ### Instalação
 
