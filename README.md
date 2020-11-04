@@ -30,6 +30,7 @@ git pull upstream master
 ## Autores
 * **Davi Teixeira** - *Colaborador* - [DaviLemos](https://github.com/DaviLemos)
 * **Igor Oliveira** - *Colaborador* - [igoroliveirads](https://github.com/igoroliveirads)
+* **Michel Neves** - *Colaborador* - [michelneves](https://github.com/michelneves)
 
 Veja a lista de todos colaboradores do projeto [Colaboradores](https://github.com/orgs/FURG-YouTube-PDS2/people).
 
