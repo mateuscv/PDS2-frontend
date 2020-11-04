@@ -6,6 +6,7 @@
 [![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
 [![npm next][npm-next]][npm]
 
+<<<<<<< HEAD
 [npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
 [npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
 [npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
@@ -14,6 +15,9 @@
 [npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
 [npm-next]: https://img.shields.io/npm/v/@coreui/react/next.png?style=flat-square
 [npm]: https://www.npmjs.com/package/@coreui/react
+=======
+Frontend do trabalho de um sistema clone do Youtube para disciplina de AIC 4 da Universidade Federal De Rio Grande.
+>>>>>>> 1ed80209790fcfea3a24979ff276623317963c0e
 
 # CoreUI Free React Admin Template v3
 
