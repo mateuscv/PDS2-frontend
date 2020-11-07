@@ -23,7 +23,7 @@ export default [
     _tag: "CSidebarNavItem",
     name: "Em alta",
     to: "/fire",
-    icon: "cib-mediafire",
+    icon: "cil-fire",
   },
   {
     _tag: "CSidebarNavItem",
