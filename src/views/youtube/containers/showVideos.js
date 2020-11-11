@@ -26,7 +26,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 3,
@@ -48,7 +48,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 5,
@@ -70,7 +70,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 6,
@@ -80,7 +80,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 7,
@@ -91,7 +91,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
   {
     id: 8,
@@ -102,7 +102,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
 ];
 
@@ -112,37 +112,19 @@ const HomeVideos = ({ history }) => {
       <CContainer fluid>
         <CRow>
           {videos.map((item, index) => (
-            <CCol sm="4">
+            <CCol style={{ width: "5%" }} sm="2">
               <CCard>
                 <CLink aria-current="page" to="/view">
                   <CImg style={{ width: "100%" }} src={item.thumb} />
                 </CLink>
                 <div>
-                  <CCardBody
-                    className=" float-left"
-                    style={{ height: "100px" }}
-                  >
-                    <div className="c-avatar">
-                      <CLink
-                        aria-current="page"
-                        to="/channel"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <CImg
-                          src={item.avatar}
-                          className="c-avatar-img"
-                          alt="admin@bootstrapmaster.com"
-                        />
-                      </CLink>
-                    </div>
-                  </CCardBody>
-                  <CCardBody>
+                  <CCardBody style={{ fontSize: "80%" }}>
                     <CLink
                       aria-current="page"
                       to="/view"
                       style={{ textDecoration: "none", color: "black" }}
                     >
-                      <CCardSubtitle>{item.title}</CCardSubtitle>{" "}
+                      <h3 style={{ fontSize: "120%" }}>{item.title}</h3>{" "}
                     </CLink>
 
                     <CCardText

@@ -32,6 +32,28 @@ const TheHeaderDropdown = ({ history }) => {
           <strong>Account</strong>
         </CDropdownItem>
         <CDropdownItem>
+          <CLink
+            style={{ textDecoration: "none", color: "#4f5d73" }}
+            // className="c-subheader-nav-link"
+            aria-current="page"
+            to="/profile"
+          >
+            <CIcon name="cil-user" className="mfe-2" />
+            &nbsp;Perfil
+          </CLink>
+        </CDropdownItem>
+        <CDropdownItem>
+          <CLink
+            style={{ textDecoration: "none", color: "#4f5d73" }}
+            // className="c-subheader-nav-link"
+            aria-current="page"
+            to="/channel"
+          >
+            <CIcon name="cil-settings" className="mfe-2" />
+            Canal
+          </CLink>
+        </CDropdownItem>
+        <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
           Updates
           <CBadge color="info" className="mfs-auto">
@@ -64,28 +86,6 @@ const TheHeaderDropdown = ({ history }) => {
         </CDropdownItem>
 
         <CDropdownItem>
-          <CLink
-            style={{ textDecoration: "none", color: "#4f5d73" }}
-            // className="c-subheader-nav-link"
-            aria-current="page"
-            to="/profile"
-          >
-            <CIcon name="cil-user" className="mfe-2" />
-            &nbsp;Perfil
-          </CLink>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CLink
-            style={{ textDecoration: "none", color: "#4f5d73" }}
-            // className="c-subheader-nav-link"
-            aria-current="page"
-            to="/channel"
-          >
-            <CIcon name="cil-settings" className="mfe-2" />
-            Canal
-          </CLink>
-        </CDropdownItem>
-        <CDropdownItem>
           <CIcon name="cil-credit-card" className="mfe-2" />
           Payments
           <CBadge color="secondary" className="mfs-auto">
@@ -101,8 +101,8 @@ const TheHeaderDropdown = ({ history }) => {
         </CDropdownItem>
         <CDropdownItem divider />
         <CDropdownItem>
-          <CIcon name="cil-lock-locked" className="mfe-2" />
-          Lock Account
+          <CIcon name="cil-account-logout" className="mfe-2" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
