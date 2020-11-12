@@ -10,6 +10,7 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { cilAccountLogout } from "@coreui/icons";
 
 const TheHeaderDropdown = ({ history }) => {
   const handleClick = () => {
@@ -101,7 +102,7 @@ const TheHeaderDropdown = ({ history }) => {
         </CDropdownItem>
         <CDropdownItem divider />
         <CDropdownItem>
-          <CIcon name="cil-account-logout" className="mfe-2" />
+          <CIcon name="cilAccountLogout" className="mfe-2" />
           Logout
         </CDropdownItem>
       </CDropdownMenu>
