@@ -10,10 +10,13 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { useHistory } from "react-router-dom";
 
-const TheHeaderDropdown = ({ history }) => {
-  const handleClick = () => {
-    this.props.history.push("/profile");
+const TheHeaderDropdown = ({}) => {
+  let history = useHistory();
+
+  const handleClick = (route) => {
+    history.push("/" + route);
   };
 
   return (
@@ -31,27 +34,13 @@ const TheHeaderDropdown = ({ history }) => {
         <CDropdownItem header tag="div" color="light" className="text-center">
           <strong>Account</strong>
         </CDropdownItem>
-        <CDropdownItem>
-          <CLink
-            style={{ textDecoration: "none", color: "#4f5d73" }}
-            // className="c-subheader-nav-link"
-            aria-current="page"
-            to="/profile"
-          >
-            <CIcon name="cil-user" className="mfe-2" />
-            &nbsp;Perfil
-          </CLink>
+        <CDropdownItem onClick={() => handleClick("profile")}>
+          <CIcon name="cil-user" className="mfe-2" />
+          &nbsp;Perfil
         </CDropdownItem>
-        <CDropdownItem>
-          <CLink
-            style={{ textDecoration: "none", color: "#4f5d73" }}
-            // className="c-subheader-nav-link"
-            aria-current="page"
-            to="/channel"
-          >
-            <CIcon name="cil-settings" className="mfe-2" />
-            Canal
-          </CLink>
+        <CDropdownItem onClick={() => handleClick("channel")}>
+          <CIcon name="cil-settings" className="mfe-2" />
+          Canal
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
@@ -101,7 +90,7 @@ const TheHeaderDropdown = ({ history }) => {
         </CDropdownItem>
         <CDropdownItem divider />
         <CDropdownItem>
-          <CIcon name="cil-account-logout" className="mfe-2" />
+          <CIcon name="cilAccountLogout" className="mfe-2" />
           Logout
         </CDropdownItem>
       </CDropdownMenu>

@@ -23,7 +23,7 @@ export default [
     _tag: "CSidebarNavItem",
     name: "Em alta",
     to: "/fire",
-    icon: "cil-fire",
+    icon: "cilFire",
   },
   {
     _tag: "CSidebarNavItem",
