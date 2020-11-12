@@ -13,6 +13,7 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 
 // import { Container } from './styles';
 
@@ -106,7 +107,12 @@ const videos = [
   },
 ];
 
-const HomeVideos = ({ history }) => {
+const HomeVideos = ({}) => {
+  let history = useHistory();
+  const handleClick = (route) => {
+    history.push("/" + route);
+  };
+
   return (
     <div>
       <CContainer fluid>
@@ -114,36 +120,32 @@ const HomeVideos = ({ history }) => {
           {videos.map((item, index) => (
             <CCol style={{ width: "5%" }} sm="2">
               <CCard>
-                <CLink aria-current="page" to="/view">
-                  <CImg style={{ width: "100%" }} src={item.thumb} />
-                </CLink>
+                <CImg
+                  onClick={() => handleClick("view")}
+                  style={{ width: "100%", cursor: "pointer" }}
+                  src={item.thumb}
+                />
                 <div>
                   <CCardBody style={{ fontSize: "80%" }}>
-                    <CLink
-                      aria-current="page"
-                      to="/view"
-                      style={{ textDecoration: "none", color: "black" }}
+                    <h3
+                      onClick={() => handleClick("view")}
+                      style={{ fontSize: "120%", cursor: "pointer" }}
                     >
-                      <h3 style={{ fontSize: "120%" }}>{item.title}</h3>{" "}
-                    </CLink>
-
+                      {item.title}
+                    </h3>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
-                      <CLink
-                        aria-current="page"
-                        to="/channel"
-                        style={{ textDecoration: "none", color: "black" }}
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("channel")}
                       >
                         {item.channel}
-                      </CLink>
-                      <CLink
-                        aria-current="page"
-                        to="/view"
-                        style={{ textDecoration: "none", color: "black" }}
-                      >
-                        <CCardText>{`${item.views} • ${item.date}`}</CCardText>{" "}
-                      </CLink>
+                      </span>
+                      <CCardText
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view")}
+                      >{`${item.views} • ${item.date}`}</CCardText>{" "}
                     </CCardText>
                   </CCardBody>
                 </div>
