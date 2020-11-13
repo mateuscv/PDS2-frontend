@@ -4,16 +4,34 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
+import {
+  CButton,
+  CContainer,
+  CRow,
+  CCol,
+  CCard,
+  CCardBody,
+  CCardTitle,
+  CCardSubtitle,
+  CCardText,
+  CCardHeader,
+  CImg,
+} from "@coreui/react";
 //Componets
+import StackVideo from "../containers/stackVideo";
 //Style
+ 
+const Fire = ({ history }) => {
+  const handleClick = () => {
+    history.push("/view");
+  };
 
-const Fire = () => {
   useEffect(() => {
     console.log("oi");
   }, []);
   return (
     <div>
-      <h1>Fire</h1>
+      <StackVideo />
     </div>
   );
 };
