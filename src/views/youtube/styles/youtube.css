@@ -1,0 +1,27 @@
+/* TAGS */
+button:focus {
+  outline: 0;
+}
+
+/* CLASS */
+.inscribe {
+  background-color: #c00;
+  color: #fff;
+}
+.registered {
+  background-color: #ffffff33;
+  color: #aaa;
+}
+
+/* IDS */
+#inscribe {
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: auto 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 200;
+  letter-spacing: 0.007px;
+  text-transform: uppercase;
+  border: none;
+}

@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+//REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
+//CoreUI
 import { CButton } from "@coreui/react";
-// import { Container } from './styles';
+//Componets
+//Style
 
-const library = ({ history }) => {
+const Library = ({ history }) => {
   const handleClick = () => {
     history.push("/playlist");
   };
-
+  useEffect(() => {
+    console.log("oi");
+  }, []);
   return (
     <div>
       <h1>Biblioteca</h1>
@@ -15,4 +23,6 @@ const library = ({ history }) => {
   );
 };
 
-export default library;
+const mapStateToProps = (state) => ({ user: state.user });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(Library);
