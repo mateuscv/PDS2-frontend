@@ -14,7 +14,7 @@ import {
   CImg,
 } from "@coreui/react";
 import { useHistory } from "react-router-dom";
-
+ 
 // import { Container } from './styles';
 
 const videos = [
