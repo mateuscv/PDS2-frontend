@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -8,8 +8,14 @@ import * as actions from "../../../store/actions";
 //Style
 
 const Profile = () => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
   useEffect(() => {
-    console.log("oi");
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+      console.log("oi");
+    }
   }, []);
   return (
     <div>
