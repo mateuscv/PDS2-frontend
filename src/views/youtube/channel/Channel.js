@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -22,28 +22,39 @@ import {
 import ShowVideos from "../containers/showVideos";
 //Style
 import "../styles/youtube.css";
-var context = "text";
+
 const Channel = () => {
+  const [state, setState] = useState({
+    fetched: false,
+    content: 1,
+    subscribe: false,
+  });
   useEffect(() => {
-    changeContent("video");
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+      changeContent("text");
+    }
   }, []);
-  var content = 0;
-  var subscribe = false;
+
   const Change = (cond) => {
-    subscribe = cond;
+    setState({ ...state, subscribe: cond });
   };
   const changeContent = (component) => {
     console.log(component);
     // eslint-disable-next-line default-case
     switch (component) {
+      case "init":
+        setState({ ...state, content: 1 });
+        break;
       case "video":
-        return (
-          <div>
-            <ShowVideos />
-          </div>
-        );
-      case "text":
-        return <h1>Texto</h1>;
+        setState({ ...state, content: 2 });
+        break;
+      case "playlist":
+        setState({ ...state, content: 3 });
+        break;
+      case "about":
+        setState({ ...state, content: 4 });
+        break;
     }
   };
   return (
@@ -70,7 +81,7 @@ const Channel = () => {
               </div>
               <div>
                 <span className="h3">Manual do Mundo</span>
-                {subscribe === false && (
+                {state.subscribe === false && (
                   <CButton
                     id="inscribe"
                     class="inscribe"
@@ -79,7 +90,7 @@ const Channel = () => {
                     Inscrever-se
                   </CButton>
                 )}{" "}
-                {subscribe === true && (
+                {state.subscribe === true && (
                   <CButton
                     id="inscribe"
                     class="registered"
@@ -104,7 +115,9 @@ const Channel = () => {
               </CCol>
               <CCol sm="3">
                 <CButton
-                  onClick={() => {}}
+                  onClick={() => {
+                    changeContent("video");
+                  }}
                   style={{ border: "1px solid", width: "100%", height: "130%" }}
                 >
                   Vídeos
@@ -119,6 +132,9 @@ const Channel = () => {
               </CCol>
               <CCol sm="3">
                 <CButton
+                  onClick={() => {
+                    changeContent("about");
+                  }}
                   style={{ border: "1px solid", width: "100%", height: "130%" }}
                 >
                   Sobre
@@ -128,7 +144,8 @@ const Channel = () => {
           </CCardBody>
         </CCard>
       </header>
-      <ShowVideos />
+      {state.content === 4 && <h1>Sobre</h1>}
+      {state.content === 2 && <ShowVideos />}
     </div>
   );
 };

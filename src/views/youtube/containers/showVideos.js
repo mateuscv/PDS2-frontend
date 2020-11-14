@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   CLink,
   CButton,
@@ -108,11 +108,20 @@ const videos = [
 ];
 
 const HomeVideos = ({}) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
+
   let history = useHistory();
   const handleClick = (route) => {
     history.push("/" + route);
   };
-
+  useEffect(() => {
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+      console.log("oi");
+    }
+  }, []);
   return (
     <div>
       <CContainer fluid>

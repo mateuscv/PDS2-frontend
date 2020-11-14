@@ -1,13 +1,26 @@
-import React, { useEffect,useState } from "react";
+import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
-//Componets
+import {
+  CLink,
+  CButton,
+  CContainer,
+  CRow,
+  CCol,
+  CCard,
+  CCardBody,
+  CCardTitle,
+  CCardSubtitle,
+  CCardText,
+  CCardHeader,
+  CImg,
+} from "@coreui/react";
 //Style
 
-const Historic = () => {
+const About = () => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -17,13 +30,9 @@ const Historic = () => {
       console.log("oi");
     }
   }, []);
-  return (
-    <div>
-      <h1>Histórico</h1>
-    </div>
-  );
+  return <div />;
 };
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(Historic);
+export default connect(mapStateToProps, mapDispatchToProps)(About);
