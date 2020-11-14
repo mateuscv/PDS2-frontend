@@ -6,6 +6,7 @@ import * as actions from "../../../store/actions";
 //CoreUI
 import { CButton } from "@coreui/react";
 //Componets
+import Videos from "../containers/showVideos";
 //Style
 
 const Library = ({ history }) => {
@@ -19,6 +20,14 @@ const Library = ({ history }) => {
     <div>
       <h1>Biblioteca</h1>
       <CButton onClick={() => handleClick()}>Playlist</CButton>
+      <h4>Histórico</h4>
+      <Videos />
+      <h4>Assistir mais tarde</h4>
+      <Videos />
+      <h4>Playlists</h4>
+      <Videos /> 
+      <h4>Vídeos marcados com "gostei"</h4>
+      <Videos /> 
     </div>
   );
 };
