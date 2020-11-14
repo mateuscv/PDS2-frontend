@@ -14,7 +14,7 @@ const Inscriptions = () => {
   }, []);
   return (
     <div>
-      <Videos />
+      <Videos /> 
     </div>
   );
 };
