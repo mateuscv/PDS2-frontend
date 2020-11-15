@@ -124,7 +124,7 @@ const StackVideo = ({}) => {
               {videos.map((item, index) => (
                   <CCard>
                     <div>             
-                    <CCol>
+                    <CCol sm="4">
                     <CImg
                       onClick={() => handleClick("view")}
                       style={{ width: "100%", cursor: "pointer" }}
@@ -133,7 +133,7 @@ const StackVideo = ({}) => {
                     </CCol>
                     </div> 
                     <div>
-                    <CCol>
+                    <CCol sm="9">
                       {/* <CCardBody
                         className=" float-left"
                         style={{ height: "100px" }}
