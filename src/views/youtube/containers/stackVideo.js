@@ -28,7 +28,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "11 mi de visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -39,7 +40,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "957 mil visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -50,7 +52,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "106 mil visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -61,7 +64,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "5,6 mi de visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -72,7 +76,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "2,2 mi de visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -82,7 +87,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "233 mil visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -93,7 +99,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "118 mil visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -104,87 +111,74 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "1,9 mi de visualizações",
     date: "há 1 semana",
-    description: "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
 ];
 
 const StackVideo = ({}) => {
-    let history = useHistory();
-    const handleClick = (route) => {
-        history.push("/" + route);
-    };
+  let history = useHistory();
+  const handleClick = (route) => {
+    history.push("/" + route);
+  };
 
-    return (
-        <div>
-          <CContainer fluid>
-            <CRow>
-            <CCol sm="12">
-              {videos.map((item, index) => (
-                  <CCard>
-                    <div>             
-                    <CCol sm="4">
-                    <CImg
-                      onClick={() => handleClick("view")}
-                      style={{ width: "100%", cursor: "pointer" }}
-                      src={item.thumb}
-                    />
-                    </CCol>
-                    </div> 
-                    <div>
-                    <CCol sm="9">
-                      {/* <CCardBody
-                        className=" float-left"
-                        style={{ height: "100px" }}
+  return (
+    <div>
+      <CContainer fluid>
+        <CRow>
+          <CCol sm="12">
+            {videos.map((item, index) => (
+              <CCard
+                style={{
+                  marginBottom: "1%",
+                }}
+              >
+                <CCardBody style={{ margin: "0" }}>
+                  <CImg
+                    onClick={() => handleClick("view")}
+                    style={{
+                      width: "25%",
+                      cursor: "pointer",
+                      float: "left",
+                      marginRight: "1%",
+                    }}
+                    src={item.thumb}
+                  />
+                  <CCardText>
+                    <CCardText>
+                      <h5
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view")}
                       >
-                        <div className="c-avatar">
-                          <CImg
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("channel")}
-                            src={item.avatar}
-                            className="c-avatar-img"
-                            alt="admin@bootstrapmaster.com"
-                          />
-                        </div>
-                      </CCardBody> */}
-                      <CCardBody>
-                        <CCardSubtitle
-                          style={{ cursor: "pointer" }}
-                          onClick={() => handleClick("view")}
-                        >
-                          {item.title}
-                        </CCardSubtitle>{" "}
-                        <CCardText
-                          style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                        >
-                          {" "}
-                          <span
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("channel")}
-                          >
-                            {item.channel}
-                          </span>
-                          <CCardText
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view")}
-                          >{`${item.views} • ${item.date}`}</CCardText>{" "}
-                          <CCardText
-                            style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view")}
-                          >{item.description}</CCardText>{" "}
-                        </CCardText>
-                      </CCardBody>
-                    </CCol>
-                    </div>
-                  </CCard>
-              ))}
-               </CCol>
-            </CRow>
-          </CContainer>
-        </div>
-      );
-    };
-    
+                        {item.title}
+                      </h5>
+                      <span onClick={() => handleClick("channel")}>
+                        {item.channel}
+                      </span>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view")}
+                      >
+                        {` • ${item.views} • ${item.date}`}
+                      </span>{" "}
+                    </CCardText>
+                    <CCardText
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleClick("view")}
+                    >
+                      {item.description}
+                    </CCardText>{" "}
+                  </CCardText>
+                </CCardBody>
+              </CCard>
+            ))}
+          </CCol>
+        </CRow>
+      </CContainer>
+    </div>
+  );
+};
+
 export default StackVideo;
-    

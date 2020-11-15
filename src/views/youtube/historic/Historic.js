@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,14 +28,13 @@ import StackVideo from "../containers/stackVideo";
 //Style
 
 const modes = [
-  { variant: 'outline', shape:'pill', title: 'Histórico de exibição' },
-  { variant: 'outline', shape:'pill', title: 'Histórico de enquete' },
-  { variant: 'outline', shape:'pill', title: 'Comentários' },
-  { variant: 'outline', shape:'pill', title: 'Comunidade' },
-  { variant: 'outline', shape:'pill', title: 'Chat ao vivo' },
+  { variant: "outline", shape: "pill", title: "Histórico de exibição" },
+  { variant: "outline", shape: "pill", title: "Histórico de enquete" },
+  { variant: "outline", shape: "pill", title: "Comentários" },
+  { variant: "outline", shape: "pill", title: "Comunidade" },
+  { variant: "outline", shape: "pill", title: "Chat ao vivo" },
 ];
-const colors = ['dark'];
-
+const colors = ["dark"];
 
 const Historic = () => {
   const [state, setState] = useState({
@@ -49,46 +48,50 @@ const Historic = () => {
   }, []);
   return (
     <div>
-      <h1>Histórico</h1>
-
-      <CInputGroup>
-          <CInput placeholder="Pesquisar no histório de exibição" />
+      <h4 align="center">Histórico de Exibição</h4>
+      <div style={{ float: "right", width: "20%" }}>
+        <CInputGroup>
           <CInputGroupAppend>
             <CInputGroupText>
               <CIcon name="cil-magnifying-glass" />
             </CInputGroupText>
           </CInputGroupAppend>
+          <CInput placeholder="Pesquisar no histório de exibição" />
         </CInputGroup>
 
-      <>
-      <h4>Tipo de Histórico</h4>
-      {modes.map((mode, index)=>{
-        return (
-          <div className="d-flex justify-content-between my-4" key={index}>
-            {mode.title}
-            {
-              colors.map((color, key)=>{
-                return (
-                  <CSwitch //ALTERAR TIPO DE BOTÃO PARA DE ÚNICA ESCOLHA (Ñ ENCONTRADO NA DOCUMENTAÇÃO DO COREUI)
-                    key={key}
-                    color={color}
-                    checked
-                    value={color}
-                    {...mode}
-                  />
-                )
-              })
-            }
-          </div>
-        )
-      })}
-    </>
+        <>
+          <h4>Tipo de Histórico</h4>
+          {modes.map((mode, index) => {
+            return (
+              <div className="d-flex justify-content-between my-4" key={index}>
+                {mode.title}
+                {colors.map((color, key) => {
+                  return (
+                    <CSwitch //ALTERAR TIPO DE BOTÃO PARA DE ÚNICA ESCOLHA (Ñ ENCONTRADO NA DOCUMENTAÇÃO DO COREUI)
+                      key={key}
+                      color={color}
+                      checked
+                      value={color}
+                      {...mode}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
+        </>
 
-    <CButton className="m-2" color="danger">LIMPAR TODO O HISTÓRICO DE EXIBIÇÃO</CButton>
-    <CButton className="m-2" color="danger">PAUSAR O HISTÓRICO DE VISUALIZAÇÕES</CButton>
-    <CButton className="m-2" color="danger">GERENCIAR TODAS AS ATIVIDADES</CButton>
-
-    <StackVideo />
+        <CButton className="m-2" color="danger">
+          LIMPAR TODO O HISTÓRICO DE EXIBIÇÃO
+        </CButton>
+        <CButton className="m-2" color="danger">
+          PAUSAR O HISTÓRICO DE VISUALIZAÇÕES
+        </CButton>
+        <CButton className="m-2" color="danger">
+          GERENCIAR TODAS AS ATIVIDADES
+        </CButton>
+      </div>
+      <StackVideo />
     </div>
   );
 };
