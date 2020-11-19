@@ -1,3 +1,4 @@
+//REACT
 import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
@@ -26,6 +27,7 @@ import CIcon from "@coreui/icons-react";
 //Componets
 import StackVideo from "../containers/stackVideo";
 //Style
+//API
 
 const modes = [
   { variant: "outline", shape: "pill", title: "Histórico de exibição" },
@@ -36,14 +38,13 @@ const modes = [
 ];
 const colors = ["dark"];
 
-const Historic = () => {
+const Historic = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log("oi");
     }
   }, []);
   return (
@@ -96,6 +97,6 @@ const Historic = () => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Historic);

@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+//REACT
+import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,14 +21,21 @@ import {
 //Componets
 import StackVideo from "../containers/stackVideo";
 //Style
- 
-const Fire = ({ history }) => {
+//API
+
+const Fire = ({ history, token }) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
   const handleClick = () => {
     history.push("/view");
   };
 
   useEffect(() => {
-    console.log("oi");
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+      console.log(token);
+    }
   }, []);
   return (
     <div>
@@ -36,6 +44,6 @@ const Fire = ({ history }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Fire);

@@ -1,4 +1,11 @@
+//REACT
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+//REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
+//CoreUI
 import {
   CLink,
   CButton,
@@ -13,9 +20,9 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
-import { useHistory } from "react-router-dom";
-
-// import { Container } from './styles';
+//Componets
+//Style
+//API
 
 const videos = [
   {
@@ -107,7 +114,7 @@ const videos = [
   },
 ];
 
-const HomeVideos = ({}) => {
+const HomeVideos = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -119,7 +126,6 @@ const HomeVideos = ({}) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log("oi");
     }
   }, []);
   return (
@@ -167,4 +173,6 @@ const HomeVideos = ({}) => {
   );
 };
 
-export default HomeVideos;
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeVideos);

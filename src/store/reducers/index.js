@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import isLogged from "./isLogged";
+import setToken from "./setToken";
 
 const allReducers = combineReducers({
-  isLogged: isLogged,
+  token: setToken,
 });
 
 export default allReducers;

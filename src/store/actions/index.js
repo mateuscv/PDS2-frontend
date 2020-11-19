@@ -1,22 +1,6 @@
-export const login = (keep_alive) => {
+export const setToken = (token) => {
   return {
-    type: "LOGIN",
-    keep_alive: keep_alive,
-  };
-};
-export const logout = () => {
-  return {
-    type: "LOGOUT",
-  };
-};
-export const setUser = (user) => {
-  return {
-    type: "SETUSER",
-    user: user,
-  };
-};
-export const reset = () => {
-  return {
-    type: "RESET",
+    type: "SETTOKEN",
+    token: token,
   };
 };
