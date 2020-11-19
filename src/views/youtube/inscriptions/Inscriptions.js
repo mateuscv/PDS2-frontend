@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
 //Componets
-import Videos from "../containers/showVideos";
+import ShowVideos from "../containers/showVideos";
 //Style
 
 const Inscriptions = () => {
@@ -14,7 +14,7 @@ const Inscriptions = () => {
   }, []);
   return (
     <div>
-      <Videos /> 
+      <ShowVideos />
     </div>
   );
 };
