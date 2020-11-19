@@ -1,3 +1,4 @@
+//REACT
 import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
@@ -18,21 +19,22 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+//Componets
 //Style
+//API
 
-const About = () => {
+const About = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log("oi");
     }
   }, []);
   return <div />;
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(About);

@@ -1,3 +1,4 @@
+//REACT
 import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
@@ -23,101 +24,104 @@ import {
 } from "@coreui/react";
 //Componets
 //Style
+//API
+import { userProfile } from "../../util/Api";
 
-const Profile = () => {
+const Profile = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log("oi");
+      console.log(token);
+      // userProfile()
     }
   }, []);
 
   const [editPhoto, setPhoto] = useState(false);
   const togglePhoto = () => {
     setPhoto(!editPhoto);
-  }
+  };
   const [editName, setName] = useState(false);
   const toggleName = () => {
     setName(!editName);
-  }
+  };
 
   const [editNickname, setNickname] = useState(false);
   const toggleNickname = () => {
     setNickname(!editNickname);
-  }
+  };
 
   const [editDate, setDate] = useState(false);
   const toggleDate = () => {
     setDate(!editDate);
-  }
+  };
 
   const [editGenre, setGenre] = useState(false);
   const toggleGenre = () => {
     setGenre(!editGenre);
-  }
+  };
 
   const [editPassword, setPassword] = useState(false);
   const togglePassword = () => {
     setPassword(!editPassword);
-  }
+  };
 
   const [editEmail, setEmail] = useState(false);
   const toggleEmail = () => {
     setEmail(!editEmail);
-  }
+  };
 
   const [editPhone, setPhone] = useState(false);
   const togglePhone = () => {
     setPhone(!editPhone);
-  }
+  };
 
   return (
     <div>
       <div align="center">
         <h1>Informações pessoais</h1>
-      Informações básicas, como seu nome e foto, usadas nos serviços</div>
+        Informações básicas, como seu nome e foto, usadas nos serviços
+      </div>
 
       <h4>Perfil</h4>
       <CListGroup>
-
-      <CListGroupItem onClick={togglePhoto} href="#" color="secondary">
+        <CListGroupItem onClick={togglePhoto} href="#" color="secondary">
           Foto:
           <div className="c-avatar">
-          <CImg
-            style={{ cursor: "pointer" }}
-            src="avatars/7.jpg"
-            className="c-avatar-img"
-            alt="admin@bootstrapmaster.com"
-          />
-        </div>
-      </CListGroupItem>
-        <CModal
-          show={editPhoto}
-          onClose={togglePhoto}
-        >
+            <CImg
+              style={{ cursor: "pointer" }}
+              src="avatars/7.jpg"
+              className="c-avatar-img"
+              alt="admin@bootstrapmaster.com"
+            />
+          </div>
+        </CListGroupItem>
+        <CModal show={editPhoto} onClose={togglePhoto}>
           <CModalHeader closeButton>Alterar foto</CModalHeader>
           <CModalBody>
             <CFormGroup>
               <CLabel htmlFor="photo">Foto</CLabel>
-              <CInput id="photo" placeholder="Adicione a URL da foto" required />
+              <CInput
+                id="photo"
+                placeholder="Adicione a URL da foto"
+                required
+              />
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={togglePhoto}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={togglePhoto}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={toggleName} href="#" color="secondary">
           Nome: Igor Oliveira de Sousa
-      </CListGroupItem>
-        <CModal
-          show={editName}
-          onClose={toggleName}
-        >
+        </CListGroupItem>
+        <CModal show={editName} onClose={toggleName}>
           <CModalHeader closeButton>Alterar nome</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -130,18 +134,17 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={toggleName}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={toggleName}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={toggleNickname} href="#" color="secondary">
           Apelido: Igor
-      </CListGroupItem>
-        <CModal
-          show={editNickname}
-          onClose={toggleNickname}
-        >
+        </CListGroupItem>
+        <CModal show={editNickname} onClose={toggleNickname}>
           <CModalHeader closeButton>Alterar apelido</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -150,18 +153,17 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={toggleNickname}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={toggleNickname}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={toggleDate} href="#" color="secondary">
           Data de nascimento: 24 de novembro de 1997
-      </CListGroupItem>
-        <CModal
-          show={editDate}
-          onClose={toggleDate}
-        >
+        </CListGroupItem>
+        <CModal show={editDate} onClose={toggleDate}>
           <CModalHeader closeButton>Alterar data de nascimento</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -171,9 +173,7 @@ const Profile = () => {
             <CFormGroup>
               <CLabel htmlFor="month">Mês</CLabel>
               <CDropdown>
-                <CDropdownToggle>
-                  Novembro
-                </CDropdownToggle>
+                <CDropdownToggle>Novembro</CDropdownToggle>
                 <CDropdownMenu>
                   <CDropdownItem>Janeiro</CDropdownItem>
                   <CDropdownItem>Fevereiro</CDropdownItem>
@@ -196,26 +196,23 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={toggleDate}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={toggleDate}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={toggleGenre} href="#" color="secondary">
           Gênero: Masculino
-      </CListGroupItem>
-        <CModal
-          show={editGenre}
-          onClose={toggleGenre}
-        >
+        </CListGroupItem>
+        <CModal show={editGenre} onClose={toggleGenre}>
           <CModalHeader closeButton>Alterar Gênero</CModalHeader>
           <CModalBody>
             <CFormGroup>
               <CLabel htmlFor="name">Gênero</CLabel>
               <CDropdown>
-                <CDropdownToggle>
-                  Masculino
-                </CDropdownToggle>
+                <CDropdownToggle>Masculino</CDropdownToggle>
                 <CDropdownMenu>
                   <CDropdownItem>Masculino</CDropdownItem>
                   <CDropdownItem>Feminino</CDropdownItem>
@@ -224,18 +221,17 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={toggleGenre}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={toggleGenre}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={togglePassword} href="#" color="secondary">
           Senha: ......
-      </CListGroupItem>
-        <CModal
-          show={editPassword}
-          onClose={togglePassword}
-        >
+        </CListGroupItem>
+        <CModal show={editPassword} onClose={togglePassword}>
           <CModalHeader closeButton>Alterar senha</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -250,11 +246,12 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={togglePassword}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={togglePassword}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
-
       </CListGroup>
 
       <CListGroup>
@@ -262,11 +259,8 @@ const Profile = () => {
 
         <CListGroupItem onClick={toggleEmail} href="#" color="secondary">
           Email: igor@furg.br
-      </CListGroupItem>
-        <CModal
-          show={editEmail}
-          onClose={toggleEmail}
-        >
+        </CListGroupItem>
+        <CModal show={editEmail} onClose={toggleEmail}>
           <CModalHeader closeButton>Alterar email</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -281,18 +275,17 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={toggleEmail}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={toggleEmail}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
 
         <CListGroupItem onClick={togglePhone} href="#" color="secondary">
           Telefone: (53)984366433
-      </CListGroupItem>
-        <CModal
-          show={editPhone}
-          onClose={togglePhone}
-        >
+        </CListGroupItem>
+        <CModal show={editPhone} onClose={togglePhone}>
           <CModalHeader closeButton>Alterar telefone</CModalHeader>
           <CModalBody>
             <CFormGroup>
@@ -307,16 +300,17 @@ const Profile = () => {
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
-            <CButton color="primary">Salvar</CButton>{' '}
-            <CButton color="secondary" onClick={togglePhone}>Cancelar</CButton>
+            <CButton color="primary">Salvar</CButton>{" "}
+            <CButton color="secondary" onClick={togglePhone}>
+              Cancelar
+            </CButton>
           </CModalFooter>
         </CModal>
-
       </CListGroup>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

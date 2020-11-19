@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+//REACT
+import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -8,13 +9,19 @@ import { CButton } from "@coreui/react";
 //Componets
 import ShowVideos from "../containers/showVideos";
 //Style
+//API
 
-const Library = ({ history }) => {
+const Library = ({ history, token }) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
   const handleClick = () => {
     history.push("/playlist");
   };
   useEffect(() => {
-    console.log("oi");
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+    }
   }, []);
   return (
     <div>
@@ -32,6 +39,6 @@ const Library = ({ history }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Library);

@@ -1,3 +1,4 @@
+//REACT
 import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
@@ -22,8 +23,9 @@ import {
 import ShowVideos from "../containers/showVideos";
 //Style
 import "../styles/youtube.css";
+//API
 
-const Channel = () => {
+const Channel = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
     content: 1,
@@ -150,6 +152,6 @@ const Channel = () => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

@@ -1,5 +1,10 @@
-import React from "react";
+//REACT
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 //REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
 //CoreUI
 import {
   CLink,
@@ -17,8 +22,9 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
-import { useHistory } from "react-router-dom";
+//Componets
 //Style
+//API
 
 const videos = [
   {
@@ -118,12 +124,19 @@ const videos = [
   },
 ];
 
-const StackVideo = ({}) => {
+const StackVideo = ({ token }) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
   let history = useHistory();
   const handleClick = (route) => {
     history.push("/" + route);
   };
-
+  useEffect(() => {
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+    }
+  }, []);
   return (
     <div>
       <CContainer fluid>
@@ -181,4 +194,6 @@ const StackVideo = ({}) => {
   );
 };
 
-export default StackVideo;
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);

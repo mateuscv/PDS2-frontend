@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+//REACT
+import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,15 +21,20 @@ import {
 //Componets
 import HomeVideos from "../containers/homeVideos";
 //Style
+//API
 
-const Home = ({ history }) => {
+const Home = ({ history, token }) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
+  useEffect(() => {
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+    }
+  }, []);
   const handleClick = () => {
     history.push("/view");
   };
-
-  useEffect(() => {
-    console.log("oi");
-  }, []);
   return (
     <div>
       <HomeVideos />
@@ -36,6 +42,6 @@ const Home = ({ history }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
