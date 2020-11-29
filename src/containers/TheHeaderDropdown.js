@@ -19,6 +19,10 @@ const TheHeaderDropdown = ({}) => {
     history.push("/" + route);
   };
 
+  const Logout = () => {
+    history.push("/login");
+  };
+
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
@@ -89,7 +93,7 @@ const TheHeaderDropdown = ({}) => {
           </CBadge>
         </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem>
+        <CDropdownItem onClick={() => Logout()}>
           <CIcon name="cilAccountLogout" className="mfe-2" />
           Logout
         </CDropdownItem>

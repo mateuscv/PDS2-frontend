@@ -43,6 +43,12 @@ export default [
     to: "/historic",
     icon: "cib-youtube",
   },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Upload",
+    to: "/upload",
+    icon: "cil-cloud-upload",
+  },
 
   // {
   //   _tag: "CSidebarNavTitle",

@@ -123,6 +123,8 @@ import {
   cilWarning,
   cilFire,
   cilAccountLogout,
+  cilCloudUpload,
+  cilDataTransferUp,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -134,6 +136,8 @@ export const icons = Object.assign(
   },
   {
     cilFire,
+    cilDataTransferUp,
+    cilCloudUpload,
     cilAccountLogout,
     cilAlignCenter,
     cilAlignLeft,

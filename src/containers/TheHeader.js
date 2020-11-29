@@ -1,5 +1,10 @@
+//REACT
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+//REDUX
+import { connect, useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../store/actions";
+//CoreUI
 import {
   CHeader,
   CToggler,
@@ -16,7 +21,6 @@ import {
   CLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-
 // routes config
 import routes from "../routes";
 
@@ -27,7 +31,7 @@ import {
   TheHeaderDropdownTasks,
 } from "./index";
 
-const TheHeader = () => {
+const TheHeader = ({ token }) => {
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
 
@@ -65,6 +69,7 @@ const TheHeader = () => {
         <CIcon name="cib-youtube" />
         {/* <CHeaderNavItem className="px-3"> */}
         <CHeaderNavLink to="/dashboard">Youtube</CHeaderNavLink>
+        <CHeaderNavLink to="/login">Login</CHeaderNavLink>
         {/* </CHeaderNavItem> */}
       </CHeaderNav>
 
@@ -113,4 +118,6 @@ const TheHeader = () => {
   );
 };
 
-export default TheHeader;
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(TheHeader);
