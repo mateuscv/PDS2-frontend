@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+//REACT
+import React, { useEffect, useState } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -7,10 +8,16 @@ import * as actions from "../../../store/actions";
 //Componets
 import ShowVideos from "../containers/showVideos";
 //Style
+//API
 
-const Inscriptions = () => {
+const Inscriptions = ({ token }) => {
+  const [state, setState] = useState({
+    fetched: false,
+  });
   useEffect(() => {
-    console.log("oi");
+    if (!state.fetched) {
+      setState({ ...state, fetched: true });
+    }
   }, []);
   return (
     <div>
@@ -19,6 +26,6 @@ const Inscriptions = () => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Inscriptions);

@@ -1,5 +1,11 @@
-import React from "react";
+//REACT
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+//REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
+//CoreUI
 import {
   CButton,
   CCard,
@@ -16,8 +22,53 @@ import {
   CRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+//Componets
+//Style
+//API
+import { registerUser } from "../../util/Api";
+import md5 from "md5";
 
-const Register = () => {
+const Register = ({ history }) => {
+  const [state, setState] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password_confirm: "",
+    error: "",
+    message: "",
+  });
+  const register = (e) => {
+    e.preventDefault();
+    setState({ ...state, error: "", message: "Registrando..." });
+    const data = {
+      first_name: state.first_name.trim(),
+      last_name: state.last_name,
+      email: state.email,
+      password: md5(state.password),
+      created_at: "1",
+    };
+    // const data = {
+    //   first_name: "Igor",
+    //   last_name: "Oliveira",
+    //   email: "igor@furg.br",
+    //   password: "senha2",
+    //   created_at: "1",
+    // };
+    if (!data.first_name || !data.last_name || !data.email || !data.password) {
+      setState({
+        ...state,
+        error: "Insira os dados corretamente!",
+        message: "",
+      });
+    } else if (md5(state.password_confirm) !== data.password) {
+      setState({ ...state, error: "As senhas não batem!", message: "" });
+    } else {
+      registerUser(data).then(function (data) {
+        history.push("/login");
+      });
+    }
+  };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -27,26 +78,75 @@ const Register = () => {
               <CCardBody>
                 <CForm>
                   <h1>Register</h1>
+                  {state.message && (
+                    <CCard
+                      className="border-success"
+                      style={{ textAlign: "center" }}
+                    >
+                      {state.message}
+                    </CCard>
+                  )}
+                  {state.error && (
+                    <CCard
+                      className="border-danger"
+                      style={{ textAlign: "center" }}
+                    >
+                      {state.error}
+                    </CCard>
+                  )}
                   <p className="text-muted">Create your account</p>
                   <CFormGroup row>
                     <CCol md="6">
-                      <CInput placeholder="Nome" />
+                      <CInput
+                        type="text"
+                        placeholder="Nome"
+                        onChange={(e) => {
+                          setState({ ...state, first_name: e.target.value });
+                        }}
+                      />
                     </CCol>
                     <CCol md="6">
-                      <CInput placeholder="Sobrenome" />
+                      <CInput
+                        type="text"
+                        placeholder="Sobrenome"
+                        onChange={(e) => {
+                          setState({ ...state, last_name: e.target.value });
+                        }}
+                      />
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="12">
-                      <CInput placeholder="Seu endereço de Email" />
+                      <CInput
+                        type="email"
+                        placeholder="Seu endereço de Email"
+                        onChange={(e) => {
+                          setState({ ...state, email: e.target.value });
+                        }}
+                      />
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="6">
-                      <CInput placeholder="Senha" />
+                      <CInput
+                        type="password"
+                        placeholder="Senha"
+                        onChange={(e) => {
+                          setState({ ...state, password: e.target.value });
+                        }}
+                      />
                     </CCol>
                     <CCol md="6">
-                      <CInput placeholder="Confirmar" />
+                      <CInput
+                        type="password"
+                        placeholder="Confirmar"
+                        onChange={(e) => {
+                          setState({
+                            ...state,
+                            password_confirm: e.target.value,
+                          });
+                        }}
+                      />
                     </CCol>
                   </CFormGroup>
                   <Link to="/login">
@@ -54,90 +154,19 @@ const Register = () => {
                       Login
                     </p>
                   </Link>
-                  <CButton color="success" block>
+                  <CButton onClick={(e) => register(e)} color="success" block>
                     Criar Conta
                   </CButton>
                 </CForm>
               </CCardBody>
             </CCard>
           </CCol>
-          {/* <CCol md="9" lg="7" xl="6">
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-user" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput
-                      type="text"
-                      placeholder="Username"
-                      autoComplete="username"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>@</CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput
-                      type="text"
-                      placeholder="Email"
-                      autoComplete="email"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-lock-locked" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-lock-locked" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput
-                      type="password"
-                      placeholder="Repeat password"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <CButton color="success" block>
-                    Create Account
-                  </CButton>
-                </CForm>
-              </CCardBody>
-              <CCardFooter className="p-4">
-                <CRow>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-facebook mb-1" block>
-                      <span>facebook</span>
-                    </CButton>
-                  </CCol>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-twitter mb-1" block>
-                      <span>twitter</span>
-                    </CButton>
-                  </CCol>
-                </CRow>
-              </CCardFooter>
-            </CCard>
-          </CCol> */}
         </CRow>
       </CContainer>
     </div>
   );
 };
 
-export default Register;
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

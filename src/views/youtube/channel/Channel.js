@@ -1,3 +1,4 @@
+//REACT
 import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
@@ -22,8 +23,9 @@ import {
 import ShowVideos from "../containers/showVideos";
 //Style
 import "../styles/youtube.css";
+//API
 
-const Channel = () => {
+const Channel = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
     content: 1,
@@ -104,6 +106,9 @@ const Channel = () => {
             <CRow>
               <CCol sm="3">
                 <CButton
+                  onClick={() => {
+                    changeContent("init");
+                  }}
                   style={{
                     border: "1px solid",
                     width: "100%",
@@ -125,6 +130,9 @@ const Channel = () => {
               </CCol>
               <CCol sm="3">
                 <CButton
+                  onClick={() => {
+                    changeContent("playlist");
+                  }}
                   style={{ border: "1px solid", width: "100%", height: "130%" }}
                 >
                   Playlists
@@ -144,12 +152,14 @@ const Channel = () => {
           </CCardBody>
         </CCard>
       </header>
-      {state.content === 4 && <h1>Sobre</h1>}
-      {state.content === 2 && <ShowVideos />}
+      {state.content === 1 ? <h1>Inicio</h1> : null}
+      {state.content === 2 ? <ShowVideos /> : null}
+      {state.content === 3 ? <h1>Playlist</h1> : null}
+      {state.content === 4 ? <h1>Sobre</h1> : null}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

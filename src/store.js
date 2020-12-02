@@ -1,9 +1,16 @@
 import { createStore } from "redux";
 import AllReducer from "./store/reducers";
+import ls from "local-storage";
 
-const initialState = {
-  sidebarShow: "responsive",
+const creds = {
+  token: ls.get("token"),
 };
+
+export let initialState = creds;
+
+// const initialState = {
+//   sidebarShow: "responsive",
+// };
 
 const changeState = (state = initialState, { type, ...rest }) => {
   switch (type) {
@@ -14,5 +21,12 @@ const changeState = (state = initialState, { type, ...rest }) => {
   }
 };
 
-const store = createStore(changeState);
+const store = createStore(AllReducer, initialState);
+
+store.subscribe(() => {
+  const { token } = store.getState();
+
+  ls.set("token", token);
+});
+
 export default store;

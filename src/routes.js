@@ -70,6 +70,7 @@ const Profile = React.lazy(() => import("./views/youtube/profile/Profile"));
 const Playlist = React.lazy(() => import("./views/youtube/playlist/Playlist"));
 const Channel = React.lazy(() => import("./views/youtube/channel/Channel"));
 const Historic = React.lazy(() => import("./views/youtube/historic/Historic"));
+const Upload = React.lazy(() => import("./views/youtube/upload/Upload"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -82,6 +83,7 @@ const routes = [
   { path: "/playlist", name: "Playlist", component: Playlist },
   { path: "/channel", name: "Channel", component: Channel },
   { path: "/historic", name: "Historic", component: Historic },
+  { path: "/upload", name: "Upload", component: Upload },
 ];
 
 // const routes = [
