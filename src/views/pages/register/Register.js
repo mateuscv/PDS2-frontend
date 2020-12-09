@@ -24,7 +24,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
-//API
+//API 
 import { registerUser } from "../../util/Api";
 import md5 from "md5";
 

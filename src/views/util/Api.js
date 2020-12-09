@@ -35,3 +35,12 @@ export const getProfile = (data) => {
     }.bind(this)
   );
 };
+
+export const editProfile = (data) => {
+  return axios.post(API_URL + "/users/profile/edit", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
