@@ -11,6 +11,7 @@ import {
   CRow,
   CCol,
   CForm,
+  CSelect,
   CFormText,
   CListGroup,
   CListGroupItem,
@@ -29,24 +30,24 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
-//Style 
+//Style
 //API
 import { getProfile, editProfile } from "../../util/Api";
 import md5 from "md5";
+import MaskedInput from "react-text-mask";
 
 const Profile = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
     user: {
       photo: "",
-    first_name: "",
-    last_name: "",
-    genre: "",
-    email: "",
-    password: "",
-    password_confirm: "",
-    birth_date: "",
-    phone: "",
+      name: "",
+      genre: "",
+      email: "",
+      password: "",
+      password_confirm: "",
+      birth_date: "",
+      phone: "",
     },
     error: "",
     message: "",
@@ -56,15 +57,22 @@ const Profile = ({ token }) => {
     setState({ ...state, error: "", message: "Alterando..." });
     const data = {
       photo: state.photo,
-      first_name: state.first_name.trim(),
-      last_name: state.last_name,
+      name: state.name.trim(),
       genre: state.genre,
       email: state.email,
       password: md5(state.password),
       birth_date: state.birth_date,
       phone: state.phone,
     };
-    if (!data.photo || !data.first_name || !data.last_name || !data.genre || !data.email || !data.password || !data.birth_date || !data.phone) {
+    if (
+      !data.photo ||
+      !data.name ||
+      !data.genre ||
+      !data.email ||
+      !data.password ||
+      !data.birth_date ||
+      !data.phone
+    ) {
       setState({
         ...state,
         error: "Insira os dados corretamente!",
@@ -77,24 +85,37 @@ const Profile = ({ token }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      
       console.log(token);
-      const user = 
-        {
-          first_name: "Igor",
-          last_name: "Oliveira",
-          genre: "Masculino",
-          email: "igor@furg.br",
-          password: "123456",
-          birth_date: "24/11/1997",
-          phone: "53984366433",
-        }
-
+      const user = {
+        name: "Igor Oliveira",
+        genre: "a",
+        email: "igor@furg.br",
+        password: "123456",
+        birth_date: "24/11/1997",
+        phone: "(53) 98436-6433",
+      };
+      // const gender = {
+      //   man: false,
+      //   woman: false,
+      //   another: false,
+      // };
+      // switch (user.genre) {
+      //   case "m":
+      //     gender.man = true;
+      //     break;
+      //   case "w":
+      //     gender.woman = true;
+      //     break;
+      //   case "a":
+      //     gender.another = true;
+      //     break;
+      //   default:
+      //     break;
+      // }
       setState({ ...state, fetched: true, user });
-
     }
   }, []);
-  console.log(state.user)
+  console.log(state.user);
   // const toggleName = (e) => {
   //   setState({... state, first_name: e.target.value});
   // };
@@ -137,7 +158,6 @@ const Profile = ({ token }) => {
         <CRow>
           <CCol sm="12">
             <CForm action="" method="post">
-
               {state.message && (
                 <CCard
                   className="border-success"
@@ -162,15 +182,15 @@ const Profile = ({ token }) => {
                   id="nf-first_name"
                   name="nf-first_name"
                   autoComplete="name"
-                  value={ state.user.first_name }
+                  value={state.user.name}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.first_name=e.target.value
+                    let user = { ...state.user };
+                    user.name = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
               </CFormGroup>
-
+              {/* 
               <CFormGroup>
                 <CLabel htmlFor="nf-last_name">Sobrenome</CLabel>
                 <CInput
@@ -178,45 +198,50 @@ const Profile = ({ token }) => {
                   id="nf-last_name"
                   name="nf-last_name"
                   autoComplete="lastname"
-                  value={ state.user.last_name }
+                  value={state.user.last_name}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.last_name=e.target.value
+                    let user = { ...state.user };
+                    user.last_name = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
-              </CFormGroup>
+              </CFormGroup> */}
 
               <CFormGroup>
-                <CLabel htmlFor="nf-phone">Número</CLabel>
-                <CInput
-                  type="number"
-                  id="nf-phone"
-                  name="nf-phone"
-                  autoComplete="phone"
-                  value={ state.user.phone }
+                <CLabel htmlFor="nf-genre">Gênero</CLabel>
+                <CSelect
+                  value={state.user.genre}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.phone=e.target.value
+                    let user = { ...state.user };
+                    user.genre = e.target.value;
                     setState({ ...state, user });
                   }}
-                />
-              </CFormGroup>
-              
-              <CFormGroup>
-                <CLabel htmlFor="nf-genre">Gênero</CLabel>
-                <CInput
+                >
+                  <option value="m">Masculino</option>
+                  <option value="w">Feminino</option>
+                  <option value="a">Outros</option>
+                  {/* <option value="m" selected={state.gender.man}>
+                    Masculino
+                  </option>
+                  <option value="w" selected={state.gender.woman}>
+                    Feminino
+                  </option>
+                  <option value="a" selected={state.gender.another}>
+                    Outros
+                  </option> */}
+                </CSelect>
+                {/* <CInput
                   type="text"
                   id="nf-genre"
                   name="nf-genre"
                   autoComplete="genre"
-                  value={ state.user.genre }
+                  value={state.user.genre}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.genre=e.target.value
+                    let user = { ...state.user };
+                    user.genre = e.target.value;
                     setState({ ...state, user });
                   }}
-                />
+                /> */}
               </CFormGroup>
 
               <CFormGroup>
@@ -226,15 +251,46 @@ const Profile = ({ token }) => {
                   id="nf-birth_date"
                   name="nf-birth_date"
                   autoComplete="birth_date"
-                  value={ state.user.birth_date }
+                  value={state.user.birth_date}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.birth_date=e.target.value
+                    let user = { ...state.user };
+                    user.birth_date = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
               </CFormGroup>
 
+              <CFormGroup>
+                <CLabel htmlFor="nf-password">Senha</CLabel>
+                <CInput
+                  type="password"
+                  id="nf-password"
+                  name="nf-password"
+                  autoComplete="current-password"
+                  value={state.user.password}
+                  onChange={(e) => {
+                    let user = { ...state.user };
+                    user.password = e.target.value;
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-password_confirm">Confirme a senha</CLabel>
+                <CInput
+                  type="password"
+                  id="nf-password_confirm"
+                  name="nf-password_confirm"
+                  autoComplete="password_confirm"
+                  value={state.user.password_confirm}
+                  onChange={(e) => {
+                    let user = { ...state.user };
+                    user.password_confirm = e.target.value;
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
             </CForm>
           </CCol>
         </CRow>
@@ -436,7 +492,6 @@ const Profile = ({ token }) => {
         <CRow>
           <CCol sm="12">
             <CForm action="" method="post">
-
               <CFormGroup>
                 <CLabel htmlFor="nf-email">E-mail</CLabel>
                 <CInput
@@ -444,51 +499,70 @@ const Profile = ({ token }) => {
                   id="nf-email"
                   name="nf-email"
                   autoComplete="email"
-                  value={ state.user.email }
+                  value={state.user.email}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.email=e.target.value
+                    let user = { ...state.user };
+                    user.email = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
               </CFormGroup>
 
               <CFormGroup>
-                <CLabel htmlFor="nf-password">Senha</CLabel>
-                <CInput
-                  type="password"
-                  id="nf-password"
-                  name="nf-password"
-                  autoComplete="current-password"
-                  value={ state.user.password }
+                <CLabel htmlFor="nf-phone">Telefone</CLabel>
+                {/*<CInput
+                  type="number"
+                  id="nf-phone"
+                  name="nf-phone"
+                  autoComplete="phone"
+                  value={state.user.phone}
                   onChange={(e) => {
-                    let user={... state.user }
-                    user.password=e.target.value
+                    let user = { ...state.user };
+                    user.phone = e.target.value;
+                    setState({ ...state, user });
+                  }}
+                /> */}
+                <MaskedInput
+                  mask={[
+                    "(",
+                    /[1-9]/,
+                    /\d/,
+                    ")",
+                    " ",
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    "-",
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                    /\d/,
+                  ]}
+                  id="nf-phone"
+                  name="nf-phone"
+                  autoComplete="phone"
+                  value={state.user.phone}
+                  className="form-control"
+                  onChange={(e) => {
+                    let user = { ...state.user };
+                    user.phone = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
               </CFormGroup>
 
-              <CFormGroup>
-                <CLabel htmlFor="nf-password_confirm">Confirme a senha</CLabel>
-                <CInput
-                  type="password"
-                  id="nf-password_confirm"
-                  name="nf-password_confirm"
-                  autoComplete="password_confirm"
-                  value={ state.user.password_confirm }
-                  onChange={(e) => {
-                    let user={... state.user }
-                    user.password_confirm=e.target.value
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-
-              <CButton onClick={(e) => profile(e)} color="success" block>
-                Alterar informações
-              </CButton>
-
+              <div align="center">
+                <CButton
+                  style={{ width: "10%" }}
+                  onClick={(e) => profile(e)}
+                  color="success"
+                  block
+                >
+                  Alterar informações
+                </CButton>
+              </div>
             </CForm>
           </CCol>
         </CRow>
