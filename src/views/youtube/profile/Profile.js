@@ -6,6 +6,12 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
 import {
+  CContainer,
+  CCard,
+  CRow,
+  CCol,
+  CForm,
+  CFormText,
   CListGroup,
   CListGroupItem,
   CModal,
@@ -23,60 +29,100 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
-//Style
+//Style 
 //API
-import { userProfile } from "../../util/Api";
+import { getProfile, editProfile } from "../../util/Api";
+import md5 from "md5";
 
 const Profile = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
+    user: {
+      photo: "",
+    first_name: "",
+    last_name: "",
+    genre: "",
+    email: "",
+    password: "",
+    password_confirm: "",
+    birth_date: "",
+    phone: "",
+    },
+    error: "",
+    message: "",
   });
+  const profile = (e) => {
+    e.preventDefault();
+    setState({ ...state, error: "", message: "Alterando..." });
+    const data = {
+      photo: state.photo,
+      first_name: state.first_name.trim(),
+      last_name: state.last_name,
+      genre: state.genre,
+      email: state.email,
+      password: md5(state.password),
+      birth_date: state.birth_date,
+      phone: state.phone,
+    };
+    if (!data.photo || !data.first_name || !data.last_name || !data.genre || !data.email || !data.password || !data.birth_date || !data.phone) {
+      setState({
+        ...state,
+        error: "Insira os dados corretamente!",
+        message: "",
+      });
+    } else if (md5(state.password_confirm) !== data.password) {
+      setState({ ...state, error: "As senhas não batem!", message: "" });
+    }
+  };
+
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      
       console.log(token);
-      // userProfile()
+      const user = 
+        {
+          first_name: "Igor",
+          last_name: "Oliveira",
+          genre: "Masculino",
+          email: "igor@furg.br",
+          password: "123456",
+          birth_date: "24/11/1997",
+          phone: "53984366433",
+        }
+
+      setState({ ...state, fetched: true, user });
+
     }
   }, []);
+  console.log(state.user)
+  // const toggleName = (e) => {
+  //   setState({... state, first_name: e.target.value});
+  // };
 
-  const [editPhoto, setPhoto] = useState(false);
-  const togglePhoto = () => {
-    setPhoto(!editPhoto);
-  };
-  const [editName, setName] = useState(false);
-  const toggleName = () => {
-    setName(!editName);
-  };
-
-  const [editNickname, setNickname] = useState(false);
-  const toggleNickname = () => {
-    setNickname(!editNickname);
-  };
-
-  const [editDate, setDate] = useState(false);
-  const toggleDate = () => {
-    setDate(!editDate);
-  };
-
-  const [editGenre, setGenre] = useState(false);
-  const toggleGenre = () => {
-    setGenre(!editGenre);
-  };
-
-  const [editPassword, setPassword] = useState(false);
-  const togglePassword = () => {
-    setPassword(!editPassword);
-  };
-
-  const [editEmail, setEmail] = useState(false);
-  const toggleEmail = () => {
-    setEmail(!editEmail);
-  };
-
-  const [editPhone, setPhone] = useState(false);
-  const togglePhone = () => {
-    setPhone(!editPhone);
-  };
+  // const togglePhoto = () => {
+  //   setPhoto(!editPhoto);
+  // };
+  // const toggleName = () => {
+  //   setPhoto(!editName);
+  // };
+  // const toggleNickname = () => {
+  //   setNickname(!editNickname);
+  // };
+  // const toggleDate = () => {
+  //   setDate(!editDate);
+  // };
+  // const toggleGenre = () => {
+  //   setGenre(!editGenre);
+  // };
+  // const togglePassword = () => {
+  //   setPassword(!editPassword);
+  // };
+  // const toggleEmail = () => {
+  //   setEmail(!editEmail);
+  // };
+  // const togglePhone = () => {
+  //   setPhone(!editPhone);
+  // };
 
   return (
     <div>
@@ -86,6 +132,114 @@ const Profile = ({ token }) => {
       </div>
 
       <h4>Perfil</h4>
+
+      <CContainer fluid>
+        <CRow>
+          <CCol sm="12">
+            <CForm action="" method="post">
+
+              {state.message && (
+                <CCard
+                  className="border-success"
+                  style={{ textAlign: "center" }}
+                >
+                  {state.message}
+                </CCard>
+              )}
+              {state.error && (
+                <CCard
+                  className="border-danger"
+                  style={{ textAlign: "center" }}
+                >
+                  {state.error}
+                </CCard>
+              )}
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-first_name">Nome</CLabel>
+                <CInput
+                  type="text"
+                  id="nf-first_name"
+                  name="nf-first_name"
+                  autoComplete="name"
+                  value={ state.user.first_name }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.first_name=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-last_name">Sobrenome</CLabel>
+                <CInput
+                  type="text"
+                  id="nf-last_name"
+                  name="nf-last_name"
+                  autoComplete="lastname"
+                  value={ state.user.last_name }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.last_name=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-phone">Número</CLabel>
+                <CInput
+                  type="number"
+                  id="nf-phone"
+                  name="nf-phone"
+                  autoComplete="phone"
+                  value={ state.user.phone }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.phone=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+              
+              <CFormGroup>
+                <CLabel htmlFor="nf-genre">Gênero</CLabel>
+                <CInput
+                  type="text"
+                  id="nf-genre"
+                  name="nf-genre"
+                  autoComplete="genre"
+                  value={ state.user.genre }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.genre=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-birth_date">Data de Nascimento</CLabel>
+                <CInput
+                  type="date"
+                  id="nf-birth_date"
+                  name="nf-birth_date"
+                  autoComplete="birth_date"
+                  value={ state.user.birth_date }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.birth_date=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+            </CForm>
+          </CCol>
+        </CRow>
+      </CContainer>
+      {/*     
       <CListGroup>
         <CListGroupItem onClick={togglePhoto} href="#" color="secondary">
           Foto:
@@ -126,11 +280,19 @@ const Profile = ({ token }) => {
           <CModalBody>
             <CFormGroup>
               <CLabel htmlFor="name">Nome</CLabel>
-              <CInput id="name" placeholder="Igor" required />
+              <CInput 
+                id="name" 
+                placeholder="Igor" 
+                required 
+              />
             </CFormGroup>
             <CFormGroup>
               <CLabel htmlFor="lastname">Sobrenome</CLabel>
-              <CInput id="lastname" placeholder="Oliveira de Sousa" required />
+              <CInput 
+                id="lastname" 
+                placeholder="Oliveira de Sousa" 
+                required 
+                />
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
@@ -149,7 +311,11 @@ const Profile = ({ token }) => {
           <CModalBody>
             <CFormGroup>
               <CLabel htmlFor="nickname">Apelido</CLabel>
-              <CInput id="nickname" placeholder="Igor" required />
+              <CInput 
+                id="nickname" 
+                placeholder="Igor" 
+                required 
+              />
             </CFormGroup>
           </CModalBody>
           <CModalFooter>
@@ -168,10 +334,19 @@ const Profile = ({ token }) => {
           <CModalBody>
             <CFormGroup>
               <CLabel htmlFor="day">Dia</CLabel>
-              <CInput id="day" placeholder="24" required />
+              <CInput 
+                id="day"
+                placeholder="24" 
+                required 
+                />
             </CFormGroup>
             <CFormGroup>
               <CLabel htmlFor="month">Mês</CLabel>
+              <CInput 
+                id="day"
+                placeholder="24" 
+                required 
+                />
               <CDropdown>
                 <CDropdownToggle>Novembro</CDropdownToggle>
                 <CDropdownMenu>
@@ -254,9 +429,72 @@ const Profile = ({ token }) => {
         </CModal>
       </CListGroup>
 
-      <CListGroup>
-        <h4>Informações de contato</h4>
+      <CListGroup> */}
+      <h4>Informações de contato</h4>
 
+      <CContainer fluid>
+        <CRow>
+          <CCol sm="12">
+            <CForm action="" method="post">
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-email">E-mail</CLabel>
+                <CInput
+                  type="email"
+                  id="nf-email"
+                  name="nf-email"
+                  autoComplete="email"
+                  value={ state.user.email }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.email=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-password">Senha</CLabel>
+                <CInput
+                  type="password"
+                  id="nf-password"
+                  name="nf-password"
+                  autoComplete="current-password"
+                  value={ state.user.password }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.password=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CFormGroup>
+                <CLabel htmlFor="nf-password_confirm">Confirme a senha</CLabel>
+                <CInput
+                  type="password"
+                  id="nf-password_confirm"
+                  name="nf-password_confirm"
+                  autoComplete="password_confirm"
+                  value={ state.user.password_confirm }
+                  onChange={(e) => {
+                    let user={... state.user }
+                    user.password_confirm=e.target.value
+                    setState({ ...state, user });
+                  }}
+                />
+              </CFormGroup>
+
+              <CButton onClick={(e) => profile(e)} color="success" block>
+                Alterar informações
+              </CButton>
+
+            </CForm>
+          </CCol>
+        </CRow>
+      </CContainer>
+
+      {/* 
         <CListGroupItem onClick={toggleEmail} href="#" color="secondary">
           Email: igor@furg.br
         </CListGroupItem>
@@ -306,7 +544,7 @@ const Profile = ({ token }) => {
             </CButton>
           </CModalFooter>
         </CModal>
-      </CListGroup>
+      </CListGroup> */}
     </div>
   );
 };
