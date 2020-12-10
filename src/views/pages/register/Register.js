@@ -37,6 +37,7 @@ const Register = ({ history }) => {
     password_confirm: "",
     error: "",
     message: "",
+    date: "",
   });
   const register = (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ const Register = ({ history }) => {
       last_name: state.last_name,
       email: state.email,
       password: md5(state.password),
-      created_at: "1",
+      avatar: "file_url",
     };
     // const data = {
     //   first_name: "Igor",
@@ -55,6 +56,7 @@ const Register = ({ history }) => {
     //   password: "senha2",
     //   created_at: "1",
     // };
+    console.log(state.date);
     if (!data.first_name || !data.last_name || !data.email || !data.password) {
       setState({
         ...state,
@@ -96,21 +98,20 @@ const Register = ({ history }) => {
                   )}
                   <p className="text-muted">Create your account</p>
                   <CFormGroup row>
-                    <CCol md="6">
+                    <CCol md="12">
+                      <label>
+                        Selecione seu Avatar
+                        <CInput type="file" />
+                      </label>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
                       <CInput
                         type="text"
-                        placeholder="Nome"
+                        placeholder="Username"
                         onChange={(e) => {
                           setState({ ...state, first_name: e.target.value });
-                        }}
-                      />
-                    </CCol>
-                    <CCol md="6">
-                      <CInput
-                        type="text"
-                        placeholder="Sobrenome"
-                        onChange={(e) => {
-                          setState({ ...state, last_name: e.target.value });
                         }}
                       />
                     </CCol>
@@ -139,7 +140,7 @@ const Register = ({ history }) => {
                     <CCol md="6">
                       <CInput
                         type="password"
-                        placeholder="Confirmar"
+                        placeholder="Confirmar Senha"
                         onChange={(e) => {
                           setState({
                             ...state,
@@ -149,6 +150,12 @@ const Register = ({ history }) => {
                       />
                     </CCol>
                   </CFormGroup>
+                  <CInput
+                    type="date"
+                    onChange={(e) => {
+                      setState({ ...state, date: e.target.value });
+                    }}
+                  />
                   <Link to="/login">
                     <p color="primary" className="mt-3" active tabIndex={-1}>
                       Login

@@ -27,7 +27,7 @@ import CIcon from "@coreui/icons-react";
 import { loginUser } from "../../util/Api";
 import md5 from "md5";
 
-const Login = ({ history, setToken, token }) => {
+const Login = ({ history, setToken }) => {
   const [state, setState] = useState({
     error: "",
     message: "",
@@ -39,7 +39,7 @@ const Login = ({ history, setToken, token }) => {
     setState({ ...state, error: "", message: "Logando..." });
     var data = {
       email: state.email,
-      password: md5(state.password),
+      password: state.password,
     };
     // const data = {
     //   email: "davi@furg.br",

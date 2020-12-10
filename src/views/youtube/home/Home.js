@@ -30,6 +30,7 @@ const Home = ({ history, token }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
+      console.log(token);
     }
   }, []);
   const handleClick = () => {
