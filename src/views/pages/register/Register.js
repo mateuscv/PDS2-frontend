@@ -20,56 +20,60 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow,
+  CSelect,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
-//API 
+//API
 import { registerUser } from "../../util/Api";
 import md5 from "md5";
+import MaskedInput from "react-text-mask";
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
-    first_name: "",
-    last_name: "",
+    avatar: null,
+    username: "",
     email: "",
     password: "",
     password_confirm: "",
     error: "",
     message: "",
-    date: "",
+    birthdate: "",
+    gender: "",
+    telephone: "",
   });
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-    const data = {
-      first_name: state.first_name.trim(),
-      last_name: state.last_name,
+
+    const data = new FormData();
+    data.append("avatar", state.avatar);
+    const values = {
+      username: state.username,
       email: state.email,
       password: md5(state.password),
-      avatar: "file_url",
+      birthdate: state.birthdate,
+      gender: state.gender,
+      phone: state.phone,
     };
-    // const data = {
-    //   first_name: "Igor",
-    //   last_name: "Oliveira",
-    //   email: "igor@furg.br",
-    //   password: "senha2",
-    //   created_at: "1",
-    // };
-    console.log(state.date);
-    if (!data.first_name || !data.last_name || !data.email || !data.password) {
-      setState({
-        ...state,
-        error: "Insira os dados corretamente!",
-        message: "",
-      });
-    } else if (md5(state.password_confirm) !== data.password) {
-      setState({ ...state, error: "As senhas não batem!", message: "" });
-    } else {
-      registerUser(data).then(function (data) {
+
+    data.append("username", state.username);
+    data.append("email", state.email);
+    data.append("password", md5(state.password));
+    data.append("birthdate", state.birthdate);
+    data.append("gender", state.gender);
+    data.append("phone", state.phone);
+
+    console.log(data);
+    registerUser(data).then(function (data) {
+      // history.push("/login");
+      if (data.status === 1) {
         history.push("/login");
-      });
-    }
+      }
+      console.log(data);
+    });
+    // }
   };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
@@ -99,10 +103,15 @@ const Register = ({ history }) => {
                   <p className="text-muted">Create your account</p>
                   <CFormGroup row>
                     <CCol md="12">
-                      <label>
-                        Selecione seu Avatar
-                        <CInput type="file" />
-                      </label>
+                      {/* <label>
+                        Selecione seu Avatar */}
+                      <CInput
+                        type="file"
+                        onChange={(e) => {
+                          setState({ ...state, avatar: e.target.files[0] });
+                        }}
+                      />
+                      {/* </label> */}
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
@@ -111,7 +120,7 @@ const Register = ({ history }) => {
                         type="text"
                         placeholder="Username"
                         onChange={(e) => {
-                          setState({ ...state, first_name: e.target.value });
+                          setState({ ...state, username: e.target.value });
                         }}
                       />
                     </CCol>
@@ -150,12 +159,63 @@ const Register = ({ history }) => {
                       />
                     </CCol>
                   </CFormGroup>
-                  <CInput
-                    type="date"
-                    onChange={(e) => {
-                      setState({ ...state, date: e.target.value });
-                    }}
-                  />
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CInput
+                        type="date"
+                        onChange={(e) => {
+                          setState({ ...state, birthdate: e.target.value });
+                        }}
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <MaskedInput
+                        mask={[
+                          "(",
+                          /[1-9]/,
+                          /\d/,
+                          ")",
+                          " ",
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          "-",
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                        ]}
+                        id="nf-phone"
+                        name="nf-phone"
+                        value={state.phone}
+                        placeholder="(53) 99999-9999"
+                        className="form-control"
+                        onChange={(e) => {
+                          setState({ ...state, phone: e.target.value });
+                        }}
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CSelect
+                        value={state.gender}
+                        onChange={(e) => {
+                          setState({ ...state, gender: e.target.value });
+                        }}
+                      >
+                        {" "}
+                        <option value=""> Selecione o Genero </option>
+                        <option value="m">Masculino</option>
+                        <option value="w">Feminino</option>
+                        <option value="a">Outros</option>
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
                   <Link to="/login">
                     <p color="primary" className="mt-3" active tabIndex={-1}>
                       Login
