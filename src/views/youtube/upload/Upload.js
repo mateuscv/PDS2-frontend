@@ -1,20 +1,26 @@
 import React, { useState } from "react";
-
+//REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
 import CIcon from "@coreui/icons-react";
-
+//API
+import { uploadVideo } from "../../util/Api";
 import Dropzone from "react-dropzone";
-import axios from "axios";
+
 const creds = {
   file: null,
 };
 
-const Upload = () => {
+const Upload = ({ token }) => {
   const [state, setState] = useState({
     upload: "",
   });
   const onDrop = (files) => {
     const data = new FormData();
     data.append("file", files[0]);
+    data.append("title", "titulo");
+    data.append("description", "descrição");
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -27,19 +33,23 @@ const Upload = () => {
     //     // }
     //   },
     // };
-
-    axios.post("http://localhost:8000/upload", data).then(function (data) {
-      // then print response status
+    console.log(token);
+    uploadVideo(data, token).then(function (data) {
       console.log(data);
-      if (data.status === 200) {
-        setState({ ...state, msg: "Upload Completo!" });
-      } else {
-        setState({
-          ...state,
-          msg: "Tivemos um problema, tente novamente!",
-        });
-      }
     });
+
+    // axios.post("http://localhost:8000/upload", data).then(function (data) {
+    //   // then print response status
+    //   console.log(data);
+    //   if (data.status === 200) {
+    //     setState({ ...state, msg: "Upload Completo!" });
+    //   } else {
+    //     setState({
+    //       ...state,
+    //       msg: "Tivemos um problema, tente novamente!",
+    //     });
+    //   }
+    // });
   };
 
   return (
@@ -68,4 +78,7 @@ const Upload = () => {
     </div>
   );
 };
-export default Upload;
+
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);

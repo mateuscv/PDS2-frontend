@@ -19,7 +19,7 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "../styles/youtube.css";
 //API
-import Dropzone from "react-dropzone";
+import useWindowSize from "./windowSize";
 import ReactPlayer from "react-player";
 
 // import { Container } from './styles';
@@ -31,6 +31,7 @@ const Player = () => {
     playing: false,
     playbackRate: 1.0,
     muted: false,
+    size: "",
   });
 
   const handlePlayPause = () => {
@@ -55,13 +56,16 @@ const Player = () => {
   };
 
   useEffect(() => {
+    // var size = useWindowSize();
     if (!state.fetched) {
       setState({ ...state, fetched: true });
     }
   }, []);
 
   return (
-    <div style={{ width: "fit-content", height: "fit-content" }}>
+    <div
+      style={{ width: "fit-content", height: "fit-content", marginLeft: "3%" }}
+    >
       <div
         style={{
           cursor: "pointer",
@@ -74,6 +78,11 @@ const Player = () => {
           // url="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"
           url="	https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
           //url="https://youtube-videos-furg.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4"
+
+          width="1280px"
+          height="720px"
+          // width={state.size.width - (state.size.width - 1280)}
+          // height={state.size.height - (state.size.height - 1280)}
           muted={state.muted}
           playing={state.playing}
           volume={state.volume}
@@ -83,16 +92,16 @@ const Player = () => {
 
       <div
         style={{
-          //border: "1px solid black",
+          border: "1px solid black",
           display: "flex",
-          backgroundColor: "rgb(38, 38, 38)",
+          //backgroundColor: "rgb(38, 36, 82)",
         }}
       >
         {" "}
         <div
           onClick={() => handlePlayPause()}
           style={{
-            padding: "7px",
+            //padding: "7px",
             //marginLeft: "1%",
             cursor: "pointer",
             display: "flex",
@@ -103,7 +112,7 @@ const Player = () => {
             //border: "1px inset black",
             width: "6%",
             height: "35px",
-            color: "white",
+            //color: "white",
           }}
         >
           {/* <CButton onClick={() => handlePlayPause()}>
@@ -136,7 +145,7 @@ const Player = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            color: "white",
+            //color: "white",
           }}
         >
           {state.muted === true ? (
@@ -173,7 +182,7 @@ const Player = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            color: "white",
+            //color: "white",
           }}
         >
           Velocidade

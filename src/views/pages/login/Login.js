@@ -39,7 +39,7 @@ const Login = ({ history, setToken }) => {
     setState({ ...state, error: "", message: "Logando..." });
     var data = {
       email: state.email,
-      password: state.password,
+      password: md5(state.password),
     };
     // const data = {
     //   email: "davi@furg.br",
