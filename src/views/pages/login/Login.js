@@ -53,13 +53,17 @@ const Login = ({ history, setToken }) => {
         message: "",
       });
     } else {
-      loginUser(data).then(function (data) {
-        //console.log(user);
-        // console.log(data.token);
-        // console.log(data);
-        setToken(data.token);
-        history.push("/home");
-      });
+      loginUser(data)
+        .then(function (data) {
+          //console.log(user);
+          // console.log(data.token);
+          // console.log(data);
+          setToken(data.token);
+          history.push("/home");
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   };
   return (

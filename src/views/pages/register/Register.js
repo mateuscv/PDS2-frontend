@@ -57,23 +57,54 @@ const Register = ({ history }) => {
       gender: state.gender,
       phone: state.phone,
     };
+    if (
+      !state.username ||
+      !state.email ||
+      !state.password ||
+      !state.birthdate ||
+      !state.gender ||
+      !state.phone
+    ) {
+      setState({
+        ...state,
+        error: "Porfavor inserir valores em todos os campos",
+        message: "",
+      });
+    } else if (state.password !== state.password_confirm) {
+      setState({
+        ...state,
+        error: "As senhas não batem. Tente novamente!",
+        message: "",
+      });
+    } else {
+      console.log(values);
+      data.append(
+        "old_img",
+        "https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/default.png"
+      );
+      data.append("username", state.username);
+      data.append("email", state.email);
+      data.append("password", md5(state.password));
+      data.append("birthdate", state.birthdate);
+      data.append("gender", state.gender);
+      data.append("phone", state.phone);
 
-    data.append("username", state.username);
-    data.append("email", state.email);
-    data.append("password", md5(state.password));
-    data.append("birthdate", state.birthdate);
-    data.append("gender", state.gender);
-    data.append("phone", state.phone);
-
-    console.log(data);
-    registerUser(data).then(function (data) {
-      // history.push("/login");
-      if (data.status === 1) {
-        history.push("/login");
-      }
-      console.log(data);
-    });
-    // }
+      registerUser(data)
+        .then(function (data) {
+          if (data.status === 1) {
+            history.push("/login");
+          } else {
+            setState({
+              ...state,
+              error: "Algo deu errado tentar novamente!",
+              message: "",
+            });
+          }
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
+    }
   };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
