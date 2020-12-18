@@ -27,7 +27,7 @@ import CIcon from "@coreui/icons-react";
 import { loginUser } from "../../util/Api";
 import md5 from "md5";
 
-const Login = ({ history, setToken, token }) => {
+const Login = ({ history, setToken }) => {
   const [state, setState] = useState({
     error: "",
     message: "",
@@ -53,13 +53,17 @@ const Login = ({ history, setToken, token }) => {
         message: "",
       });
     } else {
-      loginUser(data).then(function (data) {
-        //console.log(user);
-        // console.log(data.token);
-        // console.log(data);
-        setToken(data.token);
-        history.push("/home");
-      });
+      loginUser(data)
+        .then(function (data) {
+          //console.log(user);
+          // console.log(data.token);
+          // console.log(data);
+          setToken(data.token);
+          history.push("/home");
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   };
   return (

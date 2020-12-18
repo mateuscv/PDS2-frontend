@@ -1,20 +1,36 @@
 import React, { useState } from "react";
-
+//REDUX
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../../../store/actions";
 import CIcon from "@coreui/icons-react";
-
+//CoreUI
+import { CInput, CTextarea, CCard, CFormGroup, CCol } from "@coreui/react";
+//Componets
+//Style
+import "../styles/youtube.css";
+//API
+import { uploadVideo } from "../../util/Api";
 import Dropzone from "react-dropzone";
-import axios from "axios";
+
 const creds = {
   file: null,
 };
 
-const Upload = () => {
+const Upload = ({ token }) => {
   const [state, setState] = useState({
     upload: "",
+    description: "",
+    title: "",
   });
   const onDrop = (files) => {
+    setState({
+      ...state,
+      error: "",
+      message: "Fazendo upload do video...",
+    });
     const data = new FormData();
-    data.append("file", files[0]);
+    var video = files[0];
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -27,23 +43,61 @@ const Upload = () => {
     //     // }
     //   },
     // };
-
-    axios.post("http://localhost:8000/upload", data).then(function (data) {
-      // then print response status
-      console.log(data);
-      if (data.status === 200) {
-        setState({ ...state, msg: "Upload Completo!" });
-      } else {
-        setState({
-          ...state,
-          msg: "Tivemos um problema, tente novamente!",
+    console.log(token);
+    if (!state.video || !state.description || !state.title) {
+      setState({
+        ...state,
+        error: "Campos não podem ficar em branco!",
+        message: "",
+      });
+    } else {
+      data.append("file", video);
+      data.append("title", state.title);
+      data.append("description", state.description);
+      uploadVideo(data, token)
+        .then(function (data) {
+          setState({
+            ...state,
+            error: "",
+            message: "Video criado com sucesso!",
+          });
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
         });
-      }
-    });
+    }
   };
 
   return (
     <div>
+      {state.message && (
+        <CCard className="border-success" style={{ textAlign: "center" }}>
+          {state.message}
+        </CCard>
+      )}
+      {state.error && (
+        <CCard className="border-danger" style={{ textAlign: "center" }}>
+          {state.error}
+        </CCard>
+      )}
+      <CFormGroup row style={{ width: "50%" }}>
+        <CCol md="12">
+          <CInput
+            placeholder="Titulo"
+            onChange={(e) => setState({ ...state, title: e.target.value })}
+          />
+        </CCol>
+      </CFormGroup>
+      <CFormGroup row style={{ width: "50%" }}>
+        <CCol md="12">
+          <CTextarea
+            placeholder="Descrição"
+            onChange={(e) =>
+              setState({ ...state, description: e.target.value })
+            }
+          />
+        </CCol>
+      </CFormGroup>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
           {({ getRootProps, getInputProps }) => (
@@ -68,4 +122,7 @@ const Upload = () => {
     </div>
   );
 };
-export default Upload;
+
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);

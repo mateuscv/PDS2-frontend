@@ -125,6 +125,11 @@ import {
   cilAccountLogout,
   cilCloudUpload,
   cilDataTransferUp,
+  cilVolumeHigh,
+  cilVolumeLow,
+  cilVolumeOff,
+  cilMediaPlay,
+  cilMediaPause,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -135,6 +140,11 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
+    cilMediaPlay,
+    cilMediaPause,
+    cilVolumeLow,
+    cilVolumeOff,
+    cilVolumeHigh,
     cilFire,
     cilDataTransferUp,
     cilCloudUpload,

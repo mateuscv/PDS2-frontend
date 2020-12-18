@@ -20,53 +20,90 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow,
+  CSelect,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
-//API 
+//API
 import { registerUser } from "../../util/Api";
 import md5 from "md5";
+import MaskedInput from "react-text-mask";
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
-    first_name: "",
-    last_name: "",
+    avatar: null,
+    username: "",
     email: "",
     password: "",
     password_confirm: "",
     error: "",
     message: "",
+    birthdate: "",
+    gender: "",
+    telephone: "",
   });
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-    const data = {
-      first_name: state.first_name.trim(),
-      last_name: state.last_name,
+
+    const data = new FormData();
+    data.append("avatar", state.avatar);
+    const values = {
+      username: state.username,
       email: state.email,
       password: md5(state.password),
-      created_at: "1",
+      birthdate: state.birthdate,
+      gender: state.gender,
+      phone: state.phone,
     };
-    // const data = {
-    //   first_name: "Igor",
-    //   last_name: "Oliveira",
-    //   email: "igor@furg.br",
-    //   password: "senha2",
-    //   created_at: "1",
-    // };
-    if (!data.first_name || !data.last_name || !data.email || !data.password) {
+    if (
+      !state.username ||
+      !state.email ||
+      !state.password ||
+      !state.birthdate ||
+      !state.gender ||
+      !state.phone
+    ) {
       setState({
         ...state,
-        error: "Insira os dados corretamente!",
+        error: "Porfavor inserir valores em todos os campos",
         message: "",
       });
-    } else if (md5(state.password_confirm) !== data.password) {
-      setState({ ...state, error: "As senhas não batem!", message: "" });
-    } else {
-      registerUser(data).then(function (data) {
-        history.push("/login");
+    } else if (state.password !== state.password_confirm) {
+      setState({
+        ...state,
+        error: "As senhas não batem. Tente novamente!",
+        message: "",
       });
+    } else {
+      console.log(values);
+      data.append(
+        "old_img",
+        "https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/default.png"
+      );
+      data.append("username", state.username);
+      data.append("email", state.email);
+      data.append("password", md5(state.password));
+      data.append("birthdate", state.birthdate);
+      data.append("gender", state.gender);
+      data.append("phone", state.phone);
+
+      registerUser(data)
+        .then(function (data) {
+          if (data.status === 1) {
+            history.push("/login");
+          } else {
+            setState({
+              ...state,
+              error: "Algo deu errado tentar novamente!",
+              message: "",
+            });
+          }
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   };
   return (
@@ -96,21 +133,25 @@ const Register = ({ history }) => {
                   )}
                   <p className="text-muted">Create your account</p>
                   <CFormGroup row>
-                    <CCol md="6">
+                    <CCol md="12">
+                      {/* <label>
+                        Selecione seu Avatar */}
                       <CInput
-                        type="text"
-                        placeholder="Nome"
+                        type="file"
                         onChange={(e) => {
-                          setState({ ...state, first_name: e.target.value });
+                          setState({ ...state, avatar: e.target.files[0] });
                         }}
                       />
+                      {/* </label> */}
                     </CCol>
-                    <CCol md="6">
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
                       <CInput
                         type="text"
-                        placeholder="Sobrenome"
+                        placeholder="Username"
                         onChange={(e) => {
-                          setState({ ...state, last_name: e.target.value });
+                          setState({ ...state, username: e.target.value });
                         }}
                       />
                     </CCol>
@@ -139,7 +180,7 @@ const Register = ({ history }) => {
                     <CCol md="6">
                       <CInput
                         type="password"
-                        placeholder="Confirmar"
+                        placeholder="Confirmar Senha"
                         onChange={(e) => {
                           setState({
                             ...state,
@@ -147,6 +188,63 @@ const Register = ({ history }) => {
                           });
                         }}
                       />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CInput
+                        type="date"
+                        onChange={(e) => {
+                          setState({ ...state, birthdate: e.target.value });
+                        }}
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <MaskedInput
+                        mask={[
+                          "(",
+                          /[1-9]/,
+                          /\d/,
+                          ")",
+                          " ",
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          "-",
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                          /\d/,
+                        ]}
+                        id="nf-phone"
+                        name="nf-phone"
+                        value={state.phone}
+                        placeholder="(53) 99999-9999"
+                        className="form-control"
+                        onChange={(e) => {
+                          setState({ ...state, phone: e.target.value });
+                        }}
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="12">
+                      <CSelect
+                        value={state.gender}
+                        onChange={(e) => {
+                          setState({ ...state, gender: e.target.value });
+                        }}
+                      >
+                        {" "}
+                        <option value=""> Selecione o Genero </option>
+                        <option value="m">Masculino</option>
+                        <option value="w">Feminino</option>
+                        <option value="a">Outros</option>
+                      </CSelect>
                     </CCol>
                   </CFormGroup>
                   <Link to="/login">
