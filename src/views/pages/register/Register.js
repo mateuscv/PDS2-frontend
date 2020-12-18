@@ -24,7 +24,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-//Style
+//Style 
 //API
 import { registerUser } from "../../util/Api";
 import md5 from "md5";
@@ -41,7 +41,7 @@ const Register = ({ history }) => {
     message: "",
     birthdate: "",
     gender: "",
-    telephone: "",
+    phone: "",
   });
   const register = (e) => {
     e.preventDefault();
@@ -67,7 +67,7 @@ const Register = ({ history }) => {
     ) {
       setState({
         ...state,
-        error: "Porfavor inserir valores em todos os campos",
+        error: "Por favor, inserir valores em todos os campos",
         message: "",
       });
     } else if (state.password !== state.password_confirm) {
@@ -139,8 +139,8 @@ const Register = ({ history }) => {
                       <CInput
                         type="file"
                         onChange={(e) => {
-                          setState({ ...state, avatar: e.target.files[0] });
-                        }}
+                        setState({ ...state, avatar: e.target.files[0] });
+                      }}
                       />
                       {/* </label> */}
                     </CCol>

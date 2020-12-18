@@ -40,13 +40,14 @@ const Profile = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
     user: {
-      photo: "",
-      name: "",
-      genre: "",
+      avatar: null,
+      username: "",
       email: "",
       password: "",
       password_confirm: "",
-      birth_date: "",
+      password_new: "",
+      birthdate: "",
+      gender: "",
       phone: "",
     },
     error: "",
@@ -55,31 +56,74 @@ const Profile = ({ token }) => {
   const profile = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Alterando..." });
-    const data = {
-      photo: state.photo,
-      name: state.name.trim(),
-      genre: state.genre,
-      email: state.email,
-      password: md5(state.password),
-      birth_date: state.birth_date,
-      phone: state.phone,
+    
+    const data = new FormData();
+    data.append("avatar", state.avatar);
+    const values = {
+      username: state.user.username,
+      email: state.user.email,
+      password: md5(state.user.password),
+      birthdate: state.user.birthdate,
+      gender: state.user.gender,
+      phone: state.userphone,
     };
+    var password = "";
+
     if (
-      !data.photo ||
-      !data.name ||
-      !data.genre ||
-      !data.email ||
-      !data.password ||
-      !data.birth_date ||
-      !data.phone
+      !state.user.username ||
+      !state.user.email ||
+      !state.user.birthdate ||
+      !state.user.gender ||
+      !state.user.phone
     ) {
       setState({
         ...state,
-        error: "Insira os dados corretamente!",
+        error: "Por favor, inserir valores em todos os campos",
         message: "",
       });
-    } else if (md5(state.password_confirm) !== data.password) {
-      setState({ ...state, error: "As senhas não batem!", message: "" });
+    } else if (state.user.password_confirm !== state.user.password_new) {
+      setState({ 
+        ...state, 
+        error: "As senhas não batem. Tente novamente!",
+        message: "" 
+      });
+    } else {
+      if (state.user.password_new == null){
+        password = state.user.password;
+      } else {
+        password = md5(state.user.password_new);
+      }
+      console.log(values);
+      data.append("token", token);
+      data.append("old_img", state.user.avatar);
+      data.append("username", state.user.username);
+      data.append("email", state.user.email);
+      data.append("password", md5(state.user.password));
+      data.append("birthdate", state.user.birthdate);
+      data.append("gender", state.user.gender);
+      data.append("phone", state.user.phone);
+
+      editProfile(data)
+        .then(function (data) {
+          console.log(data)
+          if (data.status === 1) {
+            setState({
+              ...state,
+              error: "Perfil atualizado!",
+              message: "",
+            });
+          } else {
+            setState({
+              ...state,
+              error: "Algo deu errado tentar novamente!",
+              message: "",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   };
 
@@ -87,7 +131,10 @@ const Profile = ({ token }) => {
     if (!state.fetched) {
       console.log(token);
       var data = { token: token };
-      getProfile(data).then(function (data) {});
+      getProfile(data, token).then(function (data) {
+        console.log(data.birthdate.substring(0,10));
+        setState({ ...state, user: data, fetched: true });
+      });
       // const user = {
       //   name: "Igor Oliveira",
       //   genre: "a",
@@ -99,7 +146,7 @@ const Profile = ({ token }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-
+  
   return (
     <div>
       <div align="center">
@@ -129,29 +176,46 @@ const Profile = ({ token }) => {
                   {state.error}
                 </CCard>
               )}
-
+              <div class="c-avatar">
+              
+              </div>
               <CFormGroup>
-                <CLabel htmlFor="nf-first_name">Nome</CLabel>
+                <CCol md="12">
+                  {/* <label>
+                    Selecione seu Avatar */}
+                  <img style={{ width: "50px" }} src={ state.user.avatar } alt="avatar"></img>
+                  { console.log(state) }
+                  <CInput
+                    type="file"
+                    onChange={(e) => {
+                    setState({ ...state, avatar: e.target.files[0] });
+                  }}
+                  />
+                  {/* </label> */}
+                </CCol>
+              </CFormGroup>
+              <CFormGroup>
+                <CLabel htmlFor="nf-username">Nome de usário</CLabel>
                 <CInput
                   type="text"
-                  id="nf-first_name"
-                  name="nf-first_name"
+                  id="nf-username"
+                  name="nf-username"
                   autoComplete="name"
-                  value={state.user.name}
+                  value={state.user.username}
                   onChange={(e) => {
                     let user = { ...state.user };
-                    user.name = e.target.value;
+                    user.username = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
               </CFormGroup>
               <CFormGroup>
-                <CLabel htmlFor="nf-genre">Gênero</CLabel>
+                <CLabel htmlFor="nf-gender">Gênero</CLabel>
                 <CSelect
-                  value={state.user.genre}
+                  value={state.user.gender}
                   onChange={(e) => {
                     let user = { ...state.user };
-                    user.genre = e.target.value;
+                    user.gender = e.target.value;
                     setState({ ...state, user });
                   }}
                 >
@@ -160,18 +224,18 @@ const Profile = ({ token }) => {
                   <option value="a">Outros</option>
                 </CSelect>
               </CFormGroup>
-
+              
               <CFormGroup>
-                <CLabel htmlFor="nf-birth_date">Data de Nascimento</CLabel>
+                <CLabel htmlFor="nf-birthdate">Data de Nascimento</CLabel>
                 <CInput
                   type="date"
-                  id="nf-birth_date"
-                  name="nf-birth_date"
-                  autoComplete="birth_date"
-                  value={state.user.birth_date}
+                  id="nf-birthdate"
+                  name="nf-birthdate"
+                  autoComplete="birthdate"
+                  value={state.user.birthdate.substring(0,10)}
                   onChange={(e) => {
                     let user = { ...state.user };
-                    user.birth_date = e.target.value;
+                    user.birthdate = e.target.value;
                     setState({ ...state, user });
                   }}
                 />
@@ -184,10 +248,9 @@ const Profile = ({ token }) => {
                   id="nf-password"
                   name="nf-password"
                   autoComplete="current-password"
-                  value={state.user.password}
                   onChange={(e) => {
                     let user = { ...state.user };
-                    user.password = e.target.value;
+                    user.password_new = e.target.value;
                     setState({ ...state, user });
                   }}
                 />

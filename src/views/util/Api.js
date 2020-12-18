@@ -21,9 +21,11 @@ export const loginUser = (data) => {
   );
 };
 
-export const getProfile = (data) => {
-  console.log(data);
-  return axios.post(API_URL + "users/profile", data).then(
+export const getProfile = (data, token) => {
+  const config = {
+    headers: { authorization: token },
+  };
+  return axios.post(API_URL + "users/profile", data, config).then(
     function (res) {
       let data = res.data;
       return data;
@@ -31,8 +33,11 @@ export const getProfile = (data) => {
   );
 };
 
-export const editProfile = (data) => {
-  return axios.post(API_URL + "users/profile/edit", data).then(
+export const editProfile = (data, token) => {
+  const config = {
+    headers: { authorization: token },
+  };
+  return axios.post(API_URL + "users/profile/edit", data, config).then(
     function (res) {
       let data = res.data;
       return data;
