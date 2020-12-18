@@ -88,7 +88,7 @@ const Profile = ({ token }) => {
         message: "" 
       });
     } else {
-      if (state.user.password_new == null){
+      if (state.user.password_new == "" || state.user.password_new == null){
         password = state.user.password;
       } else {
         password = md5(state.user.password_new);
@@ -103,7 +103,7 @@ const Profile = ({ token }) => {
       data.append("gender", state.user.gender);
       data.append("phone", state.user.phone);
 
-      editProfile(data)
+      editProfile(data, token)
         .then(function (data) {
           console.log(data)
           if (data.status === 1) {
