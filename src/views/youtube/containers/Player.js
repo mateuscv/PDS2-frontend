@@ -19,19 +19,17 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "../styles/youtube.css";
 //API
-import useWindowSize from "./windowSize";
 import ReactPlayer from "react-player";
-
-// import { Container } from './styles';
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 const Player = () => {
+  const [window_width, window_height] = useWindowSize({ fps: 60 });
   const [state, setState] = useState({
     fetched: false,
     volume: 0.5,
     playing: false,
     playbackRate: 1.0,
     muted: false,
-    size: "",
   });
 
   const handlePlayPause = () => {
@@ -39,11 +37,6 @@ const Player = () => {
   };
 
   const handleVolumeChange = (value) => {
-    // if (value === 0) {
-    //   setState({ ...state, bool_volume: state.volume, volume: value });
-    // } else {
-    //   setState({ ...state, volume: value });
-    // }
     setState({
       ...state,
       volume: value ? value : state.volume,
@@ -79,10 +72,10 @@ const Player = () => {
           url="	https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
           //url="https://youtube-videos-furg.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4"
 
-          width="1280px"
-          height="720px"
-          // width={state.size.width - (state.size.width - 1280)}
-          // height={state.size.height - (state.size.height - 1280)}
+          width="860px"
+          height="420px"
+          // width={window_width - 1000}
+          // height={window_height - 500}
           muted={state.muted}
           playing={state.playing}
           volume={state.volume}
@@ -115,31 +108,12 @@ const Player = () => {
             //color: "white",
           }}
         >
-          {/* <CButton onClick={() => handlePlayPause()}>
-            {state.playing ? (
-              <CIcon name="cilMediaPause" />
-            ) : (
-              <CIcon name="cilMediaPlay" />
-            )}
-          </CButton> */}
           {state.playing ? (
             <CIcon name="cilMediaPause" />
           ) : (
             <CIcon name="cilMediaPlay" />
           )}
         </div>
-        {/* {state.volume === 0 ? (
-          <CIcon
-            name="cilVolumeOff"
-            onClick={() => handleVolumeChange(state.bool_volume)}
-          />
-        ) : null}
-        {state.volume > 0 && state.volume <= 0.5 ? (
-          <CIcon name="cilVolumeLow" onClick={() => handleVolumeChange(0)} />
-        ) : null}
-        {state.volume > 0.5 && state.volume <= 1 ? (
-          <CIcon name="cilVolumeHigh" onClick={() => handleVolumeChange(0)} />
-        ) : null} */}
         <div
           style={{
             display: "flex",
@@ -198,32 +172,6 @@ const Player = () => {
             <option value="1.75">1.75</option>
             <option value="2">2</option>
           </CSelect>
-          {/* <CDropdown className="m-1">
-            <CDropdownToggle color="secondary">Velocidade</CDropdownToggle>
-            <CDropdownMenu placement="top">
-              <CDropdownItem onClick={() => handleSetPlaybackRate(0.25)}>
-                0.25x
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(0.5)}>
-                0.5x
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(0.75)}>
-                0.75
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(1)}>
-                1x
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(1.5)}>
-                1.5x
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(1.75)}>
-                1.75x
-              </CDropdownItem>
-              <CDropdownItem onClick={() => handleSetPlaybackRate(2)}>
-                2x
-              </CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown> */}
         </div>
       </div>
     </div>

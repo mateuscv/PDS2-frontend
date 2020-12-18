@@ -1,5 +1,4 @@
 /* TAGS */
-
 button:focus {
   outline: 0;
 }
@@ -10,8 +9,8 @@ button:focus {
   color: #fff;
 }
 .registered {
-  background-color: #b4b4b4be;
-  color: #aaa;
+  /* background-color: #b4b4b4be; */
+  color: #606060;
 }
 
 /* IDS */
@@ -26,3 +25,5 @@ button:focus {
   text-transform: uppercase;
   border: none;
 }
+
+/* #181818 */
