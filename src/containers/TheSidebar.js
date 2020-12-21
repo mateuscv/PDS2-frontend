@@ -13,6 +13,7 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
+  CImg,
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
@@ -23,10 +24,10 @@ const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.sidebarShow);
 
-  const toggleSidebar = () => {
-    const val = [true, "responsive"].includes(show) ? false : "responsive";
-    dispatch({ type: "set", sidebarShow: val });
-  };
+  // const toggleSidebar = () => {
+  //   const val = [true, "responsive"].includes(show) ? false : "responsive";
+  //   dispatch({ type: "set", sidebarShow: val });
+  // };
 
   return (
     <CSidebar
@@ -34,6 +35,16 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
+        <CImg
+          style={{ width: "100%" }}
+          className="c-sidebar-brand-full"
+          src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/banner_2.png"
+        />
+        <CImg
+          style={{ width: "100%" }}
+          className="c-sidebar-brand-minimized"
+          src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/nintube_icon1.png"
+        />
         {/* <CIcon
           className="c-sidebar-brand-full"
           name="logo-negative"
@@ -44,15 +55,15 @@ const TheSidebar = () => {
           name="sygnet"
           height={35}
         /> */}
-        <CToggler
+        {/* <CToggler
           inHeader
           className="ml-3 d-md-down-none"
           onClick={toggleSidebar}
-        />
-        <CHeaderNav className="d-md-down-none mr-auto">
-          <CIcon name="cib-youtube" />
-          <CHeaderNavLink to="/dashboard">Youtube</CHeaderNavLink>
-        </CHeaderNav>
+        /> */}
+        {/* <CHeaderNav className="d-md-down-none mr-auto"> */}
+        {/* <CIcon name="cib-youtube" /> */}
+        {/* <CHeaderNavLink to="/">Youtube</CHeaderNavLink> */}
+        {/* </CHeaderNav> */}
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement

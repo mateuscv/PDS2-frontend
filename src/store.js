@@ -8,11 +8,11 @@ const creds = {
 
 export let initialState = creds;
 
-// const initialState = {
-//   sidebarShow: "responsive",
-// };
+const siderBar = {
+  sidebarShow: "responsive",
+};
 
-const changeState = (state = initialState, { type, ...rest }) => {
+const changeState = (state = siderBar, { type, ...rest }) => {
   switch (type) {
     case "set":
       return { ...state, ...rest };

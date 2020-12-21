@@ -32,7 +32,7 @@ import {
 //Componets
 //Style
 //API
-import { getProfile, editProfile } from "../../util/Api";
+import { getProfile, editProfile } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 

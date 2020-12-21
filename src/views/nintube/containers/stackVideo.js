@@ -146,6 +146,7 @@ const StackVideo = ({ token }) => {
               <CCard
                 style={{
                   marginBottom: "1%",
+                  border: "2px solid #B3272C",
                 }}
               >
                 <CCardBody style={{ margin: "0" }}>
@@ -156,6 +157,8 @@ const StackVideo = ({ token }) => {
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
                     }}
                     src={item.thumb}
                   />

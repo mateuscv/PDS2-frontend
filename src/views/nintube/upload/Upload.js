@@ -8,9 +8,9 @@ import CIcon from "@coreui/icons-react";
 import { CInput, CTextarea, CCard, CFormGroup, CCol } from "@coreui/react";
 //Componets
 //Style
-import "../styles/youtube.css";
+import "../styles/nintube.css";
 //API
-import { uploadVideo } from "../../util/Api";
+import { uploadVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 
 const creds = {
@@ -44,7 +44,7 @@ const Upload = ({ token }) => {
     //   },
     // };
     console.log(token);
-    if (!state.video || !state.description || !state.title) {
+    if (!video || !state.description || !state.title) {
       setState({
         ...state,
         error: "Campos não podem ficar em branco!",

@@ -34,7 +34,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://cdn.discordapp.com/attachments/300483456440336385/789180212175699998/unknown.png",
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 3,
@@ -56,7 +56,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 4,
@@ -67,7 +67,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 5,
@@ -78,7 +78,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 6,
@@ -88,7 +88,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 7,
@@ -99,7 +99,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
   {
     id: 8,
@@ -110,7 +110,7 @@ const videos = [
     date: "há 1 semana",
     avatar: "avatars/7.jpg",
     thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
 ];
 
@@ -118,7 +118,6 @@ const HomeVideos = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
-
   let history = useHistory();
   const handleClick = (route) => {
     history.push("/" + route);
@@ -133,24 +132,45 @@ const HomeVideos = ({ token }) => {
       <CContainer fluid>
         <CRow>
           {videos.map((item, index) => (
-            <CCol style={{ width: "5%" }} sm="2">
-              <CCard>
+            <CCol sm="4">
+              <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
                   onClick={() => handleClick("view")}
-                  style={{ width: "100%", cursor: "pointer" }}
+                  style={{
+                    width: "100%",
+                    cursor: "pointer",
+                    borderBottom: "1px solid black",
+                    borderBottomLeftRadius: "10px",
+                    borderBottomRightRadius: "10px",
+                  }}
                   src={item.thumb}
                 />
                 <div>
-                  <CCardBody style={{ fontSize: "80%" }}>
-                    <h3
+                  <CCardBody
+                    className=" float-left"
+                    style={{ height: "100px" }}
+                  >
+                    <div className="c-avatar">
+                      <CImg
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("channel")}
+                        src={item.avatar}
+                        className="c-avatar-img"
+                        alt="admin@bootstrapmaster.com"
+                      />
+                    </div>
+                  </CCardBody>
+                  <CCardBody>
+                    <CCardSubtitle
+                      style={{ cursor: "pointer" }}
                       onClick={() => handleClick("view")}
-                      style={{ fontSize: "120%", cursor: "pointer" }}
                     >
                       {item.title}
-                    </h3>{" "}
+                    </CCardSubtitle>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
+                      {" "}
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("channel")}
