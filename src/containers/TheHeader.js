@@ -49,8 +49,10 @@ const TheHeader = ({ token }) => {
     dispatch({ type: "set", sidebarShow: val });
   };
 
+  const dark = "dark";
+
   return (
-    <CHeader withSubheader>
+    <CHeader class={dark + "-mode"} withSubheader>
       <CToggler
         inHeader
         className="ml-md-3 d-lg-none"
@@ -61,20 +63,20 @@ const TheHeader = ({ token }) => {
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
       />
-      {/* <CHeaderBrand className="mx-auto d-lg-none" to="/">
+      <CHeaderBrand className="mx-auto d-lg-none" to="/">
         <CIcon name="logo" height="48" alt="Logo" />
-      </CHeaderBrand> */}
+      </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CIcon name="cib-youtube" />
+        {/* <CIcon name="cib-youtube" /> */}
         {/* <CHeaderNavItem className="px-3"> */}
-        <CHeaderNavLink to="/dashboard">Youtube</CHeaderNavLink>
+        <CHeaderNavLink to="/dashboard">Nintube</CHeaderNavLink>
         <CHeaderNavLink to="/login">Login</CHeaderNavLink>
         {/* </CHeaderNavItem> */}
       </CHeaderNav>
 
-      <CHeaderNav className="d-md-down-none mr-auto">
-        <CInputGroup>
+      <CHeaderNav style={{ width: "50%" }} className="d-md-down-none mr-auto">
+        <CInputGroup style={{ border: "1px solid red", borderRadius: "5px" }}>
           <CInput placeholder="Pesquisar" />
           <CInputGroupAppend>
             <CInputGroupText>

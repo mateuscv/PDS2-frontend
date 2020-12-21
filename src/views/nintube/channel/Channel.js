@@ -22,7 +22,7 @@ import {
 //Componets
 import ShowVideos from "../containers/showVideos";
 //Style
-import "../styles/youtube.css";
+import "../styles/nintube.css";
 //API
 
 const Channel = ({ token }) => {

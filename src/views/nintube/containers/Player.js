@@ -17,7 +17,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
-import "../styles/youtube.css";
+import "../styles/nintube.css";
 //API
 import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";

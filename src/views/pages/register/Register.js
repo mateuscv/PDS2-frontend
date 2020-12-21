@@ -26,7 +26,7 @@ import CIcon from "@coreui/icons-react";
 //Componets
 //Style 
 //API
-import { registerUser } from "../../util/Api";
+import { registerUser } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
@@ -114,7 +114,7 @@ const Register = ({ history }) => {
             <CCard>
               <CCardBody>
                 <CForm>
-                  <h1>Register</h1>
+                  <h1>Registrar</h1>
                   {state.message && (
                     <CCard
                       className="border-success"
@@ -131,7 +131,7 @@ const Register = ({ history }) => {
                       {state.error}
                     </CCard>
                   )}
-                  <p className="text-muted">Create your account</p>
+                  <p className="text-muted">Crie sua conta</p>
                   <CFormGroup row>
                     <CCol md="12">
                       {/* <label>

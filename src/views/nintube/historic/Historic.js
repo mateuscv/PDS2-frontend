@@ -65,7 +65,7 @@ const Historic = ({ token }) => {
           {modes.map((mode, index) => {
             return (
               <div className="d-flex justify-content-between my-4" key={index}>
-                {mode.title}
+                <span style={{ color: "white" }}>{mode.title}</span>
                 {colors.map((color, key) => {
                   return (
                     <CSwitch //ALTERAR TIPO DE BOTÃO PARA DE ÚNICA ESCOLHA (Ñ ENCONTRADO NA DOCUMENTAÇÃO DO COREUI)
