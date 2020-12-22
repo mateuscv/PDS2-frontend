@@ -13,6 +13,7 @@ const Channel = React.lazy(() => import("./views/nintube/channel/Channel"));
 const Historic = React.lazy(() => import("./views/nintube/historic/Historic"));
 const Upload = React.lazy(() => import("./views/nintube/upload/Upload"));
 
+
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/home", name: "Home", component: Home },

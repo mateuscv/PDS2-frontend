@@ -26,7 +26,7 @@ import CIcon from "@coreui/icons-react";
 //Componets
 //Style 
 //API
-import { registerUser } from "../../../util/Api";
+import { registerUser , sendEmail } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
@@ -88,11 +88,17 @@ const Register = ({ history }) => {
       data.append("birthdate", state.birthdate);
       data.append("gender", state.gender);
       data.append("phone", state.phone);
-
+      sendEmail({email:state.email}).then(function (test){
+        console.log(test);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
       registerUser(data)
         .then(function (data) {
           if (data.status === 1) {
-            history.push("/login");
+            // sendEmail(state.email).then(function (data))
+            // history.push("/login");
           } else {
             setState({
               ...state,
