@@ -29,9 +29,9 @@ import {
   CImg,
 } from "@coreui/react";
 //Api
-import { checkEmail } from "../../../util/Api";
+// import { checkEmail } from "../../../util/Api";
 //Style
-import "./emailConfirm.css";
+import "./forgotPass.css";
 
 const Confirm = ({ history }) => {
   let id = useParams();
@@ -45,7 +45,7 @@ const Confirm = ({ history }) => {
   const [state, setState] = useState({
     fetched: false,
     error: "",
-    message: "",
+    message:"Email Confirmado com sucesso",
   });
 
   useEffect(() => {
@@ -53,21 +53,6 @@ const Confirm = ({ history }) => {
       if (!id) {
         history.push("/login");
       } else {
-        checkEmail(id)
-          .then(function (data) {
-            setState({
-              ...state,
-              fetched: true,
-              message: "Email Confirmado com sucesso",
-            });
-          })
-          .catch((err) => {
-            setState({
-              ...state,
-              fetched: true,
-              error: "Houve um problema na verificação",
-            });
-          });
       }
     }
   }, []);
@@ -121,19 +106,30 @@ const Confirm = ({ history }) => {
                   <h1>{state.message}.</h1>
                 </CCardHeader>
                 <CCardBody>
-                  <h3 id="align">Verificação finalizada</h3>
-                  <div id="align">
-                    Obrigado por registra-se no NinTube
-                    <div id="align">
-                      Click no botão abaixo para se redicionar para aplicação.
-                    </div>
-                  </div>
+                  <h3 id="align">Cadastre uma nova senha abaixo:</h3>
+                  
                   <p id="align">
+                  <CCol>
+                        <CLabel>
+                            Nova Senha
+                        </CLabel>
+                        <CInput>
+
+                        </CInput>
+                    </CCol>
+                    <CCol>
+                        <CLabel>
+                            Confirme a senha
+                        </CLabel>
+                        <CInput>
+                            
+                        </CInput>
+                    </CCol>
                     <CButton
                       onClick={() => handleClick("login")}
                       class="myButton"
                     >
-                      Voltar
+                      Enviar
                     </CButton>
                   </p>
                 </CCardBody>
