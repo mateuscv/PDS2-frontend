@@ -88,12 +88,6 @@ const Register = ({ history }) => {
       data.append("birthdate", state.birthdate);
       data.append("gender", state.gender);
       data.append("phone", state.phone);
-      sendEmail({email:state.email}).then(function (test){
-        console.log(test);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
       registerUser(data)
         .then(function (data) {
           if (data.status === 1) {
