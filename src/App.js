@@ -17,6 +17,7 @@ const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const Email = React.lazy(() => import("./views/nintube/emailConfirm/emailConfirm"));
+const ForgotPass = React.lazy(() => import("./views/nintube/forgotPass/forgotPass"));
 
 const App = ({}) => {
   return (
@@ -49,9 +50,15 @@ const App = ({}) => {
           />
           <Route
           exact
-          path="/confirmation/:email"
+          path="/confirmation/:id"
           name= "Confirm"
           render={(props) => <Email {...props} />}
+          />
+          <Route
+          exact
+          path="/forgot_password/:id"
+          name= "forgot"
+          render={(props) => <ForgotPass {...props} />}
           />
             
           <Route
