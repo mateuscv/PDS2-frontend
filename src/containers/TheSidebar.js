@@ -38,13 +38,23 @@ const TheSidebar = () => {
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-full"
+          src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+        />
+        <CImg
+          style={{ width: "100%" }}
+          className="c-sidebar-brand-minimized"
+          src="https://cdn.discordapp.com/attachments/300483456440336385/790994285977534514/nintube_banner_icon_dark.png"
+        />
+        {/* <CImg
+          style={{ width: "100%" }}
+          className="c-sidebar-brand-full"
           src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/banner_2.png"
         />
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-minimized"
           src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/nintube_icon1.png"
-        />
+        /> */}
         {/* <CIcon
           className="c-sidebar-brand-full"
           name="logo-negative"
