@@ -24,6 +24,7 @@ import CIcon from "@coreui/icons-react";
 //Componets
 //Style
 //API
+import { alert } from "../../../util/alertApi";
 import { loginUser } from "../../../util/Api";
 import md5 from "md5";
 
@@ -66,6 +67,11 @@ const Login = ({ history, setToken }) => {
         });
     }
   };
+
+  const forgotPassword = () => {
+    alert("Foda-se", "Te vira ai otario... Cria outra conta ai babaca.");
+  };
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -132,7 +138,11 @@ const Login = ({ history, setToken }) => {
                         </CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">
+                        <CButton
+                          onClick={() => forgotPassword()}
+                          color="link"
+                          className="px-0"
+                        >
                           Forgot password?
                         </CButton>
                       </CCol>

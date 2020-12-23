@@ -165,7 +165,7 @@ const HomeVideos = ({ token }) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => handleClick("view")}
                     >
-                      {item.title}
+                      {item.title.substring(0, 100)}
                     </CCardSubtitle>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}

@@ -56,7 +56,7 @@ const Profile = ({ token }) => {
   const profile = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Alterando..." });
-    
+
     const data = new FormData();
     data.append("avatar", state.avatar);
     const values = {
@@ -82,13 +82,13 @@ const Profile = ({ token }) => {
         message: "",
       });
     } else if (state.user.password_confirm !== state.user.password_new) {
-      setState({ 
-        ...state, 
+      setState({
+        ...state,
         error: "As senhas não batem. Tente novamente!",
-        message: "" 
+        message: "",
       });
     } else {
-      if (state.user.password_new == "" || state.user.password_new == null){
+      if (state.user.password_new == "" || state.user.password_new == null) {
         password = state.user.password;
       } else {
         password = md5(state.user.password_new);
@@ -105,7 +105,7 @@ const Profile = ({ token }) => {
 
       editProfile(data, token)
         .then(function (data) {
-          console.log(data)
+          console.log(data);
           if (data.status === 1) {
             setState({
               ...state,
@@ -121,7 +121,7 @@ const Profile = ({ token }) => {
           }
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }
@@ -132,7 +132,7 @@ const Profile = ({ token }) => {
       console.log(token);
       var data = { token: token };
       getProfile(data, token).then(function (data) {
-        console.log(data.birthdate.substring(0,10));
+        console.log(data.birthdate.substring(0, 10));
         setState({ ...state, user: data, fetched: true });
       });
       // const user = {
@@ -146,7 +146,7 @@ const Profile = ({ token }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-  
+
   return (
     <div>
       <div align="center">
@@ -176,20 +176,21 @@ const Profile = ({ token }) => {
                   {state.error}
                 </CCard>
               )}
-              <div class="c-avatar">
-              
-              </div>
+              <div class="c-avatar"></div>
               <CFormGroup>
                 <CCol md="12">
                   {/* <label>
                     Selecione seu Avatar */}
-                  <img style={{ width: "50px" }} src={ state.user.avatar } alt="avatar"></img>
-                  { console.log(state) }
+                  <img
+                    style={{ width: "50px" }}
+                    src={state.user.avatar}
+                    alt="avatar"
+                  ></img>
                   <CInput
                     type="file"
                     onChange={(e) => {
-                    setState({ ...state, avatar: e.target.files[0] });
-                  }}
+                      setState({ ...state, avatar: e.target.files[0] });
+                    }}
                   />
                   {/* </label> */}
                 </CCol>
@@ -224,7 +225,7 @@ const Profile = ({ token }) => {
                   <option value="a">Outros</option>
                 </CSelect>
               </CFormGroup>
-              
+
               <CFormGroup>
                 <CLabel htmlFor="nf-birthdate">Data de Nascimento</CLabel>
                 <CInput
@@ -232,7 +233,7 @@ const Profile = ({ token }) => {
                   id="nf-birthdate"
                   name="nf-birthdate"
                   autoComplete="birthdate"
-                  value={state.user.birthdate.substring(0,10)}
+                  value={state.user.birthdate.substring(0, 10)}
                   onChange={(e) => {
                     let user = { ...state.user };
                     user.birthdate = e.target.value;

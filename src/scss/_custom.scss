@@ -2,15 +2,22 @@
 // .c-header {
 //   background-color: grey;
 // }
+label {
+  color: white;
+}
 .c-app {
   background-color: #181818;
 }
 .c-sidebar {
   background-color: #212121;
 }
+.c-sidebar-brand {
+  margin-bottom: 1%;
+}
 
 .c-sidebar-nav {
   // background-color: #212121;
+  // border-top: 1px white solid;
   border-right: 1px white solid;
 }
 
@@ -91,5 +98,5 @@ a {
 
 h4,
 h1 {
-  color: white;
+  color: red;
 }

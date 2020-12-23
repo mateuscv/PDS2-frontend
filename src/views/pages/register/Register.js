@@ -24,9 +24,10 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-//Style 
+//Style
 //API
-import { registerUser , sendEmail } from "../../../util/Api";
+import { registerUser, sendEmail } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
@@ -57,6 +58,10 @@ const Register = ({ history }) => {
       gender: state.gender,
       phone: state.phone,
     };
+    alert(
+      "Registro Completo",
+      "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
+    );
     if (
       !state.username ||
       !state.email ||
@@ -80,7 +85,7 @@ const Register = ({ history }) => {
       console.log(values);
       data.append(
         "old_img",
-        "https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/default.png"
+        "https://nintube.s3-sa-east-1.amazonaws.com/images/default.png"
       );
       data.append("username", state.username);
       data.append("email", state.email);
@@ -88,22 +93,28 @@ const Register = ({ history }) => {
       data.append("birthdate", state.birthdate);
       data.append("gender", state.gender);
       data.append("phone", state.phone);
-      registerUser(data)
-        .then(function (data) {
-          if (data.status === 1) {
-            // sendEmail(state.email).then(function (data))
-            // history.push("/login");
-          } else {
-            setState({
-              ...state,
-              error: "Algo deu errado tentar novamente!",
-              message: "",
-            });
-          }
-        })
-        .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
-        });
+
+      // registerUser(data)
+      //   .then(function (data) {
+      //     if (data.status === 1) {
+      // setState({
+      //   ...state,
+      //   error: "",
+      //   message: "Registrado com Sucesso",
+      // });
+      //       // sendEmail(state.email).then(function (data))
+      //       // history.push("/login");
+      //     } else {
+      //       setState({
+      //         ...state,
+      //         error: "Algo deu errado tentar novamente!",
+      //         message: "",
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     setState({ ...state, error: "Dados inválidos", message: "" });
+      //   });
     }
   };
   return (
@@ -139,8 +150,8 @@ const Register = ({ history }) => {
                       <CInput
                         type="file"
                         onChange={(e) => {
-                        setState({ ...state, avatar: e.target.files[0] });
-                      }}
+                          setState({ ...state, avatar: e.target.files[0] });
+                        }}
                       />
                       {/* </label> */}
                     </CCol>
