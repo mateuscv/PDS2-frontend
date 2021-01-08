@@ -3,7 +3,7 @@ const setToken = (state = {}, action) => {
     case "SETTOKEN":
       return action.token;
     case "RESET":
-      return {};
+      return "";
     default:
       return state;
   }

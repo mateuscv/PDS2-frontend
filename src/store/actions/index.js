@@ -4,3 +4,9 @@ export const setToken = (token) => {
     token: token,
   };
 };
+
+export const reset = () => {
+  return {
+    type: "RESET",
+  };
+};

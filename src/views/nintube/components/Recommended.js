@@ -14,7 +14,9 @@ import {
   CCol,
   CCard,
   CCardBody,
+  CIcon,
   CCardTitle,
+  CWidgetIcon,
   CCardSubtitle,
   CCardText,
   CCardHeader,
@@ -32,7 +34,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "11 mi de visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -43,7 +46,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "957 mil visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -54,7 +58,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "106 mil visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -65,7 +70,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "5,6 mi de visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -76,7 +82,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "2,2 mi de visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -86,7 +93,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "233 mil visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -97,7 +105,8 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "118 mil visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -108,20 +117,20 @@ const videos = [
     channel: "Lucas Nhimi",
     views: "1,9 mi de visualizações",
     date: "há 1 semana",
-    avatar: "avatars/7.jpg",
+    description:
+      "Ouça #FavelaVive em todas as plataformas: https://onerpm.lnk.to/FavelaVive4 Se inscreva no canal e ative o sino de notificações para não perder nenhum lançamento. Favela Vive 4 Letra:...",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
 ];
 
-const HomeVideos = ({ token }) => {
+const StackVideo = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
   });
-
   let history = useHistory();
-  const handleClick = (route) => {
-    history.push("/" + route);
+  const handleClick = (route, id) => {
+    history.push("/" + route + "/" + id);
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -130,55 +139,56 @@ const HomeVideos = ({ token }) => {
   }, []);
   return (
     <div>
-      <CContainer fluid>
-        <CRow>
+      <CRow>
+        <CCol sm="12">
           {videos.map((item, index) => (
-            <CCol style={{ width: "5%" }} sm="2">
-              <CCard style={{ border: "2px solid #B3272C" }}>
+            <CCard
+              style={{
+                marginBottom: "1%",
+                border: "2px solid #B3272C",
+              }}
+            >
+              <CCardBody style={{ margin: "0" }}>
                 <CImg
-                  onClick={() => handleClick("view")}
+                  onClick={() => handleClick("view", item.id)}
                   style={{
-                    width: "100%",
+                    width: "25%",
                     cursor: "pointer",
+                    float: "left",
+                    marginRight: "1%",
                     borderBottom: "1px solid black",
-                    borderBottomLeftRadius: "10px",
-                    borderBottomRightRadius: "10px",
+                    borderRadius: "10px",
                   }}
                   src={item.thumb}
                 />
-                <div>
-                  <CCardBody style={{ fontSize: "80%" }}>
-                    <h3
-                      onClick={() => handleClick("view")}
-                      style={{ fontSize: "120%", cursor: "pointer" }}
+                <CCardText>
+                  <CCardText>
+                    <h5
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleClick("view", item.id)}
                     >
-                      {item.title}
-                    </h3>{" "}
-                    <CCardText
-                      style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                      {item.title.substring(0, 50) + "..."}
+                    </h5>
+                    <span onClick={() => handleClick("channel", item.id)}>
+                      {item.channel}
+                    </span>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleClick("view", item.id)}
                     >
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel")}
-                      >
-                        {item.channel}
-                      </span>
-                      <CCardText
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view")}
-                      >{`${item.views} • ${item.date}`}</CCardText>{" "}
-                    </CCardText>
-                  </CCardBody>
-                </div>
-              </CCard>
-            </CCol>
+                      {` • ${item.views} • ${item.date}`}
+                    </span>{" "}
+                  </CCardText>
+                </CCardText>
+              </CCardBody>
+            </CCard>
           ))}
-        </CRow>
-      </CContainer>
+        </CCol>
+      </CRow>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(HomeVideos);
+export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);

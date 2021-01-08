@@ -129,8 +129,8 @@ const StackVideo = ({ token }) => {
     fetched: false,
   });
   let history = useHistory();
-  const handleClick = (route) => {
-    history.push("/" + route);
+  const handleClick = (route, id) => {
+    history.push("/" + route + "/" + id);
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -151,7 +151,7 @@ const StackVideo = ({ token }) => {
               >
                 <CCardBody style={{ margin: "0" }}>
                   <CImg
-                    onClick={() => handleClick("view")}
+                    onClick={() => handleClick("view", item.id)}
                     style={{
                       width: "25%",
                       cursor: "pointer",
@@ -166,23 +166,23 @@ const StackVideo = ({ token }) => {
                     <CCardText>
                       <h5
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view")}
+                        onClick={() => handleClick("view", item.id)}
                       >
-                        {item.title}
+                        {item.title.substring(0, 100) + "..."}
                       </h5>
-                      <span onClick={() => handleClick("channel")}>
+                      <span onClick={() => handleClick("channel", item.id)}>
                         {item.channel}
                       </span>
                       <span
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view")}
+                        onClick={() => handleClick("view", item.id)}
                       >
                         {` • ${item.views} • ${item.date}`}
                       </span>{" "}
                     </CCardText>
                     <CCardText
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view")}
+                      onClick={() => handleClick("view", item.id)}
                     >
                       {item.description}
                     </CCardText>{" "}

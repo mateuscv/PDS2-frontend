@@ -1,4 +1,11 @@
+//REACT
 import React from "react";
+import { useHistory } from "react-router-dom";
+//REDUX
+import { connect, useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../store/actions/index";
+//CoreUI
 import {
   CButton,
   CLink,
@@ -10,9 +17,8 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { useHistory } from "react-router-dom";
 
-const TheHeaderDropdown = ({}) => {
+const TheHeaderDropdown = ({ token, reset }) => {
   let history = useHistory();
 
   const handleClick = (route) => {
@@ -20,6 +26,7 @@ const TheHeaderDropdown = ({}) => {
   };
 
   const Logout = () => {
+    reset();
     history.push("/login");
   };
 
@@ -36,17 +43,25 @@ const TheHeaderDropdown = ({}) => {
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownItem header tag="div" color="light" className="text-center">
-          <strong>Account</strong>
+          <strong>Settings</strong>
         </CDropdownItem>
         <CDropdownItem onClick={() => handleClick("profile")}>
           <CIcon name="cil-user" className="mfe-2" />
           &nbsp;Perfil
         </CDropdownItem>
         <CDropdownItem onClick={() => handleClick("channel")}>
-          <CIcon name="cil-settings" className="mfe-2" />
+          <CIcon name="cilTv" className="mfe-2" />
           Canal
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem onClick={() => handleClick("studio")}>
+          <CIcon name="cil-settings" className="mfe-2" />
+          Studio
+        </CDropdownItem>
+        <CDropdownItem onClick={() => handleClick("statistics")}>
+          <CIcon name="cilChart" className="mfe-2" />
+          Estatisticas do Canal
+        </CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
           Updates
           <CBadge color="info" className="mfs-auto">
@@ -91,7 +106,7 @@ const TheHeaderDropdown = ({}) => {
           <CBadge color="primary" className="mfs-auto">
             42
           </CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem divider />
         <CDropdownItem onClick={() => Logout()}>
           <CIcon name="cilAccountLogout" className="mfe-2" />
@@ -102,4 +117,6 @@ const TheHeaderDropdown = ({}) => {
   );
 };
 
-export default TheHeaderDropdown;
+const mapStateToProps = (state) => ({ token: state.token });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(TheHeaderDropdown);

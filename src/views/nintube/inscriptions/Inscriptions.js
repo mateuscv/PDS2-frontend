@@ -6,7 +6,8 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
 //Componets
-import ShowVideos from "../containers/showVideos";
+import ShowVideos from "../components/showVideos";
+import LogoutPage from "../components/logoutPage";
 //Style
 //API
 
@@ -19,11 +20,7 @@ const Inscriptions = ({ token }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-  return (
-    <div>
-      <ShowVideos />
-    </div>
-  );
+  return <div>{token ? <ShowVideos /> : <LogoutPage />}</div>;
 };
 
 const mapStateToProps = (state) => ({ token: state.token });

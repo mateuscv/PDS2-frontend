@@ -1,5 +1,7 @@
 //REACT
 import React, { useEffect, useState } from "react";
+import { findDOMNode } from "react-dom";
+import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -21,8 +23,11 @@ import "../styles/nintube.css";
 //API
 import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";
+import screenfull from "screenfull";
 
 const Player = () => {
+  let { id } = useParams();
+  const ref = React.createRef();
   const [window_width, window_height] = useWindowSize({ fps: 60 });
   const [state, setState] = useState({
     fetched: false,
@@ -31,9 +36,17 @@ const Player = () => {
     playbackRate: 1.0,
     muted: false,
   });
+  const [loaded, setLoaded] = useState(0);
+  const [seeking, setSeeking] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [played, setPlayed] = useState(0);
 
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
+  };
+
+  const handleClickFullscreen = () => {
+    screenfull.request(findDOMNode(ref.current));
   };
 
   const handleVolumeChange = (value) => {
@@ -48,6 +61,29 @@ const Player = () => {
     setState({ ...state, playbackRate: parseFloat(e.target.value) });
   };
 
+  const handleProgress = (state) => {
+    if (!seeking) {
+      setPlayed(state.played);
+    }
+  };
+
+  const handleDuration = (duration) => {
+    setDuration(duration);
+  };
+
+  const handleSeekMouseDown = (e) => {
+    setSeeking(true);
+  };
+
+  const handleSeekChange = (e) => {
+    setPlayed(parseFloat(e.target.value));
+  };
+
+  const handleSeekMouseUp = (e) => {
+    setSeeking(false);
+    ref.current.seekTo(parseFloat(e.target.value));
+  };
+
   useEffect(() => {
     // var size = useWindowSize();
     if (!state.fetched) {
@@ -56,9 +92,7 @@ const Player = () => {
   }, []);
 
   return (
-    <div
-      style={{ width: "fit-content", height: "fit-content", marginLeft: "3%" }}
-    >
+    <div className="divVideo">
       <div
         style={{
           cursor: "pointer",
@@ -67,19 +101,22 @@ const Player = () => {
         onClick={() => handlePlayPause()}
       >
         <ReactPlayer
+          ref={ref}
           style={{}}
-          // url="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"
-          url="	https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-          //url="https://youtube-videos-furg.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4"
-
-          width="860px"
-          height="420px"
+          url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+          width="1000px"
+          height="563px"
+          // width="860px"
+          // height="420px"
           // width={window_width - 1000}
           // height={window_height - 500}
           muted={state.muted}
           playing={state.playing}
           volume={state.volume}
           playbackRate={state.playbackRate}
+          onProgress={handleProgress}
+          onDuration={handleDuration}
+          // controls={true}
         />
       </div>
 
@@ -152,6 +189,34 @@ const Player = () => {
         </div>
         <div
           style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <input
+            type="range"
+            min={0}
+            max={0.999999}
+            step="any"
+            value={played}
+            onMouseDown={handleSeekMouseDown}
+            onChange={handleSeekChange}
+            onMouseUp={handleSeekMouseUp}
+          />
+          <progress
+            max={1}
+            value={played}
+            style={{ border: "1px solid red" }}
+          />
+          <progress
+            max={1}
+            value={loaded}
+            style={{ border: "1px solid green" }}
+          />
+        </div>
+        <div
+          style={{
             marginLeft: "auto",
             display: "flex",
             justifyContent: "center",
@@ -159,8 +224,12 @@ const Player = () => {
             //color: "white",
           }}
         >
+          <CButton onClick={handleClickFullscreen}>Fullscreen</CButton>
           Velocidade
-          <CSelect onChange={(e) => handleSetPlaybackRate(e)}>
+          <CSelect
+            style={{ width: "30%" }}
+            onChange={(e) => handleSetPlaybackRate(e)}
+          >
             <option value="0.25">0.25</option>
             <option value="0.5">0.5</option>
             <option value="0.75">0.75</option>

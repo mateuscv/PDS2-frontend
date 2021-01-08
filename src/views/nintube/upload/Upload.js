@@ -5,7 +5,15 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 import CIcon from "@coreui/icons-react";
 //CoreUI
-import { CInput, CTextarea, CCard, CFormGroup, CCol } from "@coreui/react";
+import {
+  CInput,
+  CTextarea,
+  CCard,
+  CFormGroup,
+  CCol,
+  CSwitch,
+  CButton,
+} from "@coreui/react";
 //Componets
 //Style
 import "../styles/nintube.css";
@@ -22,15 +30,12 @@ const Upload = ({ token }) => {
     upload: "",
     description: "",
     title: "",
+    privacy: "",
+    file: null,
+    file_name: "",
   });
   const onDrop = (files) => {
-    setState({
-      ...state,
-      error: "",
-      message: "Fazendo upload do video...",
-    });
-    const data = new FormData();
-    var video = files[0];
+    setState({ ...state, file: files[0], file_name: files[0].path });
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -43,28 +48,48 @@ const Upload = ({ token }) => {
     //     // }
     //   },
     // };
-    console.log(token);
-    if (!video || !state.description || !state.title) {
+  };
+  const sendVideo = () => {
+    setState({
+      ...state,
+      error: "",
+      message: "Fazendo upload do video...",
+    });
+    console.log(state.file);
+    console.log(state.description);
+    console.log(state.title);
+    const data = new FormData();
+    if (!state.file || !state.description || !state.title) {
       setState({
         ...state,
         error: "Campos não podem ficar em branco!",
         message: "",
       });
     } else {
-      data.append("file", video);
-      data.append("title", state.title);
-      data.append("description", state.description);
-      uploadVideo(data, token)
-        .then(function (data) {
-          setState({
-            ...state,
-            error: "",
-            message: "Video criado com sucesso!",
-          });
-        })
-        .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
+      var type_video = state.file.type.split("/");
+      if (type_video[0] !== "video") {
+        setState({
+          ...state,
+          error: "Formato do video está errado!",
+          message: "",
         });
+      } else {
+        data.append("file", state.file);
+        data.append("title", state.title);
+        data.append("description", state.description);
+        uploadVideo(data, token)
+          .then(function (data) {
+            setState({
+              ...state,
+              error: "",
+              message: "Video criado com sucesso!",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            setState({ ...state, error: "Dados inválidos", message: "" });
+          });
+      }
     }
   };
 
@@ -98,6 +123,21 @@ const Upload = ({ token }) => {
           />
         </CCol>
       </CFormGroup>
+      <div
+        style={{
+          color: "white",
+          display: "flex",
+          // justifyContent: "space-between",
+        }}
+      >
+        {" "}
+        <CSwitch
+          className={"mx-1"}
+          color={"info"}
+          onChange={(e) => setState({ ...state, privacy: e.target.checked })}
+        />
+        {state.privacy ? "Privado" : "Publico"}
+      </div>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
           {({ getRootProps, getInputProps }) => (
@@ -118,7 +158,13 @@ const Upload = ({ token }) => {
           )}
         </Dropzone>
       </div>
-      {state.msg}
+      <p style={{ color: "white" }}>{state.file_name}</p>
+      <CButton
+        style={{ color: "white", border: "1px solid red" }}
+        onClick={() => sendVideo()}
+      >
+        Enviar
+      </CButton>
     </div>
   );
 };
