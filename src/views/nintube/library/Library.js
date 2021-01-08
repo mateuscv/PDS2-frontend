@@ -7,7 +7,8 @@ import * as actions from "../../../store/actions";
 //CoreUI
 import { CButton } from "@coreui/react";
 //Componets
-import ShowVideos from "../containers/showVideos";
+import ShowVideos from "../components/showVideos";
+import LogoutPage from "../components/logoutPage";
 //Style
 //API
 
@@ -25,16 +26,22 @@ const Library = ({ history, token }) => {
   }, []);
   return (
     <div>
-      <h1>Biblioteca</h1>
-      <CButton onClick={() => handleClick()}>Playlist</CButton>
-      <h4>Histórico</h4>
-      <ShowVideos />
-      <h4>Assistir mais tarde</h4>
-      <ShowVideos />
-      <h4>Playlists</h4>
-      <ShowVideos />
-      <h4>Vídeos marcados com "gostei"</h4>
-      <ShowVideos />
+      {token ? (
+        <>
+          <h1>Biblioteca</h1>
+          <CButton onClick={() => handleClick()}>Playlist</CButton>
+          <h4>Histórico</h4>
+          <ShowVideos />
+          <h4>Assistir mais tarde</h4>
+          <ShowVideos />
+          <h4>Playlists</h4>
+          <ShowVideos />
+          <h4>Vídeos marcados com "gostei"</h4>
+          <ShowVideos />
+        </>
+      ) : (
+        <LogoutPage />
+      )}
     </div>
   );
 };

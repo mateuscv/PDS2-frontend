@@ -1,5 +1,6 @@
 //REACT
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,12 +21,14 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
-import ShowVideos from "../containers/showVideos";
+import ShowVideos from "../components/showVideos";
 //Style
 import "../styles/nintube.css";
 //API
+import { Inscribe } from "../../../util/Api";
 
 const Channel = ({ token }) => {
+  let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
     content: 1,
@@ -39,7 +42,18 @@ const Channel = ({ token }) => {
   }, []);
 
   const Change = (cond) => {
-    setState({ ...state, subscribe: cond });
+    var data = { token: token, channel_id: "channel_id" };
+    Inscribe(data)
+      .then(function (data) {
+        setState({ ...state, subscribe: cond });
+      })
+      .catch((err) => {
+        setState({
+          ...state,
+          error: "Algum problema aconteceu, tente novamente mais tarde!",
+          message: "",
+        });
+      });
   };
   const changeContent = (component) => {
     console.log(component);

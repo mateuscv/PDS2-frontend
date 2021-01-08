@@ -31,6 +31,7 @@ export default [
     to: "/inscription",
     icon: "cib-youtube",
   },
+
   {
     _tag: "CSidebarNavItem",
     name: "Biblioteca",
@@ -43,12 +44,12 @@ export default [
     to: "/historic",
     icon: "cib-youtube",
   },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Upload",
-    to: "/upload",
-    icon: "cil-cloud-upload",
-  },
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Upload",
+  //   to: "/upload",
+  //   icon: "cil-cloud-upload",
+  // },
 
   // {
   //   _tag: "CSidebarNavTitle",

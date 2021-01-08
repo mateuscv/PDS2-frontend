@@ -12,7 +12,13 @@ const Playlist = React.lazy(() => import("./views/nintube/playlist/Playlist"));
 const Channel = React.lazy(() => import("./views/nintube/channel/Channel"));
 const Historic = React.lazy(() => import("./views/nintube/historic/Historic"));
 const Upload = React.lazy(() => import("./views/nintube/upload/Upload"));
-
+const Studio = React.lazy(() => import("./views/nintube/studio/Studio"));
+const UploadEdit = React.lazy(() =>
+  import("./views/nintube/upload/uploadEdit")
+);
+const Statistics = React.lazy(() =>
+  import("./views/nintube/statistics/Statistics")
+);
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -20,12 +26,15 @@ const routes = [
   { path: "/fire", name: "Fire", component: Fire },
   { path: "/inscription", name: "Incription", component: Inscription },
   { path: "/library", name: "Library", component: Library },
-  { path: "/view", name: "View", component: View },
+  { path: "/view/:id", name: "View", component: View },
   { path: "/profile", name: "Profile", component: Profile },
   { path: "/playlist", name: "Playlist", component: Playlist },
-  { path: "/channel", name: "Channel", component: Channel },
+  { path: "/channel/:id", name: "Channel", component: Channel },
   { path: "/historic", name: "Historic", component: Historic },
-  { path: "/upload", name: "Upload", component: Upload },
+  { path: "/upload/", name: "Upload", component: Upload },
+  { path: "/edit/upload/:id", name: "UploadEdit", component: UploadEdit },
+  { path: "/studio", name: "Studio", component: Studio },
+  { path: "/statistics", name: "Statistics", component: Statistics },
 ];
 
 export default routes;

@@ -119,8 +119,8 @@ const HomeVideos = ({ token }) => {
     fetched: false,
   });
   let history = useHistory();
-  const handleClick = (route) => {
-    history.push("/" + route);
+  const handleClick = (route, id) => {
+    history.push("/" + route + "/" + id);
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -135,7 +135,7 @@ const HomeVideos = ({ token }) => {
             <CCol sm="4">
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
-                  onClick={() => handleClick("view")}
+                  onClick={() => handleClick("view", item.id)}
                   style={{
                     width: "100%",
                     cursor: "pointer",
@@ -153,7 +153,7 @@ const HomeVideos = ({ token }) => {
                     <div className="c-avatar">
                       <CImg
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel")}
+                        onClick={() => handleClick("channel",item.id)}
                         src={item.avatar}
                         className="c-avatar-img"
                         alt="admin@bootstrapmaster.com"
@@ -163,9 +163,9 @@ const HomeVideos = ({ token }) => {
                   <CCardBody>
                     <CCardSubtitle
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view")}
+                      onClick={() => handleClick("view", item.id)}
                     >
-                      {item.title.substring(0, 100)}
+                      {item.title.substring(0, 100) + "..."}
                     </CCardSubtitle>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
@@ -173,13 +173,13 @@ const HomeVideos = ({ token }) => {
                       {" "}
                       <span
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel")}
+                        onClick={() => handleClick("channel",item.id)}
                       >
                         {item.channel}
                       </span>
                       <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view")}
+                        onClick={() => handleClick("view", item.id)}
                       >{`${item.views} • ${item.date}`}</CCardText>{" "}
                     </CCardText>
                   </CCardBody>

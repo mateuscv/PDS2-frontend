@@ -19,7 +19,7 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
-import HomeVideos from "../containers/homeVideos";
+import HomeVideos from "../components/homeVideos";
 //Style
 //API
 
@@ -30,7 +30,6 @@ const Home = ({ history, token }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log(token);
     }
   }, []);
   const handleClick = () => {

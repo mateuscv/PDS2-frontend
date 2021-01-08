@@ -19,7 +19,7 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
-import StackVideo from "../containers/stackVideo";
+import StackVideo from "../components/stackVideo";
 //Style
 //API
 
