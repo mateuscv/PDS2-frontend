@@ -22,13 +22,9 @@ import Player from "../components/Player";
 //Style
 import "../styles/nintube.css";
 //API
-import { getUploadVideo, editUploadVideo } from "../../../util/Api";
+import { getVideo, editVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
-
-const creds = {
-  file: null,
-};
 
 const UploadEdit = ({ token }) => {
   let { id } = useParams();
@@ -36,14 +32,14 @@ const UploadEdit = ({ token }) => {
     description: "",
     title: "",
     privacy: "",
-    file: null,
-    file_name: "",
+    video: null,
+    video_name: "",
     fetched: false,
     video_url: "",
     thumb: "",
   });
   const onDrop = (files) => {
-    setState({ ...state, file: files[0], file_name: files[0].path });
+    setState({ ...state, video: files[0], video_name: files[0].path });
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -64,29 +60,22 @@ const UploadEdit = ({ token }) => {
       error: "",
       message: "Salvando as alterações...",
     });
-    console.log(state.file);
+    console.log(state.video);
     console.log(state.description);
     console.log(state.title);
     const data = new FormData();
-    if (!state.file || !state.description || !state.title) {
-      setState({
-        ...state,
-        error: "Campos não podem ficar em branco!",
-        message: "",
-      });
-    } else {
-      var type_video = state.file.type.split("/");
-      if (type_video[0] !== "video") {
+    if (state.thumb || state.video) {
+      if (!state.description || !state.title) {
         setState({
           ...state,
-          error: "Formato do video está errado!",
+          error: "Campos não podem ficar em branco!",
           message: "",
         });
       } else {
-        data.append("file", state.file);
         data.append("title", state.title);
         data.append("description", state.description);
-        editUploadVideo(data, token)
+        data.append("privacy", state.privacy);
+        editVideo(data, token)
           .then(function (data) {
             setState({
               ...state,
@@ -102,6 +91,44 @@ const UploadEdit = ({ token }) => {
               message: "",
             });
           });
+      }
+    } else {
+      if (!state.description || !state.title) {
+        setState({
+          ...state,
+          error: "Campos não podem ficar em branco!",
+          message: "",
+        });
+      } else {
+        var type_video = state.video.type.split("/");
+        if (type_video[0] !== "video") {
+          setState({
+            ...state,
+            error: "Formato do video está errado!",
+            message: "",
+          });
+        } else {
+          data.append("file", state.video);
+          data.append("title", state.title);
+          data.append("description", state.description);
+          data.append("privacy", state.privacy);
+          editVideo(data, token)
+            .then(function (data) {
+              setState({
+                ...state,
+                error: "",
+                message: "Alterações salvas com sucesso!",
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              setState({
+                ...state,
+                error: "Algum erro aconteceu, tente novamente mais tarde!",
+                message: "",
+              });
+            });
+        }
       }
     }
   };
@@ -121,9 +148,9 @@ const UploadEdit = ({ token }) => {
         description: dataVideo.description,
         title: dataVideo.title,
         privacy: dataVideo.privacy,
-        thumb: dataVideo.thumb,
+        thumb_url: dataVideo.thumb,
         video_url: dataVideo.link,
-        file_name: "Nome do video",
+        video_name: "Nome do video",
       });
 
       //   })
@@ -184,7 +211,26 @@ const UploadEdit = ({ token }) => {
             />
             {state.privacy ? "Privado" : "Publico"}
           </div>
-          <CImg src={state.thumb} />
+          <div style={{ marginBottom: "5%" }}>
+            <label className="fileThumb" for="file_thumb">
+              Selecione a imagem para a thumb &#187;
+            </label>
+            <input
+              id="file_thumb"
+              onChange={(e) =>
+                setState({
+                  ...state,
+                  thumb: e.target.files[0],
+                  thumb_name: e.target.files[0].name,
+                })
+              }
+              type="file"
+            ></input>{" "}
+            <span style={{ color: "white" }}>
+              {state.thumb_name} <CImg src={state.thumb_url} />
+            </span>
+          </div>
+
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
               {({ getRootProps, getInputProps }) => (
@@ -205,7 +251,7 @@ const UploadEdit = ({ token }) => {
               )}
             </Dropzone>
           </div>
-          <p style={{ color: "white" }}>{state.file_name}</p>
+          <p style={{ color: "white" }}>{state.video_name}</p>
           <CButton
             style={{ color: "white", width: "50%", border: "1px solid red" }}
             onClick={() => editVideo()}
