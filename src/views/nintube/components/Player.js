@@ -249,4 +249,4 @@ const Player = () => {
 
 const mapStateToProps = (state) => ({ token: state.token });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(Player);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Player));
