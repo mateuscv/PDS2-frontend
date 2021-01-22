@@ -13,6 +13,7 @@ import {
   CCol,
   CSwitch,
   CButton,
+  CLabel,
 } from "@coreui/react";
 //Componets
 //Style
@@ -21,21 +22,18 @@ import "../styles/nintube.css";
 import { uploadVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 
-const creds = {
-  file: null,
-};
-
 const Upload = ({ token }) => {
   const [state, setState] = useState({
     upload: "",
     description: "",
     title: "",
     privacy: "",
-    file: null,
-    file_name: "",
+    video: null,
+    video_name: "",
+    thumb: null,
   });
   const onDrop = (files) => {
-    setState({ ...state, file: files[0], file_name: files[0].path });
+    setState({ ...state, video: files[0], video_name: files[0].path });
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -55,18 +53,19 @@ const Upload = ({ token }) => {
       error: "",
       message: "Fazendo upload do video...",
     });
-    console.log(state.file);
+    console.log(state.thumb);
+    console.log(state.video);
     console.log(state.description);
     console.log(state.title);
     const data = new FormData();
-    if (!state.file || !state.description || !state.title) {
+    if (!state.video || !state.description || !state.title || !state.thumb) {
       setState({
         ...state,
         error: "Campos não podem ficar em branco!",
         message: "",
       });
     } else {
-      var type_video = state.file.type.split("/");
+      var type_video = state.video.type.split("/");
       if (type_video[0] !== "video") {
         setState({
           ...state,
@@ -74,9 +73,10 @@ const Upload = ({ token }) => {
           message: "",
         });
       } else {
-        data.append("file", state.file);
+        data.append("file", state.video);
         data.append("title", state.title);
         data.append("description", state.description);
+        data.append("privacy", state.privacy);
         uploadVideo(data, token)
           .then(function (data) {
             setState({
@@ -138,6 +138,24 @@ const Upload = ({ token }) => {
         />
         {state.privacy ? "Privado" : "Publico"}
       </div>
+      <div>
+        <label className="fileThumb" for="file_thumb">
+          Selecione a imagem para a thumb &#187;
+        </label>
+        <input
+          id="file_thumb"
+          onChange={(e) =>
+            setState({
+              ...state,
+              thumb: e.target.files[0],
+              thumb_name: e.target.files[0].name,
+            })
+          }
+          type="file"
+        ></input>{" "}
+        <span style={{ color: "white" }}>{state.thumb_name}</span>
+      </div>
+      <h3>Arraste ou Selecione o video abaixo!</h3>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
           {({ getRootProps, getInputProps }) => (
@@ -158,7 +176,7 @@ const Upload = ({ token }) => {
           )}
         </Dropzone>
       </div>
-      <p style={{ color: "white" }}>{state.file_name}</p>
+      <p style={{ color: "white" }}>{state.video_name}</p>
       <CButton
         style={{ color: "white", border: "1px solid red" }}
         onClick={() => sendVideo()}

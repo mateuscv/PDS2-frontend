@@ -15,21 +15,22 @@ import Recommended from "../components/Recommended";
 //API
 import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
-import { Inscribe, Report } from "../../../util/Api";
+import { Inscribe, Report, getVideo } from "../../../util/Api";
 
 const View = ({ token }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
     subscribe: true,
-    color_like: "white",
-    color_dislike: "white",
+    color_like: "",
+    color_dislike: "",
     video: {
-      id: 1,
-      title: "Titulo",
-      liked: "like",
-      likes: 30,
-      dislikes: 45,
+      id: -1,
+      title: "",
+      liked: -1,
+      likes: 0,
+      dislikes: 0,
+      views: "0",
     },
   });
 
@@ -54,10 +55,49 @@ const View = ({ token }) => {
     // eslint-disable-next-line default-case
     switch (liked) {
       case "like":
-        setState({ ...state, color_like: "green", color_dislike: "white" });
+        var video = state.video;
+        if (video.liked === 1) {
+          video.likes -= 1;
+          video.liked = -1;
+          setState({
+            ...state,
+            color_like: "white",
+            video,
+          });
+        } else {
+          video.likes += 1;
+          video.dislikes =
+            video.liked === 0 ? video.dislikes - 1 : video.dislikes;
+          video.liked = 1;
+          setState({
+            ...state,
+            color_like: "green",
+            color_dislike: "white",
+            video,
+          });
+        }
         break;
       case "dislike":
-        setState({ ...state, color_dislike: "red", color_like: "white" });
+        var video = state.video;
+        if (video.liked === 0) {
+          video.dislikes -= 1;
+          video.liked = -1;
+          setState({
+            ...state,
+            color_dislike: "white",
+            video,
+          });
+        } else {
+          video.dislikes += 1;
+          video.likes = video.liked === 1 ? video.likes - 1 : video.likes;
+          video.liked = 0;
+          setState({
+            ...state,
+            color_dislike: "red",
+            color_like: "white",
+            video,
+          });
+        }
         break;
     }
     // });
@@ -80,6 +120,22 @@ const View = ({ token }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
+      var data = { video_id: id, token: token };
+      // getVideo(data).then(function (data) {});
+      var video = {
+        id: 1,
+        title: "Titulo do Fisico",
+        liked: -1,
+        likes: 30,
+        dislikes: 45,
+        views: "1.000.648",
+      };
+      setState({
+        ...state,
+        color_like: video.liked === 1 ? "green" : "white",
+        color_dislike: video.liked === 0 ? "red" : "white",
+        video,
+      });
     }
   }, []);
   return (
@@ -88,7 +144,11 @@ const View = ({ token }) => {
         <CCol sm="8" style={{ display: "flex" }}> */}
       <div style={{ marginRight: "auto" }}>
         <Player />
-        <div style={{ marginLeft: "50%" }}>
+        <div style={{ marginLeft: "30%" }}>
+          <span style={{ color: "white" }}>
+            {state.video.views} Visualizações
+          </span>
+
           <CButton
             style={{ color: state.color_like }}
             onClick={() => Liked("like")}

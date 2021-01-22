@@ -17,6 +17,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
+import { deletVideo } from "../../../util/Api";
 //Style
 //API
 import data from "./data";
@@ -54,7 +55,21 @@ const fields = [
   },
 ];
 
-const Studio = ({ history }) => {
+const Studio = ({ token, history }) => {
+  const Delet = (video_id) => {
+    var data = { token: token, video_id: video_id };
+    deletVideo(data)
+      .then(function (data) {
+        alert("Ação", "Video foi deletado com sucesso!");
+      })
+      .catch((err) => {
+        alert(
+          "Ação",
+          "Ouve algume erro ao deletar o video, por favor tentar novamente mais tarde!"
+        );
+      });
+  };
+
   return (
     <div>
       <CButton color="success" onClick={() => history.push("/upload")}>
@@ -99,12 +114,12 @@ const Studio = ({ history }) => {
                   </CButton>
                 </td>
               ),
-              Deletar: () => (
+              Deletar: (item) => (
                 <td className="align-middle">
                   <CButton
                     color="btn btn-ghost-danger"
                     title="Deletar"
-                    onClick={() => history.push("/upload")}
+                    onClick={() => Delet(item.id)}
                   >
                     <CIcon name="cil-trash" />
                   </CButton>
