@@ -1,8 +1,8 @@
 import axios from "axios";
-// export const API_URL = "http://localhost:3334/";
+export const API_URL = "http://localhost:3334/";
 //export const API_URL = "http://848251d83377.ngrok.io/";
-export const API_URL =
-  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+// export const API_URL =
+//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 // export const API_URL = "http://641d8549b43c.ngrok.io/";
 
 export const registerUser = (data) => {

@@ -83,7 +83,7 @@ const Confirm = ({ history }) => {
                   <CImg
                     style={{ width: "100%" }}
                     className="c-sidebar-brand-full"
-                    src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/banner_2.png"
+                    src="https://cdn.discordapp.com/attachments/300483456440336385/790994079717523472/banner_3.png"
                   />
                 </CCard>
                 <CCardHeader id="title">
