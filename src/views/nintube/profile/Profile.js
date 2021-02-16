@@ -1,5 +1,6 @@
 //REACT
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,11 +29,16 @@ import {
   CDropdownToggle,
   CDropdownMenu,
   CImg,
+  CCardHeader,
+  CBreadcrumb,
+  CCardBody,
+  CBreadcrumbItem,
 } from "@coreui/react";
 //Componets
 //Style
 //API
-import { getProfile, editProfile } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
+import { getProfile, editProfile, sendEmail } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
@@ -49,100 +55,79 @@ const Profile = ({ token }) => {
       birthdate: "",
       gender: "",
       phone: "",
+      verified: "",
     },
     error: "",
     message: "",
   });
+  let history = useHistory();
+  const handleClick = () => {
+    history.push("/edit/profile");
+  };
+
+  const verified = () => {
+    var data = {
+      email: state.user.email,
+      token: token,
+      cond: 0,
+    };
+    sendEmail(data).then(function (data) {
+      if (data.status === 1) {
+        alert("Email Enviado", "Favor Confirme no seu email");
+        history.push("/home");
+      }
+    });
+  };
+
   const profile = (e) => {
     e.preventDefault();
-    setState({ ...state, error: "", message: "Alterando..." });
+  };
 
-    const data = new FormData();
-    data.append("avatar", state.avatar);
-    const values = {
-      username: state.user.username,
-      email: state.user.email,
-      password: md5(state.user.password),
-      birthdate: state.user.birthdate,
-      gender: state.user.gender,
-      phone: state.userphone,
-    };
-    var password = "";
-
-    if (
-      !state.user.username ||
-      !state.user.email ||
-      !state.user.birthdate ||
-      !state.user.gender ||
-      !state.user.phone
-    ) {
-      setState({
-        ...state,
-        error: "Por favor, inserir valores em todos os campos",
-        message: "",
-      });
-    } else if (state.user.password_confirm !== state.user.password_new) {
-      setState({
-        ...state,
-        error: "As senhas não batem. Tente novamente!",
-        message: "",
-      });
+  const solvedData = (data) => {
+    var mouths = [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
+    var date = new Date(data.birthdate);
+    var birth =
+      date.getDate() +
+      1 +
+      " de " +
+      mouths[date.getMonth()] +
+      " de " +
+      date.getFullYear();
+    console.log(birth);
+    var gender = "";
+    if (data.gender === "m") {
+      gender = "Masculino";
+    } else if (data.gender === "w") {
+      gender = "Feminino";
     } else {
-      if (state.user.password_new == "" || state.user.password_new == null) {
-        password = state.user.password;
-      } else {
-        password = md5(state.user.password_new);
-      }
-      console.log(values);
-      data.append("token", token);
-      data.append("old_img", state.user.avatar);
-      data.append("username", state.user.username);
-      data.append("email", state.user.email);
-      data.append("password", md5(state.user.password));
-      data.append("birthdate", state.user.birthdate);
-      data.append("gender", state.user.gender);
-      data.append("phone", state.user.phone);
-
-      editProfile(data, token)
-        .then(function (data) {
-          console.log(data);
-          if (data.status === 1) {
-            setState({
-              ...state,
-              error: "Perfil atualizado!",
-              message: "",
-            });
-          } else {
-            setState({
-              ...state,
-              error: "Algo deu errado tentar novamente!",
-              message: "",
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setState({ ...state, error: "Dados inválidos", message: "" });
-        });
+      gender = "Outros";
     }
+    data.gender = gender;
+    data.birthdate = birth;
+    return data;
   };
 
   useEffect(() => {
     if (!state.fetched) {
-      console.log(token);
+      // console.log(token);
       var data = { token: token };
       getProfile(data, token).then(function (data) {
-        console.log(data.birthdate.substring(0, 10));
-        setState({ ...state, user: data, fetched: true });
+        console.log(data);
+        setState({ ...state, user: solvedData(data), fetched: true });
       });
-      // const user = {
-      //   name: "Igor Oliveira",
-      //   genre: "a",
-      //   email: "igor@furg.br",
-      //   password: "123456",
-      //   birth_date: "24/11/1997",
-      //   phone: "(53) 98436-6433",
-      // };
       setState({ ...state, fetched: true });
     }
   }, []);
@@ -151,201 +136,181 @@ const Profile = ({ token }) => {
     <div>
       <div align="center">
         <h1>Informações pessoais</h1>
-        Informações básicas, como seu nome e foto, usadas nos serviços
+        <p style={{ color: "white" }}>
+          Informações básicas, como seu nome e foto, usadas nos serviços
+        </p>
       </div>
-
-      <h4>Perfil</h4>
-
-      <CContainer fluid>
-        <CRow>
-          <CCol sm="12">
-            <CForm action="" method="post">
-              {state.message && (
-                <CCard
-                  className="border-success"
-                  style={{ textAlign: "center" }}
-                >
-                  {state.message}
-                </CCard>
-              )}
-              {state.error && (
-                <CCard
-                  className="border-danger"
-                  style={{ textAlign: "center" }}
-                >
-                  {state.error}
-                </CCard>
-              )}
-              <div class="c-avatar"></div>
-              <CFormGroup>
-                <CCol md="12">
-                  {/* <label>
-                    Selecione seu Avatar */}
-                  <img
-                    style={{ width: "50px" }}
-                    src={state.user.avatar}
-                    alt="avatar"
-                  ></img>
-                  <CInput
-                    type="file"
-                    onChange={(e) => {
-                      setState({ ...state, avatar: e.target.files[0] });
+      <div align="center">
+        <CRow style={{ width: "75%", color: "white" }}>
+          <CCol xs="12">
+            <CCard style={{ backgroundColor: "#212121" }}>
+              <CCardHeader style={{ backgroundColor: "#212121" }}>
+                <h4 style={{ textAlign: "center" }}>Perfil</h4>
+                <div style={{ display: "flex" }}>
+                  <div
+                    style={{
+                      width: "23%",
+                      textAlign: "center",
+                      verticalAlign: "center",
                     }}
-                  />
-                  {/* </label> */}
-                </CCol>
-              </CFormGroup>
-              <CFormGroup>
-                <CLabel htmlFor="nf-username">Nome de usário</CLabel>
-                <CInput
-                  type="text"
-                  id="nf-username"
-                  name="nf-username"
-                  autoComplete="name"
-                  value={state.user.username}
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.username = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-              <CFormGroup>
-                <CLabel htmlFor="nf-gender">Gênero</CLabel>
-                <CSelect
-                  value={state.user.gender}
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.gender = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                >
-                  <option value="m">Masculino</option>
-                  <option value="w">Feminino</option>
-                  <option value="a">Outros</option>
-                </CSelect>
-              </CFormGroup>
-
-              <CFormGroup>
-                <CLabel htmlFor="nf-birthdate">Data de Nascimento</CLabel>
-                <CInput
-                  type="date"
-                  id="nf-birthdate"
-                  name="nf-birthdate"
-                  autoComplete="birthdate"
-                  value={state.user.birthdate.substring(0, 10)}
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.birthdate = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-
-              <CFormGroup>
-                <CLabel htmlFor="nf-password">Senha</CLabel>
-                <CInput
-                  type="password"
-                  id="nf-password"
-                  name="nf-password"
-                  autoComplete="current-password"
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.password_new = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-
-              <CFormGroup>
-                <CLabel htmlFor="nf-password_confirm">Confirme a senha</CLabel>
-                <CInput
-                  type="password"
-                  id="nf-password_confirm"
-                  name="nf-password_confirm"
-                  autoComplete="password_confirm"
-                  value={state.user.password_confirm}
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.password_confirm = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-            </CForm>
+                  >
+                    Nome e Foto
+                  </div>
+                  <div
+                    style={{
+                      width: "60%",
+                      textAlign: "end",
+                      verticalAlign: "center",
+                    }}
+                  >
+                    {state.user.username}
+                    <img
+                      style={{ width: "35px", marginLeft: "7px" }}
+                      src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
+                      alt="avatar"
+                    ></img>
+                  </div>
+                </div>
+              </CCardHeader>
+              <CCardBody>
+                <CBreadcrumb>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div
+                      style={{
+                        width: "23%",
+                        textAlign: "center",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      Gênero
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "end",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      {state.user.gender}
+                    </div>
+                  </div>
+                </CBreadcrumb>
+                <CBreadcrumb>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div
+                      style={{
+                        width: "23%",
+                        textAlign: "center",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      Data de Nascimento
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "end",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      {state.user.birthdate}
+                    </div>
+                  </div>
+                </CBreadcrumb>
+                <CBreadcrumb>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div
+                      style={{
+                        width: "23%",
+                        textAlign: "center",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      Senha
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "end",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      **********
+                    </div>
+                  </div>
+                </CBreadcrumb>
+                <CBreadcrumb>
+                  <h4 style={{ textAlign: "center", width: "100%" }}>
+                    Informações de contato
+                  </h4>
+                </CBreadcrumb>
+                <CBreadcrumb>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div
+                      style={{
+                        width: "23%",
+                        textAlign: "center",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      E-mail
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "end",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      {state.user.email}
+                    </div>
+                  </div>
+                </CBreadcrumb>
+                <CBreadcrumb>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <div
+                      style={{
+                        width: "23%",
+                        textAlign: "center",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      Telefone
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "end",
+                        verticalAlign: "center",
+                      }}
+                    >
+                      {state.user.phone}
+                    </div>
+                  </div>
+                </CBreadcrumb>
+                {!state.user.verified && (
+                  <CButton
+                    style={{ width: "10%" }}
+                    color="danger"
+                    block
+                    onClick={() => verified()}
+                  >
+                    Verificar Email
+                  </CButton>
+                )}
+              </CCardBody>
+            </CCard>
           </CCol>
         </CRow>
-      </CContainer>
-
-      <h4>Informações de contato</h4>
-
-      <CContainer fluid>
-        <CRow>
-          <CCol sm="12">
-            <CForm action="" method="post">
-              <CFormGroup>
-                <CLabel htmlFor="nf-email">E-mail</CLabel>
-                <CInput
-                  type="email"
-                  id="nf-email"
-                  name="nf-email"
-                  autoComplete="email"
-                  value={state.user.email}
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.email = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-
-              <CFormGroup>
-                <CLabel htmlFor="nf-phone">Telefone</CLabel>
-                <MaskedInput
-                  mask={[
-                    "(",
-                    /[1-9]/,
-                    /\d/,
-                    ")",
-                    " ",
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    "-",
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                    /\d/,
-                  ]}
-                  id="nf-phone"
-                  name="nf-phone"
-                  autoComplete="phone"
-                  value={state.user.phone}
-                  className="form-control"
-                  onChange={(e) => {
-                    let user = { ...state.user };
-                    user.phone = e.target.value;
-                    setState({ ...state, user });
-                  }}
-                />
-              </CFormGroup>
-
-              <div align="center">
-                <CButton
-                  style={{ width: "10%" }}
-                  onClick={(e) => profile(e)}
-                  color="success"
-                  block
-                >
-                  Alterar informações
-                </CButton>
-              </div>
-            </CForm>
-          </CCol>
-        </CRow>
-      </CContainer>
+        <CButton
+          style={{ width: "10%" }}
+          color="success"
+          block
+          onClick={() => handleClick()}
+        >
+          Editar Perfil
+        </CButton>
+      </div>
     </div>
   );
 };

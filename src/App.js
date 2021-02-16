@@ -19,6 +19,9 @@ const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const Email = React.lazy(() =>
   import("./views/nintube/emailConfirm/emailConfirm")
 );
+const SendEmail = React.lazy(() =>
+  import("./views/nintube/emailConfirm/sendEmail")
+);
 const ForgotPass = React.lazy(() =>
   import("./views/nintube/forgotPass/forgotPass")
 );
@@ -64,7 +67,12 @@ const App = ({}) => {
             name="forgot"
             render={(props) => <ForgotPass {...props} />}
           />
-
+          <Route
+            exact
+            path="/send_email"
+            name="sendEmail"
+            render={(props) => <SendEmail {...props} />}
+          />
           <Route
             path="/"
             name="Home"

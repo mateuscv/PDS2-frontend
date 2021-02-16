@@ -130,7 +130,7 @@ const Confirm = ({ history }) => {
                   </div>
                   <p id="align">
                     <CButton
-                      onClick={() => handleClick("login")}
+                      onClick={() => handleClick("home")}
                       class="myButton"
                     >
                       Voltar

@@ -69,6 +69,15 @@ export const checkEmail = (data) => {
   );
 };
 
+export const editPass = (data) => { //Ver com davi a necessidade de mandar o token:autho etc
+  return axios.post(API_URL + "email/edit_pass", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
 export const sendEmail = (data) => {
   return axios.post(API_URL + "email/send", data).then(
     function (res) {

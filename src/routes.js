@@ -8,6 +8,9 @@ const Inscription = React.lazy(() =>
 const Library = React.lazy(() => import("./views/nintube/library/Library"));
 const View = React.lazy(() => import("./views/nintube/view/View"));
 const Profile = React.lazy(() => import("./views/nintube/profile/Profile"));
+const EditProfile = React.lazy(() =>
+  import("./views/nintube/profile/editProfile")
+);
 const Playlist = React.lazy(() => import("./views/nintube/playlist/Playlist"));
 const Channel = React.lazy(() => import("./views/nintube/channel/Channel"));
 const Historic = React.lazy(() => import("./views/nintube/historic/Historic"));
@@ -28,6 +31,7 @@ const routes = [
   { path: "/library", name: "Library", component: Library },
   { path: "/view/:id", name: "View", component: View },
   { path: "/profile", name: "Profile", component: Profile },
+  { path: "/edit/profile", name: "EditProfile", component: EditProfile },
   { path: "/playlist", name: "Playlist", component: Playlist },
   { path: "/channel/:id", name: "Channel", component: Channel },
   { path: "/historic", name: "Historic", component: Historic },
