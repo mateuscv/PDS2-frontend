@@ -69,7 +69,7 @@ const Login = ({ history, setToken }) => {
   };
 
   const forgotPassword = () => {
-    alert("Foda-se", "Te vira ai otario... Cria outra conta ai babaca.");
+    history.push("/send_email");
   };
 
   return (

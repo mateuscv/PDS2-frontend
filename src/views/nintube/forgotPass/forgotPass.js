@@ -29,24 +29,94 @@ import {
   CImg,
 } from "@coreui/react";
 //Api
-// import { checkEmail } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
+import { editPass } from "../../../util/Api";
+import md5 from "md5";
 //Style
 import "./forgotPass.css";
 
-const Confirm = ({ history }) => {
+const Forgot = ({ history }) => {
   let id = useParams();
 
   const handleClick = (route) => {
     history.push("/" + route);
   };
-
-  const sendEmail = () => {};
-
   const [state, setState] = useState({
     fetched: false,
+    password_new: "",
+    password_confirm: "",
     error: "",
-    message:"Email Confirmado com sucesso",
+    message: "",
   });
+
+  const changePass = () => {
+    // e.preventDefault();
+
+    setState({ ...state, error: "", message: "Alterando..." });
+
+    var password = "";
+    console.log(state.password_confirm);
+    if (!state.password_confirm || !state.password_new) {
+      console.log("teste");
+      setState({
+        ...state,
+        error: "Por favor, inserir valores em todos os campos",
+        message: "",
+      });
+    } else if (state.password_confirm !== state.password_new) {
+      console.log("tes");
+      setState({
+        ...state,
+        error: "As senhas não batem. Tente novamente!",
+        message: "",
+      });
+    } else {
+      console.log(id);
+      password = md5(state.password_new);
+
+      var Newdata = {
+        id: id.id, // Nao sei pq krl isso ta acontencendo porem msm se eu fizesse data-{ id } o id ficava id.id
+        password: password,
+      };
+      // data.append("id", id);
+      // data.append("password", password);
+      console.log(Newdata);
+
+      editPass(Newdata)
+        .then(function (data) {
+          console.log(data);
+          if (data.status === 1) {
+            setState({
+              ...state,
+              error: "",
+              message: "Senha Atualizada atualizado",
+            });
+            alert(
+              "Senha Atualizada atualizado!",
+              "Redirecionando para o login",
+              [
+                {
+                  label: "Ok",
+                  onClick: () => {
+                    history.push("/login");
+                  },
+                },
+              ]
+            );
+          } else {
+            setState({
+              ...state,
+              error: "Algo deu errado tentar novamente!",
+              message: "",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
+    }
+  };
 
   useEffect(() => {
     if (!state.fetched) {
@@ -59,88 +129,87 @@ const Confirm = ({ history }) => {
 
   return (
     <div className="confirm">
-      {state.error != "" && (
-        <div id="divBut">
-          <div>
-            <CRow class="msg">
-              <CCard className="border-danger">
-                <CCard>
-                  <CImg
-                    style={{ width: "100%" }}
-                    className="c-sidebar-brand-full"
-                    src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/banner_2.png"
-                  />
-                </CCard>
-                <CCardHeader id="title">
-                  <h1>{state.error}.</h1>
-                </CCardHeader>
-                <CCardBody>
-                  <h3 id="align">Tentar novamente</h3>
-                  <p id="align">
-                    <CButton
-                      onClick={() => handleClick("login")}
-                      class="myButton"
-                    >
-                      Reenviar
-                    </CButton>
-                  </p>
-                </CCardBody>
+      <div id="divBut">
+        <div>
+          <CRow class="msg">
+            <CCard className="border-success">
+              <CCard>
+                <CImg
+                  style={{ width: "100%" }}
+                  className="c-sidebar-brand-full"
+                  src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+                />
               </CCard>
-            </CRow>
-          </div>
-        </div>
-      )}
-      {state.message != "" && (
-        <div id="divBut">
-          <div>
-            <CRow class="msg">
-              <CCard className="border-success">
-                <CCard>
-                  <CImg
-                    style={{ width: "100%" }}
-                    className="c-sidebar-brand-full"
-                    src="https://youtube-videos-furg.s3.sa-east-1.amazonaws.com/banner_2.png"
-                  />
-                </CCard>
-                <CCardHeader id="title">
-                  <h1>{state.message}.</h1>
-                </CCardHeader>
-                <CCardBody>
-                  <h3 id="align">Cadastre uma nova senha abaixo:</h3>
-                  
-                  <p id="align">
-                  <CCol>
-                        <CLabel>
-                            Nova Senha
-                        </CLabel>
-                        <CInput>
+              <CCardBody>
+                {state.error && (
+                  <CCard
+                    className="border-danger"
+                    style={{ textAlign: "center", color: "black" }}
+                  >
+                    {state.error}
+                  </CCard>
+                )}
+                <h3 id="align">Cadastre uma nova senha abaixo:</h3>
 
-                        </CInput>
-                    </CCol>
-                    <CCol>
-                        <CLabel>
-                            Confirme a senha
+                <p>
+                  <CCol>
+                    <CForm>
+                      <CFormGroup>
+                        <CLabel id="lb" htmlFor="nf-password">
+                          Senha
                         </CLabel>
-                        <CInput>
-                            
-                        </CInput>
-                    </CCol>
-                    <CButton
-                      onClick={() => handleClick("login")}
-                      class="myButton"
-                    >
+                        <CInput
+                          type="password"
+                          id="nf-password"
+                          name="nf-password"
+                          // value={state.pass.password_new}
+                          autoComplete="current-password"
+                          onChange={(e) => {
+                            let user = { ...state.pass };
+                            // user.password_new = e.target.value;
+                            setState({
+                              ...state,
+                              password_new: e.target.value,
+                            });
+                          }}
+                        />
+                      </CFormGroup>
+
+                      <CFormGroup>
+                        <CLabel id="lb" htmlFor="nf-password_confirm">
+                          Confirme a senha
+                        </CLabel>
+                        <CInput
+                          type="password"
+                          id="nf-password_confirm"
+                          name="nf-password_confirm"
+                          autoComplete="password_confirm"
+                          // value={state.pass.password_confirm}
+                          onChange={(e) => {
+                            // let pass = { ...state.pass };
+                            // user.password_confirm = e.target.value;
+                            setState({
+                              ...state,
+                              password_confirm: e.target.value,
+                            });
+                          }}
+                        />
+                      </CFormGroup>
+                    </CForm>
+                  </CCol>
+                  <div align="center">
+                    <CButton onClick={() => changePass()} class="myButton">
                       Enviar
                     </CButton>
-                  </p>
-                </CCardBody>
-              </CCard>
-            </CRow>
-          </div>
+                  </div>
+                </p>
+              </CCardBody>
+            </CCard>
+          </CRow>
         </div>
-      )}
-      {/* <h1>{email.email}</h1> */}
+      </div>
     </div>
   );
 };
 
-export default Confirm;
+export default Forgot;
