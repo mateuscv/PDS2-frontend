@@ -94,27 +94,27 @@ const Register = ({ history }) => {
       data.append("gender", state.gender);
       data.append("phone", state.phone);
 
-      // registerUser(data)
-      //   .then(function (data) {
-      //     if (data.status === 1) {
-      // setState({
-      //   ...state,
-      //   error: "",
-      //   message: "Registrado com Sucesso",
-      // });
-      //       // sendEmail(state.email).then(function (data))
-      //       // history.push("/login");
-      //     } else {
-      //       setState({
-      //         ...state,
-      //         error: "Algo deu errado tentar novamente!",
-      //         message: "",
-      //       });
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     setState({ ...state, error: "Dados inválidos", message: "" });
-      //   });
+      registerUser(data)
+        .then(function (data) {
+          if (data.status === 1) {
+            setState({
+              ...state,
+              error: "",
+              message: "Registrado com Sucesso",
+            });
+            // sendEmail(state.email).then(function (data))
+            history.push("/login");
+          } else {
+            setState({
+              ...state,
+              error: "Algo deu errado tentar novamente!",
+              message: "",
+            });
+          }
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   };
   return (
