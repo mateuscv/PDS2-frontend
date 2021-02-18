@@ -6,10 +6,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
-import { CRow, CCol, CButton } from "@coreui/react";
+import { CRow, CCol, CButton, CBreadcrumb } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
 import Player from "../components/Player";
+import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
 //Style
 //API
@@ -139,66 +140,129 @@ const View = ({ token }) => {
     }
   }, []);
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", width: "100%" }}>
       {/* <CRow>
         <CCol sm="8" style={{ display: "flex" }}> */}
-      <div style={{ marginRight: "auto" }}>
+      <div style={{ marginRight: "auto", width: "70%" }}>
         <Player />
-        <div style={{ marginLeft: "30%" }}>
-          <span style={{ color: "white" }}>
-            {state.video.views} Visualizações
-          </span>
+        <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
+          <div style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
+            <a style={{ color: "lghtblue" }}>#TheWeekend</a>
+          </div>
+          <h5 style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
+            The Weeknd - Blinding Lights (Official Audio)
+          </h5>
+          <div
+            style={{
+              width: "100%",
+              marginLeft: "1.5%",
+              display: "flex",
+              height: "25px",
+            }}
+          >
+            <div style={{ width: "50%", verticalAlign: "center" }}>
+              <span style={{ color: "white", verticalAlign: "center" }}>
+                {state.video.views} Visualizações
+              </span>
+            </div>
+            <div
+              style={{
+                marginLeft: "10%",
+                height: "100%",
+                // verticalAlign: "top",
+              }}
+            >
+              <CButton
+                style={{ color: state.color_like }}
+                onClick={() => Liked("like")}
+              >
+                <CIcon name="cilThumbUp" /> {state.video.likes}
+              </CButton>
+              <CButton
+                style={{ color: state.color_dislike }}
+                onClick={() => Liked("dislike")}
+              >
+                <CIcon name="cilThumbDown" /> {state.video.dislikes}
+              </CButton>
+              <CButton
+                style={{ color: "white" }}
+                onClick={() =>
+                  alert("Compartilhar", "http://localhost:3000/#/view/" + id, [
+                    { label: "Fechar", onClick: "" },
+                  ])
+                }
+              >
+                <CIcon name="cil-share" /> Compartilhar
+              </CButton>
 
-          <CButton
-            style={{ color: state.color_like }}
-            onClick={() => Liked("like")}
-          >
-            <CIcon name="cilThumbUp" /> {state.video.likes}
-          </CButton>
-          <CButton
-            style={{ color: state.color_dislike }}
-            onClick={() => Liked("dislike")}
-          >
-            <CIcon name="cilThumbDown" /> {state.video.dislikes}
-          </CButton>
-          <CButton
-            style={{ border: "1px solid red", color: "white" }}
-            onClick={() =>
-              alert("Compartilhar", "http://localhost:3000/#/view/" + id, [
-                { label: "Fechar", onClick: "" },
-              ])
-            }
-          >
-            <CIcon name="cil-share" /> Compartilhar
-          </CButton>
-          <>
-            {state.subscribe === false && (
               <CButton
-                id="inscribe"
-                class="inscribe"
-                onClick={() => Change(true)}
+                style={{
+                  color: "white",
+                }}
+                onClick={() => reportVideo()}
               >
-                Inscrever-se
+                <CIcon name="cilFlagAlt" /> Reportar
               </CButton>
-            )}{" "}
-            {state.subscribe === true && (
-              <CButton
-                id="inscribe"
-                class="registered"
-                onClick={() => Change(false)}
-              >
-                Inscrito
-              </CButton>
-            )}
-          </>
-          <CButton class="inscribe" onClick={() => reportVideo()}>
-            Reportar
-          </CButton>
-        </div>
+            </div>
+          </div>
+        </CBreadcrumb>
+        <CBreadcrumb
+          style={{ width: "95%", marginLeft: "1.7%", display: "flex" }}
+        >
+          <div style={{ width: "7%", height: "100%" }}>
+            <img
+              src="https://cdn.discordapp.com/attachments/704786714769490101/811992050177278002/unnamed.jpg"
+              width="44"
+              height="44"
+            />
+          </div>
+          <div style={{ width: "90%" }}>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                color: "white",
+              }}
+            >
+              <div style={{ width: "90%" }}>
+                <span>The Weeknd</span>
+                <p>23M subscribers</p>
+              </div>
+              <div style={{ width: "1%" }}>
+                <>
+                  {state.subscribe === false && (
+                    <CButton
+                      id="inscribe"
+                      class="inscribe"
+                      onClick={() => Change(true)}
+                    >
+                      Inscrever-se
+                    </CButton>
+                  )}{" "}
+                  {state.subscribe === true && (
+                    <CButton
+                      id="inscribe"
+                      class="registered"
+                      onClick={() => Change(false)}
+                    >
+                      Inscrito
+                    </CButton>
+                  )}
+                </>
+              </div>
+            </div>
+            <div style={{ color: "white" }}>
+              Official audio for The Weeknd "Blinding Lights" - available
+              everywhere now: http://theweeknd.co/blindinglightsYD​ ►Subscribe
+              to The Weeknd on YouTube: http://theweeknd.co/subscribeYD​
+            </div>
+          </div>
+        </CBreadcrumb>
+        <Comments />
       </div>
       {/* </CCol>
         <CCol sm="4"> */}
-      <div style={{ display: "flex", marginLeft: "auto" }}>
+      <div style={{ marginLeft: "auto", width: "25%" }}>
         <Recommended />
       </div>
       {/* </CCol>

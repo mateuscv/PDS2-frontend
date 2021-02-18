@@ -163,3 +163,51 @@ input[type="file"] {
   // margin-bottom: 10px;
   padding: 6px 20px;
 }
+
+.myBut {
+  box-shadow: inset 3px -1px 0px 0px #ffffff;
+  background: linear-gradient(to bottom, #ededed 15%, #dfdfdf 100%);
+  background-color: #ededed;
+  border-radius: 6px;
+  border: 1px solid #212121cb;
+  display: inline-block;
+  cursor: pointer;
+  font-family: Arial;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 7px 20px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffffff;
+}
+.myBut:hover {
+  background: linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
+  background-color: #dfdfdf;
+}
+.myBut:active {
+  position: relative;
+  top: 1px;
+}
+
+.myCancel {
+  // box-shadow: inset 3px -1px 0px 0px #ffffff;
+  // background: linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
+  // background-color: #212121;
+  border-radius: 6px;
+  display: inline-block;
+  cursor: pointer;
+  font-family: Arial;
+  // color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 7px 20px;
+  text-decoration: none;
+  // text-shadow: 0px 1px 0px #ffffff;
+}
+.myCancel:hover {
+  border: 1px solid white;
+  // background-color: #dfdfdf;
+}
+.myCancel:active {
+  position: relative;
+  top: 1px;
+}
