@@ -24,12 +24,18 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
+import Crop from "../crop/Crop"
 //Style
 //API
 import { registerUser, sendEmail } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
+
+
+const imageMaxSize = 1024*1024*50 // bytes
+const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg'
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
@@ -43,7 +49,13 @@ const Register = ({ history }) => {
     birthdate: "",
     gender: "",
     phone: "",
+    
+    
   });
+  const [image, setImage] = useState(null)
+ 
+    
+
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
@@ -117,6 +129,10 @@ const Register = ({ history }) => {
         });
     }
   };
+  
+  const changeAvatar = (img) => {
+    setState({...state, avatar:img})
+  }
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -145,17 +161,27 @@ const Register = ({ history }) => {
                   <p className="text-muted">Crie sua conta</p>
                   <CFormGroup row>
                     <CCol md="12">
-                      {/* <label>
-                        Selecione seu Avatar */}
+                      <label>
+                        
                       <CInput
                         type="file"
                         onChange={(e) => {
-                          setState({ ...state, avatar: e.target.files[0] });
+                          setImage(e.target.files[0]);
                         }}
                       />
-                      {/* </label> */}
+                      <span style={{color:"black"}}>awdwadwadwaddawwadwadawdawdawdwadwad</span>
+                      </label>
+                        {image && (
+                          <center>
+                          <div>
+                            <br/>
+                            <Crop img={image} callback={changeAvatar} reload={true} circle={true}/>
+                          </div></center>
+                        )}
+                      
                     </CCol>
                   </CFormGroup>
+
                   <CFormGroup row>
                     <CCol md="12">
                       <CInput
@@ -259,7 +285,7 @@ const Register = ({ history }) => {
                     </CCol>
                   </CFormGroup>
                   <Link to="/login">
-                    <p color="primary" className="mt-3" active tabIndex={-1}>
+                    <p color="primary" className="mt-3" active="true" tabIndex={-1}>
                       Login
                     </p>
                   </Link>

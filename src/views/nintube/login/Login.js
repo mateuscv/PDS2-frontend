@@ -35,6 +35,7 @@ const Login = ({ history, setToken }) => {
     email: "",
     password: "",
   });
+  
   const login = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Logando..." });
