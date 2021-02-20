@@ -59,9 +59,9 @@ const Login = ({ history, setToken }) => {
         .then(function (data) {
           //console.log(user);
           // console.log(data.token);
-          // console.log(data);
+          console.log(data);
           setToken(data.token);
-          history.push("/home");
+          // history.push("/home");
         })
         .catch((err) => {
           setState({ ...state, error: "Dados inválidos", message: "" });

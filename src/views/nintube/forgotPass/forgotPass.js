@@ -89,20 +89,16 @@ const Forgot = ({ history }) => {
             setState({
               ...state,
               error: "",
-              message: "Senha Atualizada atualizado",
+              message: "Senha Atualizada",
             });
-            alert(
-              "Senha Atualizada atualizado!",
-              "Redirecionando para o login",
-              [
-                {
-                  label: "Ok",
-                  onClick: () => {
-                    history.push("/login");
-                  },
+            alert("Senha Atualizada!", "Redirecionando para o login", [
+              {
+                label: "Ok",
+                onClick: () => {
+                  history.push("/login");
                 },
-              ]
-            );
+              },
+            ]);
           } else {
             setState({
               ...state,

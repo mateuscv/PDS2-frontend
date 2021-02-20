@@ -23,7 +23,7 @@ import HomeVideos from "../components/homeVideos";
 //Style
 //API
 
-const Home = ({ history, token }) => {
+const Home = ({ history, token, user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -35,6 +35,8 @@ const Home = ({ history, token }) => {
   const handleClick = () => {
     history.push("/view");
   };
+  console.log(token);
+
   return (
     <div>
       <HomeVideos />

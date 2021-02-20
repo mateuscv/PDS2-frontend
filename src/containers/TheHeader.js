@@ -85,7 +85,7 @@ const TheHeader = ({ token, history, setToken }) => {
   };
 
   const forgotPassword = () => {
-    alert("Foda-se", "Te vira ai otario... Cria outra conta ai babaca.");
+    history.push("/send_email");
   };
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
