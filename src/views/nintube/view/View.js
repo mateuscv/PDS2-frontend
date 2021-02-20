@@ -22,7 +22,7 @@ const View = ({ token }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
-    subscribe: true,
+    subscribe: false,
     color_like: "",
     color_dislike: "",
     video: {
@@ -36,7 +36,11 @@ const View = ({ token }) => {
   });
 
   const Change = (cond) => {
-    var data = { token: token, channel_id: id };
+    var data = {
+      token: token,
+      target_id: "ef89ac6d-7fdb-40ab-8fb7-298d7406ef3e",
+    };
+    console.log(data);
     Inscribe(data)
       .then(function (data) {
         setState({ ...state, subscribe: cond });

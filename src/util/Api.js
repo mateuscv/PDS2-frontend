@@ -69,7 +69,8 @@ export const checkEmail = (data) => {
   );
 };
 
-export const editPass = (data) => { //Ver com davi a necessidade de mandar o token:autho etc
+export const editPass = (data) => {
+  //Ver com davi a necessidade de mandar o token:autho etc
   return axios.post(API_URL + "email/edit_pass", data).then(
     function (res) {
       let data = res.data;
@@ -115,7 +116,7 @@ export const deletVideo = (data) => {
 };
 
 export const Inscribe = (data) => {
-  return axios.put(API_URL + "users/inscribe", data).then(
+  return axios.put(API_URL + "users/subs", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -125,6 +126,33 @@ export const Inscribe = (data) => {
 
 export const Report = (data) => {
   return axios.put(API_URL + "/report", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const sendComment = (data) => {
+  return axios.put(API_URL + "video/send_comment", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const editComment = (data) => {
+  return axios.put(API_URL + "video/edit_comment", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const deletComment = (data) => {
+  return axios.put(API_URL + "video/delet_comment", data).then(
     function (res) {
       let data = res.data;
       return data;
