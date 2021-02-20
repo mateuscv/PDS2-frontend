@@ -211,3 +211,20 @@ input[type="file"] {
   position: relative;
   top: 1px;
 }
+
+.showReport {
+  display: none;
+}
+
+.showDiv:hover .showReport {
+  display: block;
+  // color: white;
+}
+
+.showReport:hover {
+  color: red;
+}
+
+.showAnswers:hover {
+  color: red;
+}

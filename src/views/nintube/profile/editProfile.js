@@ -212,7 +212,9 @@ const Profile = ({ token }) => {
                       <CInput
                         type="file"
                         onChange={(e) => {
-                          setState({ ...state, avatar: e.target.files[0] });
+                          let user = { ...state.user };
+                          user.avatar = e.target.files[0];
+                          setState({ ...state, user });
                         }}
                       />
                     </label>

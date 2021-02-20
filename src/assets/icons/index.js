@@ -136,6 +136,7 @@ import {
   cilThumbUp,
   cilThumbDown,
   cilFlagAlt,
+  cilClearAll,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -148,6 +149,7 @@ export const icons = Object.assign(
   {
     cilFlagAlt,
     cilThumbUp,
+    cilClearAll,
     cilThumbDown,
     cilTv,
     cilBarChart,

@@ -26,6 +26,8 @@ import CIcon from "@coreui/icons-react";
 //Componets
 //Style
 //API
+// import { Report } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 
 const commentsList = [
   {
@@ -74,25 +76,79 @@ const commentsList = [
   },
 ];
 
+const comment = [
+  {
+    id: 1,
+    idf: 2,
+    nickname: "yMustafa",
+    comment: "Isso eh uma merda",
+    date: "há 30 min",
+    src:
+      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+  },
+  {
+    id: 2,
+    idf: 2,
+    nickname: "yAb",
+    comment: "Cara eh muito bom",
+    date: "há 60 min",
+    src:
+      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+  },
+  {
+    id: 3,
+    idf: 4,
+    nickname: "Davi Teixeira",
+    comment: "Feliz 2020",
+    date: "há 3 horas",
+    src:
+      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+  },
+  {
+    id: 4,
+    idf: 4,
+    nickname: "Yoshi",
+    comment: "o que",
+    date: "há 3 dias",
+    src:
+      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+  },
+  {
+    id: 5,
+    idf: 4,
+    nickname: "Jhin",
+    comment: "Everyone- Thank god 2020 ended... I feel invincible.. ",
+    date: "há 1 semanas",
+    src:
+      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+  },
+];
+
 const Comments = ({ token }) => {
   const [state, setState] = useState({
     fetched: false,
     color_like: "white",
     color_dislike: "white",
     newComment: "",
-    fethedComment: false,
+    showComment: false,
+    dispId: [],
+    dispAns: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
   };
   const comment = () => {
-    if (!state.fethedComment) {
-      setState({
-        ...state,
-        newComment: "",
-        fethedComment: true,
-      });
+    if (token) {
+      if (!state.fethedComment) {
+        setState({
+          ...state,
+          newComment: "",
+          showComment: true,
+        });
+      }
+    } else {
+      alert("Login", "Você não está logado!");
     }
   };
   const sendComment = () => {
@@ -102,12 +158,35 @@ const Comments = ({ token }) => {
     setState({
       ...state,
       newComment: "",
-      fethedComment: false,
+      showComment: false,
     });
   };
+
+  const showAns = (ind, id) => {
+    console.log(state.arrId[ind]);
+    if (id === state.arrId[ind]) {
+      // console.log(state.dispAns[ind]);
+      // setState({
+      //   ...state, dispAns[ind]: true
+      // });
+    }
+  };
+
+  const reportVideo = () => {
+    alert("Reporte", "Seu reporte foi enviado com sucesso!");
+  };
+
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      var arrId = new Array();
+      var arrAns = new Array();
+      const commentDisp = new FormData();
+      for (let i = 0; i < commentsList.length; i++) {
+        arrId.push(commentsList[i].id);
+        arrAns.push(false);
+      }
+
+      setState({ ...state, fetched: true, dispId: arrId, dispAns: arrAns });
     }
   }, []);
   return (
@@ -151,7 +230,7 @@ const Comments = ({ token }) => {
                     ></input>
                   </div>
                 </div>
-                {state.fethedComment && (
+                {state.showComment && (
                   <div style={{ width: "100%", marginTop: "3px" }}>
                     <a
                       class="myCancel"
@@ -172,20 +251,33 @@ const Comments = ({ token }) => {
               </div>
             </CBreadcrumb>
             {commentsList.map((item, index) => (
-              <CBreadcrumb
-                style={{ width: "95%", marginLeft: "1.7%", display: "flex" }}
+              <div
+                style={{
+                  width: "95%",
+                  marginLeft: "3%",
+                  display: "flex",
+                  marginTop: "1%",
+                }}
               >
                 <div style={{ width: "7%", height: "100%" }}>
                   <img src={item.src} width="44" height="44" />
                 </div>
-                <div style={{ width: "90%", color: "white" }}>
+                <div class="showDiv" style={{ width: "90%", color: "white" }}>
                   <div style={{ width: "100%", display: "flex" }}>
-                    <span style={{ width: "99%" }}>
+                    <span style={{ width: "98%" }}>
                       {item.nickname} {item.date}
                     </span>
-                    <div style={{ color: "white" }}>:</div>
+                    <div
+                      class="showReport"
+                      style={{
+                        width: "3%",
+                        alignItems: "center",
+                      }}
+                      onClick={() => reportVideo()}
+                    >
+                      <CIcon name="cilFlagAlt" style={{ marginLeft: "5px" }} />
+                    </div>
                   </div>
-
                   <p>{item.comment}</p>
                   <div>
                     <CButton
@@ -199,9 +291,15 @@ const Comments = ({ token }) => {
                     </CButton>
                     <CButton style={{ color: "white" }}>Responder</CButton>
                   </div>
-                  <div>Ver respostas</div>
+                  <div
+                    class="showAnswers"
+                    onClick={() => showAns(index, item.id)}
+                  >
+                    Ver respostas
+                  </div>
+                  {state.dispAns[index] && <div>teste</div>}
                 </div>
-              </CBreadcrumb>
+              </div>
             ))}
           </div>
         </CCol>
