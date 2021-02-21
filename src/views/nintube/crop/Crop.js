@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+import React, { useState, useCallback, useRef, useEffect } from "react";
+import ReactCrop from "react-image-crop";
+import canvasToImage from "canvas-to-image";
+import "react-image-crop/dist/ReactCrop.css";
 
 function generateDownload(canvas, crop) {
   if (!crop || !canvas) {
@@ -11,32 +12,48 @@ function generateDownload(canvas, crop) {
     (blob) => {
       const previewUrl = window.URL.createObjectURL(blob);
 
-      const anchor = document.createElement('a');
-      anchor.download = 'cropPreview.png';
+      const anchor = document.createElement("a");
+      anchor.download = "cropPreview.png";
       anchor.href = URL.createObjectURL(blob);
       anchor.click();
 
       window.URL.revokeObjectURL(previewUrl);
     },
-    'image/png',
+    "image/png",
     1
   );
 }
 
-const Crop = ({img, callback, reload, circle}) => {
+const Crop = ({ img, callback, reload, circle }) => {
   const [upImg, setUpImg] = useState();
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [crop, setCrop] = useState({ unit: '%', width: 30, aspect: 1 });
+  const [crop, setCrop] = useState({ unit: "%", width: 30, aspect: 1 });
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [loaded, setLoaded] = useState(!reload)
-
+  const [loaded, setLoaded] = useState(!reload);
 
   const onSelectFile = (e) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => setUpImg(reader.result));
-      reader.readAsDataURL(e);
-    
+    const reader = new FileReader();
+    reader.addEventListener("load", () => setUpImg(reader.result));
+    reader.readAsDataURL(e);
+  };
+  const convertFile = (e) => {
+    e.toBlob(
+      function (blob) {
+        var newImg = document.createElement("img"),
+          url = URL.createObjectURL(blob);
+
+        newImg.onload = function () {
+          // no longer need to read the blob so it's revoked
+          URL.revokeObjectURL(url);
+        };
+
+        newImg.src = url;
+        document.body.appendChild(newImg);
+      },
+      "image/png",
+      0.95
+    );
   };
 
   const onLoad = useCallback((img) => {
@@ -54,15 +71,15 @@ const Crop = ({img, callback, reload, circle}) => {
 
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     const pixelRatio = window.devicePixelRatio;
 
     canvas.width = crop.width * pixelRatio;
     canvas.height = crop.height * pixelRatio;
 
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    ctx.imageSmoothingQuality = 'high';
-    
+    ctx.imageSmoothingQuality = "high";
+
     ctx.drawImage(
       image,
       crop.x * scaleX,
@@ -74,16 +91,23 @@ const Crop = ({img, callback, reload, circle}) => {
       crop.width,
       crop.height
     );
-    callback(ctx)
-  }, [completedCrop]);
+    var options = {
+      name: "custom name", // default image
+      type: "png", // default png, accepted values jpg or png
+      quality: 0.9, // default 1, can select any value from 0 to 1 range
+    };
+    var cv = document.getElementById("canvas");
+    var dataURL = cv.toDataURL("image/png", 0.1);
 
-  if(reload){
-      onSelectFile(img)
-      reload = false
+    callback(dataURL);
+  }, [completedCrop]);
+  // console.log(image);
+  if (reload) {
+    onSelectFile(img);
+    reload = false;
   }
   return (
     <div className="App">
-      
       <ReactCrop
         src={upImg}
         onImageLoaded={onLoad}
@@ -94,17 +118,17 @@ const Crop = ({img, callback, reload, circle}) => {
       />
       <div hidden>
         <canvas
+          id="canvas"
           ref={previewCanvasRef}
           // Rounding is important so the canvas width and height matches/is a multiple for sharpness.
           style={{
             width: Math.round(completedCrop?.width ?? 0),
             height: Math.round(completedCrop?.height ?? 0),
-            borderRadius: "50%"
+            borderRadius: "50%",
           }}
         />
       </div>
-      
     </div>
   );
-}
+};
 export default Crop;

@@ -38,7 +38,7 @@ import {
 //Style
 //API
 import { alert } from "../../../util/alertApi";
-import { getProfile, editProfile, sendEmail } from "../../../util/Api";
+import { getProfile, editProfile, sendEmail, API_URL } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
@@ -106,7 +106,7 @@ const Profile = ({ user }) => {
       mouths[date.getMonth()] +
       " de " +
       date.getFullYear();
-    console.log(birth);
+    // console.log(birth);
     var gender = "";
     if (data.gender === "m") {
       gender = "Masculino";
@@ -117,6 +117,8 @@ const Profile = ({ user }) => {
     }
     data.gender = gender;
     data.birthdate = birth;
+    // data.avatar = API_URL + "media/" + data.avatar;
+    // console.log(data);
     return data;
   };
 
@@ -165,10 +167,14 @@ const Profile = ({ user }) => {
                   >
                     {state.user.username}
                     <img
-                      style={{ width: "35px", marginLeft: "7px" }}
-                      src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
-                      alt="avatar"
-                    ></img>
+                      style={{
+                        width: "55px",
+                        marginLeft: "27px",
+                        borderRadius: "50%",
+                      }}
+                      src={state.user.avatar}
+                      // alt="avatar"
+                    />
                   </div>
                 </div>
               </CCardHeader>

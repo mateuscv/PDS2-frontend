@@ -20,7 +20,7 @@ const Inscriptions = ({ user }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-  return <div>{user.token ? <ShowVideos /> : <LogoutPage />}</div>;
+  return <div>{user != null ? <ShowVideos /> : <LogoutPage />}</div>;
 };
 
 const mapStateToProps = (state) => ({ user: state.user });

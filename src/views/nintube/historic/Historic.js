@@ -50,7 +50,7 @@ const Historic = ({ user }) => {
   }, []);
   return (
     <div>
-      {user.token ? (
+      {user != null ? (
         <>
           <h4 align="center">Histórico de Exibição</h4>
           <div style={{ float: "right", width: "20%" }}>

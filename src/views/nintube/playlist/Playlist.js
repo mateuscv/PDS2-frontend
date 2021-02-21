@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
+import { CProgress } from "@coreui/react";
 //Componets
 //Style
 //API

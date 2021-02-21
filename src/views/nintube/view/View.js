@@ -125,7 +125,8 @@ const View = ({ user }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      var data = { video_id: id, token: user.token };
+      var token = user != null ? user.token : "";
+      var data = { video_id: id, token: token };
       // getVideo(data).then(function (data) {});
       var video = {
         id: 1,

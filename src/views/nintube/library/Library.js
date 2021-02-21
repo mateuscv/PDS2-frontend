@@ -26,7 +26,7 @@ const Library = ({ history, user }) => {
   }, []);
   return (
     <div>
-      {user.token ? (
+      {user != null ? (
         <>
           <h1>Biblioteca</h1>
           <CButton onClick={() => handleClick()}>Playlist</CButton>

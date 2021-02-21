@@ -21,8 +21,8 @@ import CIcon from "@coreui/icons-react";
 const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
 
-  const handleClick = (route) => {
-    history.push("/" + route);
+  const handleClick = (route, id = "") => {
+    history.push("/" + route + (id = "" ? "" : "/" + id));
   };
 
   const Logout = () => {
@@ -35,7 +35,9 @@ const TheHeaderDropdown = ({ user, reset }) => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={"avatars/6.jpg"}
+            src={
+              "http://localhost:3334/media/image/93e124d9-e046-479d-a739-59b8c7668616.png"
+            }
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
@@ -49,7 +51,7 @@ const TheHeaderDropdown = ({ user, reset }) => {
           <CIcon name="cil-user" className="mfe-2" />
           &nbsp;Perfil
         </CDropdownItem>
-        <CDropdownItem onClick={() => handleClick("channel")}>
+        <CDropdownItem onClick={() => handleClick("channel", 1)}>
           <CIcon name="cilTv" className="mfe-2" />
           Canal
         </CDropdownItem>

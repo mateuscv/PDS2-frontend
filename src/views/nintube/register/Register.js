@@ -27,7 +27,7 @@ import CIcon from "@coreui/icons-react";
 import Crop from "../crop/Crop";
 //Style
 //API
-import { registerUser, sendEmail } from "../../../util/Api";
+import { registerUser, sendEmail, API_URL } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
@@ -56,24 +56,21 @@ const Register = ({ history }) => {
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-
+    console.log(state.avatar);
     const data = new FormData();
     data.append("avatar", state.avatar);
 
     const values = {
       avatar: state.avatar,
+      old_img: API_URL + "media/defaul.png",
       username: state.username,
       email: state.email,
-      password: state.password,
+      password: md5(state.password),
       birthdate: state.birthdate,
       gender: state.gender,
       phone: state.phone,
     };
 
-    alert(
-      "Registro Completo",
-      "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
-    );
     if (
       !state.username ||
       !state.email ||
@@ -94,10 +91,8 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      data.append(
-        "old_img",
-        "https://nintube.s3-sa-east-1.amazonaws.com/images/default.png"
-      );
+      console.log(values);
+      data.append("old_img", API_URL + "media/nintube/defaul.png");
       data.append("username", state.username);
       data.append("email", state.email);
       data.append("password", md5(state.password));
@@ -112,6 +107,10 @@ const Register = ({ history }) => {
               error: "",
               message: "Registrado com Sucesso",
             });
+            alert(
+              "Registro Completo",
+              "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
+            );
             // sendEmail(state.email).then(function (data))
             history.push("/login");
           } else {

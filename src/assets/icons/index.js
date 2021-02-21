@@ -137,6 +137,7 @@ import {
   cilThumbDown,
   cilFlagAlt,
   cilClearAll,
+  cilCaretBottom,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -147,6 +148,7 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
+    cilCaretBottom,
     cilFlagAlt,
     cilThumbUp,
     cilClearAll,
