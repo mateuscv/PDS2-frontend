@@ -114,7 +114,7 @@ const videos = [
   },
 ];
 
-const HomeVideos = ({ token }) => {
+const HomeVideos = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -153,7 +153,7 @@ const HomeVideos = ({ token }) => {
                     <div className="c-avatar">
                       <CImg
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel",item.id)}
+                        onClick={() => handleClick("channel", item.id)}
                         src={item.avatar}
                         className="c-avatar-img"
                         alt="admin@bootstrapmaster.com"
@@ -173,7 +173,7 @@ const HomeVideos = ({ token }) => {
                       {" "}
                       <span
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel",item.id)}
+                        onClick={() => handleClick("channel", item.id)}
                       >
                         {item.channel}
                       </span>
@@ -193,6 +193,6 @@ const HomeVideos = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(HomeVideos);

@@ -18,7 +18,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
-const TheHeaderDropdown = ({ token, reset }) => {
+const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
 
   const handleClick = (route) => {
@@ -117,6 +117,6 @@ const TheHeaderDropdown = ({ token, reset }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(TheHeaderDropdown);

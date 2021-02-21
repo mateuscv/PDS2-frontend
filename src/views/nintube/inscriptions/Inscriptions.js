@@ -11,7 +11,7 @@ import LogoutPage from "../components/logoutPage";
 //Style
 //API
 
-const Inscriptions = ({ token }) => {
+const Inscriptions = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -20,9 +20,9 @@ const Inscriptions = ({ token }) => {
       setState({ ...state, fetched: true });
     }
   }, []);
-  return <div>{token ? <ShowVideos /> : <LogoutPage />}</div>;
+  return <div>{user.token ? <ShowVideos /> : <LogoutPage />}</div>;
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Inscriptions);

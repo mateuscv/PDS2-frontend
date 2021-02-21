@@ -23,7 +23,7 @@ import {
 //Style
 //API
 
-const About = ({ token }) => {
+const About = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -35,6 +35,6 @@ const About = ({ token }) => {
   return <div />;
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(About);

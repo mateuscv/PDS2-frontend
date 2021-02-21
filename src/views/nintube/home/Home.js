@@ -23,7 +23,7 @@ import HomeVideos from "../components/homeVideos";
 //Style
 //API
 
-const Home = ({ history, token, user }) => {
+const Home = ({ history, user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -35,7 +35,7 @@ const Home = ({ history, token, user }) => {
   const handleClick = () => {
     history.push("/view");
   };
-  console.log(token);
+  console.log(user);
 
   return (
     <div>
@@ -44,6 +44,6 @@ const Home = ({ history, token, user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

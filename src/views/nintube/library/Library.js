@@ -12,7 +12,7 @@ import LogoutPage from "../components/logoutPage";
 //Style
 //API
 
-const Library = ({ history, token }) => {
+const Library = ({ history, user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -26,7 +26,7 @@ const Library = ({ history, token }) => {
   }, []);
   return (
     <div>
-      {token ? (
+      {user.token ? (
         <>
           <h1>Biblioteca</h1>
           <CButton onClick={() => handleClick()}>Playlist</CButton>
@@ -46,6 +46,6 @@ const Library = ({ history, token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Library);

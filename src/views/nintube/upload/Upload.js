@@ -22,7 +22,7 @@ import "../styles/nintube.css";
 import { uploadVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 
-const Upload = ({ token }) => {
+const Upload = ({ user }) => {
   const [state, setState] = useState({
     upload: "",
     description: "",
@@ -77,7 +77,7 @@ const Upload = ({ token }) => {
         data.append("title", state.title);
         data.append("description", state.description);
         data.append("privacy", state.privacy);
-        uploadVideo(data, token)
+        uploadVideo(data, user.token)
           .then(function (data) {
             setState({
               ...state,
@@ -187,6 +187,6 @@ const Upload = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Upload);

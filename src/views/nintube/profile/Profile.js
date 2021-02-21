@@ -42,7 +42,7 @@ import { getProfile, editProfile, sendEmail } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
-const Profile = ({ token }) => {
+const Profile = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
     user: {
@@ -68,7 +68,7 @@ const Profile = ({ token }) => {
   const verified = () => {
     var data = {
       email: state.user.email,
-      token: token,
+      token: user.token,
       cond: 0,
     };
     sendEmail(data).then(function (data) {
@@ -122,9 +122,9 @@ const Profile = ({ token }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      // console.log(token);
-      var data = { token: token };
-      getProfile(data, token).then(function (data) {
+      // console.log(user);
+      var data = { token: user.token };
+      getProfile(data, user.token).then(function (data) {
         console.log(data);
         setState({ ...state, user: solvedData(data), fetched: true });
       });
@@ -315,6 +315,6 @@ const Profile = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
