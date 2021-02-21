@@ -43,7 +43,7 @@ import { getProfile, editProfile } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
-const Profile = ({ token }) => {
+const Profile = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
     user: {
@@ -103,7 +103,7 @@ const Profile = ({ token }) => {
       } else {
         password = md5(state.user.password_new);
       }
-      data.append("token", token);
+      data.append("token", user.token);
       data.append("old_img", state.user.avatar);
       data.append("username", state.user.username);
       data.append("email", state.user.email);
@@ -112,7 +112,7 @@ const Profile = ({ token }) => {
       data.append("gender", state.user.gender);
       data.append("phone", state.user.phone);
       const values = {
-        token,
+        token: user.token,
         avatar: state.user.avatar,
         old_img: state.user.avatar,
         username: state.user.username,
@@ -122,7 +122,7 @@ const Profile = ({ token }) => {
         gender: state.user.gender,
         phone: state.user.phone,
       };
-      editProfile(values, token)
+      editProfile(values, user.token)
         .then(function (data) {
           console.log(data);
           if (data.status === 1) {
@@ -163,9 +163,9 @@ const Profile = ({ token }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      // console.log(token);
-      var data = { token: token };
-      getProfile(data, token).then(function (data) {
+      // console.log(user);
+      var data = { token: user.token };
+      getProfile(data, user.token).then(function (data) {
         // console.log(data.birthdate.substring(0, 10));
         setState({ ...state, user: data, fetched: true });
       });
@@ -729,6 +729,6 @@ const Profile = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

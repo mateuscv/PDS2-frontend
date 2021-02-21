@@ -124,7 +124,7 @@ const videos = [
   },
 ];
 
-const StackVideo = ({ token }) => {
+const StackVideo = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -189,6 +189,6 @@ const StackVideo = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);

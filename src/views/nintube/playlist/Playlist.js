@@ -5,11 +5,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
+import { CProgress } from "@coreui/react";
 //Componets
 //Style
 //API
 
-const Playlist = ({ token }) => {
+const Playlist = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -25,6 +26,6 @@ const Playlist = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist);

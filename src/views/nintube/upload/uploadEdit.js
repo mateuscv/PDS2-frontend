@@ -26,7 +26,7 @@ import { getVideo, editVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
 
-const UploadEdit = ({ token }) => {
+const UploadEdit = ({ user }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     description: "",
@@ -75,7 +75,7 @@ const UploadEdit = ({ token }) => {
         data.append("title", state.title);
         data.append("description", state.description);
         data.append("privacy", state.privacy);
-        editVideo(data, token)
+        editVideo(data, user.token)
           .then(function (data) {
             setState({
               ...state,
@@ -112,7 +112,7 @@ const UploadEdit = ({ token }) => {
           data.append("title", state.title);
           data.append("description", state.description);
           data.append("privacy", state.privacy);
-          editVideo(data, token)
+          editVideo(data, user.token)
             .then(function (data) {
               setState({
                 ...state,
@@ -267,6 +267,6 @@ const UploadEdit = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(UploadEdit);

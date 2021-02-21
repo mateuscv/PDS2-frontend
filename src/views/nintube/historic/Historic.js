@@ -39,7 +39,7 @@ const modes = [
 ];
 const colors = ["dark"];
 
-const Historic = ({ token }) => {
+const Historic = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -50,7 +50,7 @@ const Historic = ({ token }) => {
   }, []);
   return (
     <div>
-      {token ? (
+      {user != null ? (
         <>
           <h4 align="center">Histórico de Exibição</h4>
           <div style={{ float: "right", width: "20%" }}>
@@ -107,6 +107,6 @@ const Historic = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Historic);

@@ -3,7 +3,7 @@ import axios from "axios";
 //export const API_URL = "http://848251d83377.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
-export const API_URL = "http://3576c2a11286.ngrok.io/";
+export const API_URL = "http://1d1690e119af.ngrok.io/";
 
 export const registerUser = (data) => {
   return axios.post(API_URL + "users/signup", data).then(

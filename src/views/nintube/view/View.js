@@ -18,7 +18,7 @@ import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
 import { Inscribe, Report, getVideo } from "../../../util/Api";
 
-const View = ({ token }) => {
+const View = ({ user }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
@@ -37,7 +37,7 @@ const View = ({ token }) => {
 
   const Change = (cond) => {
     var data = {
-      token: token,
+      token: user.token,
       target_id: "ef89ac6d-7fdb-40ab-8fb7-298d7406ef3e",
     };
     console.log(data);
@@ -55,7 +55,7 @@ const View = ({ token }) => {
   };
 
   const Liked = (liked) => {
-    var data = { token: token, channel_id: id, liked: liked };
+    var data = { token: user.token, channel_id: id, liked: liked };
     // liked(data).then(function (data) {
     // eslint-disable-next-line default-case
     switch (liked) {
@@ -109,7 +109,7 @@ const View = ({ token }) => {
   };
 
   const reportVideo = () => {
-    var data = { token: token, video_id: state.video.id, type: "video" };
+    var data = { token: user.token, video_id: state.video.id, type: "video" };
     Report(data)
       .then(function (data) {
         alert("Reporte", "Seu reporte foi enviado com sucesso!");
@@ -125,6 +125,7 @@ const View = ({ token }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
+      var token = user != null ? user.token : "";
       var data = { video_id: id, token: token };
       // getVideo(data).then(function (data) {});
       var video = {
@@ -275,6 +276,6 @@ const View = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(View);

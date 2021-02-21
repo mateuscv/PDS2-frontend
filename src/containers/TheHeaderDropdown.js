@@ -18,11 +18,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
-const TheHeaderDropdown = ({ token, reset }) => {
+const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
 
-  const handleClick = (route) => {
-    history.push("/" + route);
+  const handleClick = (route, id = "") => {
+    history.push("/" + route + (id = "" ? "" : "/" + id));
   };
 
   const Logout = () => {
@@ -51,7 +51,7 @@ const TheHeaderDropdown = ({ token, reset }) => {
           <CIcon name="cil-user" className="mfe-2" />
           &nbsp;Perfil
         </CDropdownItem>
-        <CDropdownItem onClick={() => handleClick("channel")}>
+        <CDropdownItem onClick={() => handleClick("channel", 1)}>
           <CIcon name="cilTv" className="mfe-2" />
           Canal
         </CDropdownItem>
@@ -119,6 +119,6 @@ const TheHeaderDropdown = ({ token, reset }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(TheHeaderDropdown);

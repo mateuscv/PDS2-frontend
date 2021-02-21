@@ -65,7 +65,7 @@ const Register = ({ history }) => {
       old_img: API_URL + "media/defaul.png",
       username: state.username,
       email: state.email,
-      password: state.password,
+      password: md5(state.password),
       birthdate: state.birthdate,
       gender: state.gender,
       phone: state.phone,
@@ -322,6 +322,6 @@ const Register = ({ history }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

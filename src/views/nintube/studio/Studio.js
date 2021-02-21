@@ -55,9 +55,9 @@ const fields = [
   },
 ];
 
-const Studio = ({ token, history }) => {
+const Studio = ({ user, history }) => {
   const Delet = (video_id) => {
-    var data = { token: token, video_id: video_id };
+    var data = { token: user.token, video_id: video_id };
     deletVideo(data)
       .then(function (data) {
         alert("Ação", "Video foi deletado com sucesso!");
@@ -133,6 +133,6 @@ const Studio = ({ token, history }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Studio);
