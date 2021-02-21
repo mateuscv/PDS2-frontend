@@ -37,6 +37,7 @@ const commentsList = [
     date: "há 30 min",
     src:
       "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+    reply_id: "",
   },
   {
     id: 2,
@@ -45,6 +46,7 @@ const commentsList = [
     date: "há 60 min",
     src:
       "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+    reply_id: 1,
   },
   {
     id: 3,
@@ -53,6 +55,7 @@ const commentsList = [
     date: "há 3 horas",
     src:
       "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+    reply_id: "",
   },
   {
     id: 4,
@@ -65,6 +68,7 @@ const commentsList = [
     date: "há 3 dias",
     src:
       "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+    reply_id: "",
   },
   {
     id: 5,
@@ -73,54 +77,7 @@ const commentsList = [
     date: "há 1 semanas",
     src:
       "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
-  },
-];
-
-const comment = [
-  {
-    id: 1,
-    idf: 2,
-    nickname: "yMustafa",
-    comment: "Isso eh uma merda",
-    date: "há 30 min",
-    src:
-      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
-  },
-  {
-    id: 2,
-    idf: 2,
-    nickname: "yAb",
-    comment: "Cara eh muito bom",
-    date: "há 60 min",
-    src:
-      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
-  },
-  {
-    id: 3,
-    idf: 4,
-    nickname: "Davi Teixeira",
-    comment: "Feliz 2020",
-    date: "há 3 horas",
-    src:
-      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
-  },
-  {
-    id: 4,
-    idf: 4,
-    nickname: "Yoshi",
-    comment: "o que",
-    date: "há 3 dias",
-    src:
-      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
-  },
-  {
-    id: 5,
-    idf: 4,
-    nickname: "Jhin",
-    comment: "Everyone- Thank god 2020 ended... I feel invincible.. ",
-    date: "há 1 semanas",
-    src:
-      "https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png",
+    reply_id: 4,
   },
 ];
 
@@ -131,8 +88,10 @@ const Comments = ({ token }) => {
     color_dislike: "white",
     newComment: "",
     showComment: false,
-    dispId: [],
     dispAns: [],
+    fiComment: [],
+    secComment: [],
+    showSec: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -163,13 +122,8 @@ const Comments = ({ token }) => {
   };
 
   const showAns = (ind, id) => {
-    console.log(state.arrId[ind]);
-    if (id === state.arrId[ind]) {
-      // console.log(state.dispAns[ind]);
-      // setState({
-      //   ...state, dispAns[ind]: true
-      // });
-    }
+    state.dispAns[ind].dis = true;
+    console.log(state.dispAns);
   };
 
   const reportVideo = () => {
@@ -178,15 +132,64 @@ const Comments = ({ token }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var arrId = new Array();
-      var arrAns = new Array();
-      const commentDisp = new FormData();
+      var listAux = Array();
+      var mtxAux = Array();
+      var showAux = Array();
       for (let i = 0; i < commentsList.length; i++) {
-        arrId.push(commentsList[i].id);
-        arrAns.push(false);
+        // console.log(commentsList);
+        if (commentsList[i].reply_id === "") {
+          listAux.push({
+            id: commentsList[i].id,
+            nickname: commentsList[i].nickname,
+            comment: commentsList[i].comment,
+            date: commentsList[i].date,
+            src: commentsList[i].src,
+            reply_id: commentsList[i].reply_id,
+          });
+          showAux.push({
+            id: commentsList[i].id,
+            dis: false,
+            info: "",
+          });
+        } else {
+          mtxAux.push({
+            id: commentsList[i].id,
+            nickname: commentsList[i].nickname,
+            comment: commentsList[i].comment,
+            date: commentsList[i].date,
+            src: commentsList[i].src,
+            reply_id: commentsList[i].reply_id,
+          });
+        }
       }
 
-      setState({ ...state, fetched: true, dispId: arrId, dispAns: arrAns });
+      for (let i = 0; i < showAux.length; i++) {
+        for (let idx = 0; idx < mtxAux.length; idx++) {
+          if (showAux[i].id === mtxAux[idx].reply_id) {
+            console.log(
+              "Aux id " + showAux[i].id + " rep " + mtxAux[idx].reply_id
+            );
+            var aux = new Array();
+            aux.push({
+              id: mtxAux[idx].id,
+              nickname: mtxAux[idx].nickname,
+              comment: mtxAux[idx].comment,
+              date: mtxAux[idx].date,
+              src: mtxAux[idx].src,
+              reply_id: mtxAux[idx].reply_id,
+            });
+            showAux[i].info = aux;
+          }
+        }
+      }
+      // console.log(mtxAux);
+      setState({
+        ...state,
+        fetched: true,
+        fiComment: listAux,
+        secComment: mtxAux,
+        dispAns: showAux,
+      });
     }
   }, []);
   return (
@@ -250,7 +253,7 @@ const Comments = ({ token }) => {
                 )}
               </div>
             </CBreadcrumb>
-            {commentsList.map((item, index) => (
+            {state.fiComment.map((item, index) => (
               <div
                 style={{
                   width: "95%",
@@ -291,13 +294,17 @@ const Comments = ({ token }) => {
                     </CButton>
                     <CButton style={{ color: "white" }}>Responder</CButton>
                   </div>
-                  <div
-                    class="showAnswers"
-                    onClick={() => showAns(index, item.id)}
-                  >
-                    Ver respostas
-                  </div>
-                  {state.dispAns[index] && <div>teste</div>}
+                  {state.dispAns[index].info !== "" && (
+                    <div
+                      class="showAnswers"
+                      onClick={() => showAns(index, item.id)}
+                    >
+                      <CIcon name="cilCaretBottom" /> Ver respostas
+                    </div>
+                    // <div>
+                    //   teste
+                    // </div>
+                  )}
                 </div>
               </div>
             ))}
