@@ -1,5 +1,6 @@
 //REACT
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 //REDUX
 import { connect, useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -44,13 +45,14 @@ import {
   TheHeaderDropdownTasks,
 } from "./index";
 
-const TheHeader = ({ token, history, setToken }) => {
+const TheHeader = ({ token, setToken }) => {
   const [state, setState] = useState({
     error: "",
     message: "",
     email: "",
     password: "",
   });
+  let history = useHistory();
   const login = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Logando..." });
@@ -109,7 +111,7 @@ const TheHeader = ({ token, history, setToken }) => {
 
   return (
     <CHeader class={dark + "-mode"} withSubheader>
-      <CToggler
+      {/* <CToggler
         inHeader
         className="ml-md-3 d-lg-none"
         onClick={toggleSidebarMobile}
@@ -118,7 +120,7 @@ const TheHeader = ({ token, history, setToken }) => {
         inHeader
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
-      />
+      /> */}
       {/* <CHeaderBrand className="mx-auto d-lg-none" to="/">
         <CImg
           style={{ width: "50%", height: "100%" }}
@@ -133,8 +135,10 @@ const TheHeader = ({ token, history, setToken }) => {
       {/*<CHeaderNavLink to="/login">Login</CHeaderNavLink>
          </CHeaderNavItem> 
       </CHeaderNav>*/}
-
-      <CHeaderNav style={{ width: "50%" }} className="d-md-down-none mr-auto">
+      <CHeaderNav
+        style={{ width: "50%", marginLeft: "auto" }}
+        className="d-md-down-none mr-auto"
+      >
         <CInputGroup style={{ border: "1px solid red", borderRadius: "5px" }}>
           <CInput placeholder="Pesquisar" />
           <CInputGroupAppend>
@@ -144,7 +148,7 @@ const TheHeader = ({ token, history, setToken }) => {
           </CInputGroupAppend>
         </CInputGroup>
       </CHeaderNav>
-      {!logged && (
+      {/* {!logged && (
         <div style={{ marginRight: "5%" }}>
           <CDropdown className="m-1">
             <CDropdownToggle color="info">Login</CDropdownToggle>
@@ -177,7 +181,7 @@ const TheHeader = ({ token, history, setToken }) => {
                     Remember me
                   </CLabel>
                 </CFormGroup> */}
-                <CFormGroup className="mt-2">
+      {/*<CFormGroup className="mt-2">
                   <CButton color="primary" onClick={(e) => login(e)}>
                     Login
                   </CButton>
@@ -190,8 +194,8 @@ const TheHeader = ({ token, history, setToken }) => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
-        </div>
-        // <CButton
+        </div> */}
+      {/* // <CButton
         //   className="px-3"
         //   style={{
         //     marginRight: "2%",
@@ -202,13 +206,31 @@ const TheHeader = ({ token, history, setToken }) => {
         // >
         //   Login
         // </CButton>
-      )}
-      {logged && (
-        <CHeaderNav className="px-3">
-          <TheHeaderDropdownNotif />
-          {/* <TheHeaderDropdownTasks /> */}
-          {/* <TheHeaderDropdownMssg /> */}
-          <TheHeaderDropdown />
+      // )} */}
+      {logged ? (
+        <>
+          <CHeaderNav className="px-3">
+            <TheHeaderDropdownNotif />
+            {/* <TheHeaderDropdownTasks /> */}
+            {/* <TheHeaderDropdownMssg /> */}
+            <TheHeaderDropdown />
+          </CHeaderNav>
+        </>
+      ) : (
+        <CHeaderNav style={{ width: "10%" }}>
+          <CButton
+            style={{
+              color: "white",
+              border: "1px solid white",
+              borderRadius: "12px",
+              width: "60%",
+              height: "60%",
+              font: "18px Roboto, Arial, sans-serif",
+            }}
+            onClick={() => history.push("/login")}
+          >
+            Login
+          </CButton>
         </CHeaderNav>
       )}
       {/* <CSubheader className="px-3 justify-content-between">
