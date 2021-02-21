@@ -35,6 +35,7 @@ import {
   CImg,
 } from "@coreui/react";
 //Componets
+import Crop from "../crop/Crop";
 //Style
 //API
 import { alert } from "../../../util/alertApi";
@@ -61,12 +62,21 @@ const Profile = ({ token }) => {
     message: "",
   });
   let history = useHistory();
+  const [image, setImage] = useState(null);
+
+  const changeAvatar = (img) => {
+    let user = { ...state.user };
+    user.avatar = img;
+    setState({ ...state, user });
+  };
+
   const profile = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Alterando..." });
 
     const data = new FormData();
-    data.append("avatar", state.avatar);
+    // data.append("avatar", state.avatar);
+    console.log(state.user.avatar);
     var password = "";
 
     if (
@@ -101,10 +111,20 @@ const Profile = ({ token }) => {
       data.append("birthdate", state.user.birthdate);
       data.append("gender", state.user.gender);
       data.append("phone", state.user.phone);
-      editProfile(data, token)
+      const values = {
+        token,
+        avatar: state.user.avatar,
+        old_img: state.user.avatar,
+        username: state.user.username,
+        email: state.user.email,
+        password: password,
+        birthdate: state.user.birthdate,
+        gender: state.user.gender,
+        phone: state.user.phone,
+      };
+      editProfile(values, token)
         .then(function (data) {
           console.log(data);
-          var t = "t";
           if (data.status === 1) {
             setState({
               ...state,
@@ -201,28 +221,39 @@ const Profile = ({ token }) => {
                       verticalAlign: "center",
                     }}
                   >
-                    <label>
-                      Selecione seu Avatar
-                      <img
-                        style={{ width: "50px", marginLeft: "10px" }}
-                        src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
-                        // src={state.user.avatar}
-                        alt="avatar"
-                      ></img>
-                      <CInput
-                        type="file"
-                        onChange={(e) => {
-                          let user = { ...state.user };
-                          user.avatar = e.target.files[0];
-                          setState({ ...state, user });
-                        }}
-                      />
-                    </label>
-                    {/* <img
-                      style={{ width: "35px", marginLeft: "7px" }}
-                      src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
-                      alt="avatar"
-                    ></img> */}
+                    <CCol md="12">
+                      <label>
+                        <CInput
+                          type="file"
+                          onChange={(e) => {
+                            setImage(e.target.files[0]);
+                          }}
+                        />
+                        <span>Selecione seu Avatar</span>
+                        <img
+                          src={state.user.avatar}
+                          style={{
+                            width: "55px",
+                            marginLeft: "27px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </label>
+
+                      {image && (
+                        <center>
+                          <div>
+                            <br />
+                            <Crop
+                              img={image}
+                              callback={changeAvatar}
+                              reload={true}
+                              circle={true}
+                            />
+                          </div>
+                        </center>
+                      )}
+                    </CCol>
                   </div>
                 </div>
               </CCardHeader>

@@ -30,7 +30,7 @@ import {
 } from "@coreui/react";
 //Api
 import { alert } from "../../../util/alertApi";
-import { sendEmail } from "../../../util/Api";
+import { sendEmail, API_URL } from "../../../util/Api";
 //Style
 import "./emailConfirm.css";
 
@@ -66,7 +66,7 @@ const Email = ({ history }) => {
                 <CImg
                   style={{ width: "100%" }}
                   className="c-sidebar-brand-full"
-                  src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+                  src={API_URL + "media/nintube/banner_2.png"}
                 />
               </CCard>
               <CCardBody>

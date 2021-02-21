@@ -35,7 +35,7 @@ const Login = ({ history, setToken }) => {
     email: "",
     password: "",
   });
-  
+
   const login = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Logando..." });
@@ -61,7 +61,7 @@ const Login = ({ history, setToken }) => {
           // console.log(data.token);
           console.log(data);
           setToken(data.token);
-          // history.push("/home");
+          history.push("/home");
         })
         .catch((err) => {
           setState({ ...state, error: "Dados inválidos", message: "" });

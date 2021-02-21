@@ -30,7 +30,7 @@ import {
 } from "@coreui/react";
 //Api
 import { alert } from "../../../util/alertApi";
-import { editPass } from "../../../util/Api";
+import { editPass, API_URL } from "../../../util/Api";
 import md5 from "md5";
 //Style
 import "./forgotPass.css";
@@ -133,7 +133,7 @@ const Forgot = ({ history }) => {
                 <CImg
                   style={{ width: "100%" }}
                   className="c-sidebar-brand-full"
-                  src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+                  src={API_URL + "media/nintube/banner_2.png"}
                 />
               </CCard>
               <CCardBody>

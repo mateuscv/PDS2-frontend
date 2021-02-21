@@ -24,18 +24,19 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-import Crop from "../crop/Crop"
+import Crop from "../crop/Crop";
 //Style
 //API
-import { registerUser, sendEmail } from "../../../util/Api";
+import { registerUser, sendEmail, API_URL } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
-
-const imageMaxSize = 1024*1024*50 // bytes
-const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg'
-const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
+const imageMaxSize = 1024 * 1024 * 50; // bytes
+const acceptedFileTypes = "image/x-png, image/png, image/jpg, image/jpeg";
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
+  return item.trim();
+});
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
@@ -49,20 +50,18 @@ const Register = ({ history }) => {
     birthdate: "",
     gender: "",
     phone: "",
-    
-    
   });
-  const [image, setImage] = useState(null)
- 
-    
+  const [image, setImage] = useState(null);
 
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-
+    console.log(state.avatar);
     const data = new FormData();
     data.append("avatar", state.avatar);
     const values = {
+      avatar: state.avatar,
+      old_img: API_URL + "media/defaul.png",
       username: state.username,
       email: state.email,
       password: md5(state.password),
@@ -70,10 +69,7 @@ const Register = ({ history }) => {
       gender: state.gender,
       phone: state.phone,
     };
-    alert(
-      "Registro Completo",
-      "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
-    );
+
     if (
       !state.username ||
       !state.email ||
@@ -95,10 +91,7 @@ const Register = ({ history }) => {
       });
     } else {
       console.log(values);
-      data.append(
-        "old_img",
-        "https://nintube.s3-sa-east-1.amazonaws.com/images/default.png"
-      );
+      data.append("old_img", API_URL + "media/nintube/defaul.png");
       data.append("username", state.username);
       data.append("email", state.email);
       data.append("password", md5(state.password));
@@ -106,7 +99,7 @@ const Register = ({ history }) => {
       data.append("gender", state.gender);
       data.append("phone", state.phone);
 
-      registerUser(data)
+      registerUser(values)
         .then(function (data) {
           if (data.status === 1) {
             setState({
@@ -114,6 +107,10 @@ const Register = ({ history }) => {
               error: "",
               message: "Registrado com Sucesso",
             });
+            alert(
+              "Registro Completo",
+              "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
+            );
             // sendEmail(state.email).then(function (data))
             history.push("/login");
           } else {
@@ -129,10 +126,10 @@ const Register = ({ history }) => {
         });
     }
   };
-  
+
   const changeAvatar = (img) => {
-    setState({...state, avatar:img})
-  }
+    setState({ ...state, avatar: img });
+  };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -162,23 +159,29 @@ const Register = ({ history }) => {
                   <CFormGroup row>
                     <CCol md="12">
                       <label>
-                        
-                      <CInput
-                        type="file"
-                        onChange={(e) => {
-                          setImage(e.target.files[0]);
-                        }}
-                      />
-                      <span style={{color:"black"}}>awdwadwadwaddawwadwadawdawdawdwadwad</span>
+                        <CInput
+                          type="file"
+                          onChange={(e) => {
+                            setImage(e.target.files[0]);
+                          }}
+                        />
+                        <span style={{ color: "black" }}>
+                          awdwadwadwaddawwadwadawdawdawdwadwad
+                        </span>
                       </label>
-                        {image && (
-                          <center>
+                      {image && (
+                        <center>
                           <div>
-                            <br/>
-                            <Crop img={image} callback={changeAvatar} reload={true} circle={true}/>
-                          </div></center>
-                        )}
-                      
+                            <br />
+                            <Crop
+                              img={image}
+                              callback={changeAvatar}
+                              reload={true}
+                              circle={true}
+                            />
+                          </div>
+                        </center>
+                      )}
                     </CCol>
                   </CFormGroup>
 
@@ -285,7 +288,12 @@ const Register = ({ history }) => {
                     </CCol>
                   </CFormGroup>
                   <Link to="/login">
-                    <p color="primary" className="mt-3" active="true" tabIndex={-1}>
+                    <p
+                      color="primary"
+                      className="mt-3"
+                      active="true"
+                      tabIndex={-1}
+                    >
                       Login
                     </p>
                   </Link>
