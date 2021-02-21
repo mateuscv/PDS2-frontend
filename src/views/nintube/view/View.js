@@ -151,7 +151,7 @@ const View = ({ token }) => {
         <Player />
         <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
           <div style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-            <a style={{ color: "lghtblue" }}>#TheWeekend</a>
+            <a style={{ color: "lightblue" }}>#TheWeekend</a>
           </div>
           <h5 style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
             The Weeknd - Blinding Lights (Official Audio)

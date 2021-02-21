@@ -24,7 +24,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-import Crop from "../crop/Crop"
+import Crop from "../crop/Crop";
 //Style
 //API
 import { registerUser, sendEmail } from "../../../util/Api";
@@ -32,10 +32,11 @@ import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
 
-
-const imageMaxSize = 1024*1024*50 // bytes
-const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg'
-const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
+const imageMaxSize = 1024 * 1024 * 50; // bytes
+const acceptedFileTypes = "image/x-png, image/png, image/jpg, image/jpeg";
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
+  return item.trim();
+});
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
@@ -49,12 +50,8 @@ const Register = ({ history }) => {
     birthdate: "",
     gender: "",
     phone: "",
-    
-    
   });
-  const [image, setImage] = useState(null)
- 
-    
+  const [image, setImage] = useState(null);
 
   const register = (e) => {
     e.preventDefault();
@@ -62,14 +59,17 @@ const Register = ({ history }) => {
 
     const data = new FormData();
     data.append("avatar", state.avatar);
+
     const values = {
+      avatar: state.avatar,
       username: state.username,
       email: state.email,
-      password: md5(state.password),
+      password: state.password,
       birthdate: state.birthdate,
       gender: state.gender,
       phone: state.phone,
     };
+
     alert(
       "Registro Completo",
       "O registro foi efetuado com sucesso. Nos enviamos um email para você para confirmação, por favor confirme seu email!"
@@ -94,7 +94,6 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      console.log(values);
       data.append(
         "old_img",
         "https://nintube.s3-sa-east-1.amazonaws.com/images/default.png"
@@ -105,8 +104,7 @@ const Register = ({ history }) => {
       data.append("birthdate", state.birthdate);
       data.append("gender", state.gender);
       data.append("phone", state.phone);
-
-      registerUser(data)
+      registerUser(values)
         .then(function (data) {
           if (data.status === 1) {
             setState({
@@ -125,14 +123,15 @@ const Register = ({ history }) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }
   };
-  
+
   const changeAvatar = (img) => {
-    setState({...state, avatar:img})
-  }
+    setState({ ...state, avatar: img });
+  };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -158,27 +157,43 @@ const Register = ({ history }) => {
                       {state.error}
                     </CCard>
                   )}
-                  <p className="text-muted">Crie sua conta</p>
+                  {/* <p className="text-muted">Crie sua conta</p> */}
                   <CFormGroup row>
-                    <CCol md="12">
-                      <label>
-                        
-                      <CInput
-                        type="file"
-                        onChange={(e) => {
-                          setImage(e.target.files[0]);
+                    <CCol md="12" style={{ display: "flex" }}>
+                      <div
+                        style={{
+                          margin: "auto",
+                          border: "1px lightgrey solid",
+                          width: "50%",
+                          borderRadius: "5px",
+                          display: "flex",
                         }}
-                      />
-                      <span style={{color:"black"}}>awdwadwadwaddawwadwadawdawdawdwadwad</span>
-                      </label>
-                        {image && (
-                          <center>
+                      >
+                        <label style={{ margin: "auto" }}>
+                          <CInput
+                            type="file"
+                            onChange={(e) => {
+                              setImage(e.target.files[0]);
+                            }}
+                          />
+                          <span style={{ color: "#768299" }}>
+                            Click aqui para inserir sua imagem
+                          </span>
+                        </label>
+                      </div>
+                      {image && (
+                        <center>
                           <div>
-                            <br/>
-                            <Crop img={image} callback={changeAvatar} reload={true} circle={true}/>
-                          </div></center>
-                        )}
-                      
+                            <br />
+                            <Crop
+                              img={image}
+                              callback={changeAvatar}
+                              reload={true}
+                              circle={true}
+                            />
+                          </div>
+                        </center>
+                      )}
                     </CCol>
                   </CFormGroup>
 
@@ -284,11 +299,17 @@ const Register = ({ history }) => {
                       </CSelect>
                     </CCol>
                   </CFormGroup>
-                  <Link to="/login">
-                    <p color="primary" className="mt-3" active="true" tabIndex={-1}>
+                  <div style={{ display: "flex" }}>
+                    <CButton
+                      style={{ marginBottom: "1%", marginLeft: "auto" }}
+                      color="primary"
+                      className="mt-3"
+                      active
+                      onClick={() => history.push("/login")}
+                    >
                       Login
-                    </p>
-                  </Link>
+                    </CButton>
+                  </div>
                   <CButton onClick={(e) => register(e)} color="success" block>
                     Criar Conta
                   </CButton>
