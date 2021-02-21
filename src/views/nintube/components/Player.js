@@ -8,6 +8,7 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
 import {
+  CProgress,
   CButton,
   CDropdown,
   CCard,
@@ -92,8 +93,10 @@ const Player = () => {
   }, []);
 
   return (
+    //
     <div className="divVideo">
       <div
+        className="player-wrapper"
         style={{
           cursor: "pointer",
           //border: "3px solid red",
@@ -101,11 +104,14 @@ const Player = () => {
         onClick={() => handlePlayPause()}
       >
         <ReactPlayer
+          className="react-player"
           ref={ref}
           style={{}}
           url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
-          width="1000px"
-          height="563px"
+          // width="1000px"
+          // height="563px"
+          width="100%"
+          height="100%"
           // width="860px"
           // height="420px"
           // width={window_width - 1000}
@@ -121,6 +127,8 @@ const Player = () => {
       </div>
 
       <div
+        width="100%"
+        height="100%"
         style={{
           border: "1px solid black",
           display: "flex",
@@ -209,11 +217,11 @@ const Player = () => {
             value={played}
             style={{ border: "1px solid red" }}
           />
-          <progress
+          {/* <progress
             max={1}
             value={loaded}
             style={{ border: "1px solid green" }}
-          />
+          /> */}
         </div>
         <div
           style={{

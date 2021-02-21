@@ -59,12 +59,13 @@ const Register = ({ history }) => {
     console.log(state.avatar);
     const data = new FormData();
     data.append("avatar", state.avatar);
+
     const values = {
       avatar: state.avatar,
       old_img: API_URL + "media/defaul.png",
       username: state.username,
       email: state.email,
-      password: md5(state.password),
+      password: state.password,
       birthdate: state.birthdate,
       gender: state.gender,
       phone: state.phone,
@@ -98,7 +99,6 @@ const Register = ({ history }) => {
       data.append("birthdate", state.birthdate);
       data.append("gender", state.gender);
       data.append("phone", state.phone);
-
       registerUser(values)
         .then(function (data) {
           if (data.status === 1) {
@@ -122,6 +122,7 @@ const Register = ({ history }) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }
@@ -155,20 +156,30 @@ const Register = ({ history }) => {
                       {state.error}
                     </CCard>
                   )}
-                  <p className="text-muted">Crie sua conta</p>
+                  {/* <p className="text-muted">Crie sua conta</p> */}
                   <CFormGroup row>
-                    <CCol md="12">
-                      <label>
-                        <CInput
-                          type="file"
-                          onChange={(e) => {
-                            setImage(e.target.files[0]);
-                          }}
-                        />
-                        <span style={{ color: "black" }}>
-                          awdwadwadwaddawwadwadawdawdawdwadwad
-                        </span>
-                      </label>
+                    <CCol md="12" style={{ display: "flex" }}>
+                      <div
+                        style={{
+                          margin: "auto",
+                          border: "1px lightgrey solid",
+                          width: "50%",
+                          borderRadius: "5px",
+                          display: "flex",
+                        }}
+                      >
+                        <label style={{ margin: "auto" }}>
+                          <CInput
+                            type="file"
+                            onChange={(e) => {
+                              setImage(e.target.files[0]);
+                            }}
+                          />
+                          <span style={{ color: "#768299" }}>
+                            Click aqui para inserir sua imagem
+                          </span>
+                        </label>
+                      </div>
                       {image && (
                         <center>
                           <div>
@@ -287,16 +298,17 @@ const Register = ({ history }) => {
                       </CSelect>
                     </CCol>
                   </CFormGroup>
-                  <Link to="/login">
-                    <p
+                  <div style={{ display: "flex" }}>
+                    <CButton
+                      style={{ marginBottom: "1%", marginLeft: "auto" }}
                       color="primary"
                       className="mt-3"
-                      active="true"
-                      tabIndex={-1}
+                      active
+                      onClick={() => history.push("/login")}
                     >
                       Login
-                    </p>
-                  </Link>
+                    </CButton>
+                  </div>
                   <CButton onClick={(e) => register(e)} color="success" block>
                     Criar Conta
                   </CButton>

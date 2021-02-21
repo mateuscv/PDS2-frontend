@@ -44,7 +44,7 @@ const TheHeaderDropdown = ({ token, reset }) => {
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem header tag="div" color="light" className="text-center">
+        <CDropdownItem header tag="div" className="text-center">
           <strong>Settings</strong>
         </CDropdownItem>
         <CDropdownItem onClick={() => handleClick("profile")}>

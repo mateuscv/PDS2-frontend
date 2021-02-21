@@ -75,7 +75,7 @@ const Login = ({ history, setToken }) => {
 
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
-      <CContainer>
+      <CContainer style={{ width: "50%" }}>
         <CRow className="justify-content-center">
           <CCol md="8">
             <CCardGroup>
