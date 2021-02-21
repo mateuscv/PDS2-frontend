@@ -251,3 +251,17 @@ progress::-moz-progress-bar {
   border-radius: 12px;
   background: red;
 }
+
+.dropdown-header {
+  background-color: rgb(14, 14, 14);
+}
+
+.dropdown-menu {
+  background-color: #212121;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #5b5d5f;
+  color: white;
+}
