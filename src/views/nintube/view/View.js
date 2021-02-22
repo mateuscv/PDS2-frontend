@@ -16,7 +16,8 @@ import Recommended from "../components/Recommended";
 //API
 import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
-import { Inscribe, Report, getVideo } from "../../../util/Api";
+import { Inscribe, Report, getVideo, API_URL } from "../../../util/Api";
+//Style
 
 const View = ({ user }) => {
   let { id } = useParams();

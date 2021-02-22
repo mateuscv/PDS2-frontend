@@ -225,6 +225,24 @@ input[type="file"] {
   color: red;
 }
 
+.showReportSec {
+  display: none;
+}
+
+.showDivSec:hover .showReportSec {
+  display: block;
+  // color: white;
+}
+
+.showReportSec:hover {
+  color: red;
+}
+.showAnswers {
+  background: transparent;
+  border: none;
+  color: white;
+}
+
 .showAnswers:hover {
   color: red;
 }
