@@ -134,7 +134,7 @@ export const Report = (data) => {
 };
 
 export const sendComment = (data) => {
-  return axios.put(API_URL + "video/send_comment", data).then(
+  return axios.post(API_URL + "videos/sendComment", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -143,7 +143,7 @@ export const sendComment = (data) => {
 };
 
 export const editComment = (data) => {
-  return axios.put(API_URL + "video/edit_comment", data).then(
+  return axios.put(API_URL + "videos/edit_comment", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -152,7 +152,7 @@ export const editComment = (data) => {
 };
 
 export const deletComment = (data) => {
-  return axios.put(API_URL + "video/delet_comment", data).then(
+  return axios.put(API_URL + "videos/delet_comment", data).then(
     function (res) {
       let data = res.data;
       return data;

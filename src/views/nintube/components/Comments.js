@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,7 +28,7 @@ import CIcon from "@coreui/icons-react";
 //API
 // import { Report } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
-import { API_URL } from "../../../util/Api";
+import { API_URL, sendComment } from "../../../util/Api";
 //Style
 
 const commentsList = [
@@ -91,12 +91,15 @@ const Comments = ({ user }) => {
     fetched: false,
     color_like: "white",
     color_dislike: "white",
+    avatar: "",
     newComment: "",
+    AnswersOne: "",
+    AnswersTwo: "",
     showComment: false,
     showAns: false,
     idAns: "",
-    showAns2: false,
-    idAns2: "",
+    showAnsTwo: false,
+    idAnsTwo: "",
     dispAns: [],
     fiComment: [],
     secComment: [],
@@ -104,13 +107,14 @@ const Comments = ({ user }) => {
   });
 
   let history = useHistory();
+  let video_id = useParams();
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
   };
 
   const comment = () => {
-    if (token) {
+    if (user.token) {
       if (!state.showComment) {
         setState({
           ...state,
@@ -123,8 +127,51 @@ const Comments = ({ user }) => {
     }
   };
 
-  const sendComment = () => {
-    console.log(state.newComment);
+  const sendCom = (text, nvl, reply_id, aux) => {
+    console.log("send");
+    if (nvl === 0) {
+      console.log("nvl 0");
+      var data = {
+        token: user.token,
+        text,
+        video_id: video_id.id,
+        reply_id: "",
+      };
+      console.log(data);
+      sendComment(data).then(function (data) {
+        if (data.status === 1) {
+          exitComment();
+        }
+      });
+    } else if (nvl === 1) {
+      console.log("nvl 1");
+      var data = {
+        token: user.token,
+        text,
+        video_id: video_id.id,
+        reply_id,
+      };
+      console.log(data);
+      sendComment(data).then(function (data) {
+        if (data.status === 1) {
+          exitAns(1);
+        }
+      });
+    } else {
+      console.log("nvl 2 ");
+      var data = {
+        token: user.token,
+        text: "@" + aux + " " + text,
+        video_id: video_id.id,
+        reply_id,
+      };
+      console.log(data);
+      sendComment(data).then(function (data) {
+        if (data.status === 1) {
+          exitAns(2);
+        }
+      });
+    }
   };
 
   const exitComment = () => {
@@ -139,7 +186,7 @@ const Comments = ({ user }) => {
     if (nvl === 1) {
       setState({
         ...state,
-        newComment: "",
+        AnswersOne: "",
         showAns: false,
         idAns: "",
       });
@@ -147,8 +194,8 @@ const Comments = ({ user }) => {
       setState({
         ...state,
         newComment: "",
-        showAns2: false,
-        idAns2: "",
+        showAnsTwo: false,
+        idAnsTwo: "",
       });
     }
   };
@@ -161,11 +208,11 @@ const Comments = ({ user }) => {
   };
 
   const answers = (nvl, id) => {
-    if (token) {
+    if (user.token) {
       if (nvl === 1) {
         setState({
           ...state,
-          newComment: "",
+          AnswersOne: "",
           showAns: true,
           idAns: id,
         });
@@ -173,8 +220,8 @@ const Comments = ({ user }) => {
         setState({
           ...state,
           newComment: "",
-          showAns2: true,
-          idAns2: id,
+          showAnsTwo: true,
+          idAnsTwo: id,
         });
       }
     } else {
@@ -188,11 +235,16 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
+      var img = "";
+      if (user.token) {
+        img = user.avatar;
+      } else {
+        img = API_URL + "media/nintube/default.png";
+      }
       var listAux = Array();
       var mtxAux = Array();
       var showAux = Array();
       for (let i = 0; i < commentsList.length; i++) {
-        // console.log(commentsList);
         if (commentsList[i].reply_id === "") {
           listAux.push({
             id: commentsList[i].id,
@@ -223,9 +275,6 @@ const Comments = ({ user }) => {
         var vexAux = new Array();
         for (let idx = 0; idx < mtxAux.length; idx++) {
           if (showAux[i].id === mtxAux[idx].reply_id) {
-            // console.log(
-            //   "Aux id " + showAux[i].id + " rep " + mtxAux[idx].reply_id
-            // );
             var aux = new Array();
             aux.push({
               id: mtxAux[idx].id,
@@ -235,21 +284,19 @@ const Comments = ({ user }) => {
               src: mtxAux[idx].src,
               reply_id: mtxAux[idx].reply_id,
             });
-            // console.log(aux);
             vexAux.push(aux);
           }
         }
-        // console.log(vexAux);
         showAux[i].info = vexAux;
       }
 
-      // console.log(showAux[0].info);
       setState({
         ...state,
         fetched: true,
         fiComment: listAux,
         secComment: mtxAux,
         dispAns: showAux,
+        avatar: img,
       });
     }
   }, []);
@@ -263,9 +310,12 @@ const Comments = ({ user }) => {
             >
               <div style={{ width: "7%", height: "100%" }}>
                 <img
-                  src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
+                  src={state.avatar}
                   width="44"
                   height="44"
+                  style={{
+                    borderRadius: "40%",
+                  }}
                 />
               </div>
               <div style={{ width: "90%" }}>
@@ -305,7 +355,7 @@ const Comments = ({ user }) => {
                     </a>
                     <a
                       class="myBut "
-                      onClick={() => sendComment()}
+                      onClick={() => sendCom(state.newComment, 0, "", "")}
                       style={{ marginLeft: "1%" }}
                     >
                       Enviar
@@ -369,7 +419,10 @@ const Comments = ({ user }) => {
                       >
                         <div style={{ width: "7%", height: "100%" }}>
                           <img
-                            src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
+                            src={state.avatar}
+                            style={{
+                              borderRadius: "40%",
+                            }}
                             width="44"
                             height="44"
                           />
@@ -379,12 +432,12 @@ const Comments = ({ user }) => {
                             <div style={{ width: "100%" }}>
                               <input
                                 dir="auto"
-                                value={state.newComment}
+                                value={state.AnswersOne}
                                 placeholder="Adicionar um comentário público.."
                                 onChange={(e) => {
                                   setState({
                                     ...state,
-                                    newComment: e.target.value,
+                                    AnswersOne: e.target.value,
                                   });
                                 }}
                                 style={{
@@ -410,7 +463,9 @@ const Comments = ({ user }) => {
                             </a>
                             <a
                               class="myBut "
-                              onClick={() => sendComment()}
+                              onClick={() =>
+                                sendCom(state.AnswersOne, 1, state.idAns, "")
+                              }
                               style={{ marginLeft: "1%", color: "black" }}
                             >
                               Enviar
@@ -481,8 +536,8 @@ const Comments = ({ user }) => {
                                   >
                                     Responder
                                   </CButton>
-                                  {state.showAns2 &&
-                                    state.idAns2 === itm[0].id && (
+                                  {state.showAnsTwo &&
+                                    state.idAnsTwo === itm[0].id && (
                                       <div
                                         style={{
                                           width: "95%",
@@ -497,9 +552,12 @@ const Comments = ({ user }) => {
                                           }}
                                         >
                                           <img
-                                            src="https://cdn.discordapp.com/attachments/300483456440336385/790994294517137418/nintube_banner_icon_light.png"
+                                            src={state.avatar}
                                             width="44"
                                             height="44"
+                                            style={{
+                                              borderRadius: "40%",
+                                            }}
                                           />
                                         </div>
                                         <div style={{ width: "90%" }}>
@@ -512,12 +570,12 @@ const Comments = ({ user }) => {
                                             <div style={{ width: "100%" }}>
                                               <input
                                                 dir="auto"
-                                                value={state.newComment}
+                                                value={state.AnswersTwo}
                                                 placeholder="Adicionar um comentário público.."
                                                 onChange={(e) => {
                                                   setState({
                                                     ...state,
-                                                    newComment: e.target.value,
+                                                    AnswersTwo: e.target.value,
                                                   });
                                                 }}
                                                 style={{
@@ -551,7 +609,14 @@ const Comments = ({ user }) => {
                                             </a>
                                             <a
                                               class="myBut "
-                                              onClick={() => sendComment()}
+                                              onClick={() =>
+                                                sendCom(
+                                                  state.AnswersTwo,
+                                                  2,
+                                                  state.idAnsTwo,
+                                                  itm[0].nickname
+                                                )
+                                              }
                                               style={{
                                                 marginLeft: "1%",
                                                 color: "black",
