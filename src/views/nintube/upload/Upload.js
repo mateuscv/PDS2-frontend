@@ -53,11 +53,11 @@ const Upload = ({ user }) => {
       error: "",
       message: "Fazendo upload do video...",
     });
-    console.log(state.thumb);
-    console.log(state.video);
-    console.log(state.description);
-    console.log(state.title);
-    const data = new FormData();
+    // console.log(state.thumb);
+    // console.log(state.video);
+    // console.log(state.description);
+    // console.log(state.title);
+    // const data = new FormData();
     if (!state.video || !state.description || !state.title || !state.thumb) {
       setState({
         ...state,
@@ -73,10 +73,19 @@ const Upload = ({ user }) => {
           message: "",
         });
       } else {
-        data.append("file", state.video);
-        data.append("title", state.title);
-        data.append("description", state.description);
-        data.append("privacy", state.privacy);
+        // data.append("file", state.video);
+        // data.append("title", state.title);
+        // data.append("description", state.description);
+        // data.append("privacy", state.privacy);
+        var data = {
+          file: state.video,
+          title: state.title,
+          description: state.description,
+          privacy: state.privacy,
+          thumb: state.thumb,
+        };
+        console.log(data);
+
         uploadVideo(data, user.token)
           .then(function (data) {
             setState({

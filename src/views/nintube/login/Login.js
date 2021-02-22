@@ -63,7 +63,7 @@ const Login = ({ history, setUser }) => {
           console.log(data);
           var user = {
             token: data.token,
-            avatar: "",
+            avatar: data.avatar,
           };
           setUser(user);
           history.push("/home");
