@@ -19,6 +19,7 @@ import {
 import CIcon from "@coreui/icons-react";
 // sidebar nav config
 import navigation from "./_nav";
+import { API_URL } from "../../src/util/Api";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
@@ -38,12 +39,12 @@ const TheSidebar = () => {
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-full"
-          src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+          src={API_URL + "media/nintube/banner_2.png"}
         />
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-minimized"
-          src="https://cdn.discordapp.com/attachments/300483456440336385/790994285977534514/nintube_banner_icon_dark.png"
+          src={API_URL + "media/nintube/nintube_icon1.png"}
         />
         {/* <CImg
           style={{ width: "100%" }}

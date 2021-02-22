@@ -55,6 +55,7 @@ const Login = ({ history, setToken }) => {
         message: "",
       });
     } else {
+      console.log(data);
       loginUser(data)
         .then(function (data) {
           //console.log(user);
