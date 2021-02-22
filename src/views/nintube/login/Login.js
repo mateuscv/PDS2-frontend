@@ -28,7 +28,7 @@ import { alert } from "../../../util/alertApi";
 import { loginUser } from "../../../util/Api";
 import md5 from "md5";
 
-const Login = ({ history, setToken }) => {
+const Login = ({ history, setUser }) => {
   const [state, setState] = useState({
     error: "",
     message: "",
@@ -61,7 +61,11 @@ const Login = ({ history, setToken }) => {
           //console.log(user);
           // console.log(data.token);
           console.log(data);
-          setToken(data.token);
+          var user = {
+            token: data.token,
+            avatar: "",
+          };
+          setUser(user);
           history.push("/home");
         })
         .catch((err) => {
@@ -185,6 +189,6 @@ const Login = ({ history, setToken }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

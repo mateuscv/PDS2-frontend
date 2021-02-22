@@ -8,6 +8,7 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
 import {
+  CInput,
   CProgress,
   CButton,
   CDropdown,
@@ -125,12 +126,42 @@ const Player = () => {
           // controls={true}
         />
       </div>
-
+      <div
+        style={{
+          borderTop: "1px solid black",
+          // display: "flex",
+          // width: "100%",
+          height: "100%",
+          // position: "relative",
+        }}
+      >
+        {/* <CProgress
+          color="danger"
+          max={1}
+          value={played}
+          style={{
+            position: "absolute",
+          }}
+        /> */}
+        <input
+          type="range"
+          min={0}
+          max={0.999999}
+          step="any"
+          value={played}
+          onMouseDown={handleSeekMouseDown}
+          onChange={handleSeekChange}
+          onMouseUp={handleSeekMouseUp}
+          style={{
+            width: "100%",
+            marginTop: "auto",
+          }}
+        />
+      </div>
       <div
         width="100%"
         height="100%"
         style={{
-          border: "1px solid black",
           display: "flex",
           //backgroundColor: "rgb(38, 36, 82)",
         }}
@@ -197,12 +228,13 @@ const Player = () => {
         </div>
         <div
           style={{
+            width: "80%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <input
+          {/* <input
             type="range"
             min={0}
             max={0.999999}
@@ -211,12 +243,8 @@ const Player = () => {
             onMouseDown={handleSeekMouseDown}
             onChange={handleSeekChange}
             onMouseUp={handleSeekMouseUp}
-          />
-          <progress
-            max={1}
-            value={played}
-            style={{ border: "1px solid red" }}
-          />
+          /> */}
+
           {/* <progress
             max={1}
             value={loaded}
@@ -255,6 +283,6 @@ const Player = () => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Player));

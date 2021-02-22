@@ -86,7 +86,7 @@ const commentsList = [
   },
 ];
 
-const Comments = ({ token }) => {
+const Comments = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
     color_like: "white",
@@ -609,6 +609,6 @@ const Comments = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);

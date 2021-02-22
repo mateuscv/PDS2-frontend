@@ -27,7 +27,7 @@ import "../styles/nintube.css";
 //API
 import { Inscribe } from "../../../util/Api";
 
-const Channel = ({ token }) => {
+const Channel = ({ user }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
@@ -42,7 +42,7 @@ const Channel = ({ token }) => {
   }, []);
 
   const Change = (cond) => {
-    var data = { token: token, channel_id: "channel_id" };
+    var data = { token: user.token, channel_id: "channel_id" };
     Inscribe(data)
       .then(function (data) {
         setState({ ...state, subscribe: cond });
@@ -174,6 +174,6 @@ const Channel = ({ token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Channel);

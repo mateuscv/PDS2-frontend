@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
-import setToken from "./setToken";
+import setUser from "./setUser";
 
 const allReducers = combineReducers({
-  token: setToken,
+  // token: setToken,
+  user: setUser,
 });
 
 export default allReducers;

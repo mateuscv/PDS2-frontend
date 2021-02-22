@@ -3,7 +3,7 @@ import AllReducer from "./store/reducers";
 import ls from "local-storage";
 
 const creds = {
-  token: ls.get("token"),
+  user: ls.get("user"),
 };
 
 export let initialState = creds;
@@ -24,9 +24,9 @@ const changeState = (state = siderBar, { type, ...rest }) => {
 const store = createStore(AllReducer, initialState);
 
 store.subscribe(() => {
-  const { token } = store.getState();
+  const { user } = store.getState();
 
-  ls.set("token", token);
+  ls.set("user", user);
 });
 
 export default store;

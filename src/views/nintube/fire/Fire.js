@@ -23,7 +23,7 @@ import StackVideo from "../components/stackVideo";
 //Style
 //API
 
-const Fire = ({ history, token }) => {
+const Fire = ({ history, user }) => {
   const [state, setState] = useState({
     fetched: false,
   });
@@ -34,7 +34,7 @@ const Fire = ({ history, token }) => {
   useEffect(() => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
-      console.log(token);
+      console.log(user);
     }
   }, []);
   return (
@@ -44,6 +44,6 @@ const Fire = ({ history, token }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Fire);

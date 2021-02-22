@@ -10,3 +10,10 @@ export const reset = () => {
     type: "RESET",
   };
 };
+
+export const setUser = (user) => {
+  return {
+    type: "SETUSER",
+    user: user,
+  };
+};

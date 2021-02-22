@@ -45,7 +45,7 @@ import {
   TheHeaderDropdownTasks,
 } from "./index";
 
-const TheHeader = ({ token, setToken }) => {
+const TheHeader = ({ user, setuser }) => {
   const [state, setState] = useState({
     error: "",
     message: "",
@@ -77,7 +77,11 @@ const TheHeader = ({ token, setToken }) => {
           //console.log(user);
           // console.log(data.token);
           // console.log(data);
-          setToken(data.token);
+          var user = {
+            token: data.token,
+            avatar: "",
+          };
+          setuser(user);
           history.push("/home");
         })
         .catch((err) => {
@@ -91,7 +95,8 @@ const TheHeader = ({ token, setToken }) => {
   };
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
-  const logged = token ? true : false;
+  console.log(typeof user);
+  const logged = user ? true : false;
 
   const toggleSidebar = () => {
     const val = [true, "responsive"].includes(sidebarShow)
@@ -260,6 +265,6 @@ const TheHeader = ({ token, setToken }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ token: state.token });
+const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(TheHeader);
