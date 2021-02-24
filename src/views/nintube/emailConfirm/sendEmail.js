@@ -30,7 +30,7 @@ import {
 } from "@coreui/react";
 //Api
 import { alert } from "../../../util/alertApi";
-import { sendEmail, API_URL } from "../../../util/Api";
+import { sendEmail, API_URL, getImg } from "../../../util/Api";
 //Style
 import "./emailConfirm.css";
 
@@ -52,9 +52,27 @@ const Email = ({ history }) => {
   const [state, setState] = useState({
     fetched: false,
     error: "",
+    img: "",
     message: "",
     data: { email: "" },
   });
+
+  useEffect(() => {
+    if (!state.fetched) {
+      var req = {
+        name: "banner_bordBlack",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+
+        setState({
+          ...state,
+          img: img,
+          fetched: true,
+        });
+      });
+    }
+  }, []);
 
   return (
     <div className="confirm">
@@ -66,7 +84,7 @@ const Email = ({ history }) => {
                 <CImg
                   style={{ width: "100%" }}
                   className="c-sidebar-brand-full"
-                  src={API_URL + "media/nintube/banner_2.png"}
+                  src={state.img}
                 />
               </CCard>
               <CCardBody>
