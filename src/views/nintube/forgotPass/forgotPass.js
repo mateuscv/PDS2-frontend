@@ -30,7 +30,7 @@ import {
 } from "@coreui/react";
 //Api
 import { alert } from "../../../util/alertApi";
-import { editPass, API_URL } from "../../../util/Api";
+import { editPass, API_URL, getImg } from "../../../util/Api";
 import md5 from "md5";
 //Style
 import "./forgotPass.css";
@@ -47,6 +47,7 @@ const Forgot = ({ history }) => {
     password_confirm: "",
     error: "",
     message: "",
+    img: "",
   });
 
   const changePass = () => {
@@ -116,9 +117,19 @@ const Forgot = ({ history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
+      var req = {
+        name: "banner_bordBlack",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          img: img,
+          fetched: true,
+        });
+      });
       if (!id) {
         history.push("/login");
-      } else {
       }
     }
   }, []);
@@ -133,7 +144,7 @@ const Forgot = ({ history }) => {
                 <CImg
                   style={{ width: "100%" }}
                   className="c-sidebar-brand-full"
-                  src={API_URL + "media/nintube/banner_2.png"}
+                  src={state.img}
                 />
               </CCard>
               <CCardBody>

@@ -27,7 +27,7 @@ import CIcon from "@coreui/icons-react";
 import Crop from "../crop/Crop";
 //Style
 //API
-import { registerUser, sendEmail, API_URL } from "../../../util/Api";
+import { registerUser, sendEmail, API_URL, getImg } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
@@ -40,6 +40,7 @@ const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
 
 const Register = ({ history }) => {
   const [state, setState] = useState({
+    fetched: false,
     avatar: null,
     username: "",
     email: "",
@@ -50,6 +51,7 @@ const Register = ({ history }) => {
     birthdate: "",
     gender: "",
     phone: "",
+    old_img: "",
   });
   const [image, setImage] = useState(null);
 
@@ -62,7 +64,7 @@ const Register = ({ history }) => {
 
     const values = {
       avatar: state.avatar,
-      old_img: API_URL + "media/defaul.png",
+      old_img: state.old_img,
       username: state.username,
       email: state.email,
       password: md5(state.password),
@@ -91,7 +93,7 @@ const Register = ({ history }) => {
         message: "",
       });
     } else {
-      console.log(values);
+      // console.log(values);
       data.append("old_img", API_URL + "media/nintube/defaul.png");
       data.append("username", state.username);
       data.append("email", state.email);
@@ -131,6 +133,23 @@ const Register = ({ history }) => {
   const changeAvatar = (img) => {
     setState({ ...state, avatar: img });
   };
+
+  useEffect(() => {
+    if (!state.fetched) {
+      var req = {
+        name: "defalut",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          old_img: img,
+          fetched: true,
+        });
+      });
+    }
+  }, []);
+
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>

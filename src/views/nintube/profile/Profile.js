@@ -117,7 +117,6 @@ const Profile = ({ user }) => {
     }
     data.gender = gender;
     data.birthdate = birth;
-    // data.avatar = API_URL + "media/" + data.avatar;
     // console.log(data);
     return data;
   };

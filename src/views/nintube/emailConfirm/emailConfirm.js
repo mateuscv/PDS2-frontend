@@ -29,7 +29,7 @@ import {
   CImg,
 } from "@coreui/react";
 //Api
-import { checkEmail, API_URL } from "../../../util/Api";
+import { checkEmail, API_URL, getImg } from "../../../util/Api";
 //Style
 //Style
 import "./emailConfirm.css";
@@ -47,10 +47,23 @@ const Confirm = ({ history }) => {
     fetched: false,
     error: "",
     message: "",
+    img: "",
   });
 
   useEffect(() => {
     if (!state.fetched) {
+      var req = {
+        name: "banner_bordBlack",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+
+        setState({
+          ...state,
+          img: img,
+          fetched: true,
+        });
+      });
       if (!id) {
         history.push("/login");
       } else {
@@ -84,7 +97,7 @@ const Confirm = ({ history }) => {
                   <CImg
                     style={{ width: "100%" }}
                     className="c-sidebar-brand-full"
-                    src={API_URL + "media/nintube/banner_2.png"}
+                    src={state.img}
                   />
                 </CCard>
                 <CCardHeader id="title">

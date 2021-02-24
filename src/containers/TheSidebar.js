@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, Component } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   CToggler,
@@ -19,7 +19,7 @@ import {
 import CIcon from "@coreui/icons-react";
 // sidebar nav config
 import navigation from "./_nav";
-import { API_URL } from "../../src/util/Api";
+import { API_URL, getImg } from "../../src/util/Api";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
@@ -29,6 +29,36 @@ const TheSidebar = () => {
   //   const val = [true, "responsive"].includes(show) ? false : "responsive";
   //   dispatch({ type: "set", sidebarShow: val });
   // };
+  const [state, setState] = useState({
+    fetched: false,
+    banner: "",
+    icon: "",
+  });
+
+  useEffect(() => {
+    if (!state.fetched) {
+      var req = {
+        name: "banner_bordWhite",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          banner: img,
+        });
+      });
+      var req = {
+        name: "icon",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          icon: img,
+        });
+      });
+    }
+  }, []);
 
   return (
     <CSidebar
@@ -39,12 +69,12 @@ const TheSidebar = () => {
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-full"
-          src={API_URL + "media/nintube/banner_2.png"}
+          src={console.log(API_URL + "media/nintube/banner_bordWhite")}
         />
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-minimized"
-          src={API_URL + "media/nintube/nintube_icon1.png"}
+          src={API_URL + "media/nintube/icon"}
         />
         {/* <CImg
           style={{ width: "100%" }}

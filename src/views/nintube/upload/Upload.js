@@ -27,7 +27,7 @@ const Upload = ({ user }) => {
     upload: "",
     description: "",
     title: "",
-    privacy: "",
+    privacy: false,
     video: null,
     video_name: "",
     thumb: null,
@@ -47,7 +47,7 @@ const Upload = ({ user }) => {
     //   },
     // };
   };
-  const sendVideo = () => {
+  const sendVideo = async () => {
     setState({
       ...state,
       error: "",
@@ -73,18 +73,43 @@ const Upload = ({ user }) => {
           message: "",
         });
       } else {
-        // data.append("file", state.video);
-        // data.append("title", state.title);
-        // data.append("description", state.description);
-        // data.append("privacy", state.privacy);
-        var data = {
+
+        /*const data = new FormData();
+        data.append("file", state.video);
+        data.append("title", state.title);
+        data.append("description", state.description);
+        data.append("privacy", state.privacy);
+        data.append("thumb", state.thumb);
+
+        console.log(data);*/
+
+        /*var data = {
           file: state.video,
           title: state.title,
           description: state.description,
           privacy: state.privacy,
           thumb: state.thumb,
+        };*/
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+
+        const data = {
+          title: state.title,
+          file: await toBase64(state.video),
+          thumb: await toBase64(state.thumb),
+          description: state.description,
+          privacy: state.privacy
         };
+
         console.log(data);
+
+        //submitForm("application/json", data, (msg) => console.log(msg));
+
 
         uploadVideo(data, user.token)
           .then(function (data) {

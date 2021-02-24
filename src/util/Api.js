@@ -5,6 +5,15 @@ export const API_URL = "http://localhost:3334/";
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 // export const API_URL = "http://3576c2a11286.ngrok.io/";
 
+export const getImg = (data) => {
+  return axios.post(API_URL + "nin/imgs", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
 export const registerUser = (data) => {
   return axios.post(API_URL + "users/signup", data).then(
     function (res) {
@@ -13,6 +22,7 @@ export const registerUser = (data) => {
     }.bind(this)
   );
 };
+
 export const loginUser = (data) => {
   return axios.post(API_URL + "signin", data).then(
     function (res) {
@@ -89,7 +99,16 @@ export const sendEmail = (data) => {
 };
 
 export const getVideo = (data) => {
-  return axios.put(API_URL + "video/get", data).then(
+  return axios.post(API_URL + "videos/get", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const watchVideo = (data) => {
+  return axios.post(API_URL + "videos/watch", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -116,7 +135,7 @@ export const deletVideo = (data) => {
 };
 
 export const Inscribe = (data) => {
-  return axios.put(API_URL + "users/subs", data).then(
+  return axios.post(API_URL + "users/subs", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -153,6 +172,15 @@ export const editComment = (data) => {
 
 export const deletComment = (data) => {
   return axios.put(API_URL + "videos/delet_comment", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const getComment = (data) => {
+  return axios.post(API_URL + "videos/getComment", data).then(
     function (res) {
       let data = res.data;
       return data;

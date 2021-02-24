@@ -28,63 +28,9 @@ import CIcon from "@coreui/icons-react";
 //API
 // import { Report } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
-import { API_URL, sendComment } from "../../../util/Api";
+import { API_URL, getImg, sendComment, getComment } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 //Style
-
-const commentsList = [
-  {
-    id: 1,
-    nickname: "yMustafa",
-    comment: "Isso eh uma merda",
-    date: "há 30 min",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: "",
-  },
-  {
-    id: 2,
-    nickname: "yAb",
-    comment: "Cara eh muito bom",
-    date: "há 60 min",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: 1,
-  },
-  {
-    id: 3,
-    nickname: "Davi Teixeira",
-    comment: "Feliz 2020",
-    date: "há 3 horas",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: "",
-  },
-  {
-    id: 4,
-    nickname: "Yoshi",
-    comment: `-Skillet: You get me high
-    -Three Days Grace: You don't get me high anymore 
-    -Skillet: One Day too late
-    -Three Days Grace: Never too late
-    -Skillet: Don't Wake Me`,
-    date: "há 3 dias",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: "",
-  },
-  {
-    id: 5,
-    nickname: "Jhin",
-    comment: "Everyone- Thank god 2020 ended... I feel invincible.. ",
-    date: "há 1 semanas",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: 4,
-  },
-  {
-    id: 6,
-    nickname: "yAb",
-    comment: "Julius Summerchase",
-    date: "há 60 min",
-    src: API_URL + "media/nintube/default.png",
-    reply_id: 1,
-  },
-];
 
 const Comments = ({ user }) => {
   const [state, setState] = useState({
@@ -107,7 +53,7 @@ const Comments = ({ user }) => {
   });
 
   let history = useHistory();
-  let video_id = useParams();
+  const video_id = "06abdd82-f539-46d3-98b5-4bbd0f960440";
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -134,7 +80,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id.id,
+        video_id: video_id,
         reply_id: "",
       };
       console.log(data);
@@ -148,7 +94,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id.id,
+        video_id: video_id,
         reply_id,
       };
       console.log(data);
@@ -162,7 +108,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text: "@" + aux + " " + text,
-        video_id: video_id.id,
+        video_id: video_id,
         reply_id,
       };
       console.log(data);
@@ -235,68 +181,83 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var img = "";
-      if (user.token) {
-        img = user.avatar;
-      } else {
-        img = API_URL + "media/nintube/default.png";
-      }
-      var listAux = Array();
-      var mtxAux = Array();
-      var showAux = Array();
-      for (let i = 0; i < commentsList.length; i++) {
-        if (commentsList[i].reply_id === "") {
-          listAux.push({
-            id: commentsList[i].id,
-            nickname: commentsList[i].nickname,
-            comment: commentsList[i].comment,
-            date: commentsList[i].date,
-            src: commentsList[i].src,
-            reply_id: commentsList[i].reply_id,
-          });
-          showAux.push({
-            id: commentsList[i].id,
-            dis: false,
-            info: Array,
-          });
+      var req = {
+        name: "default",
+      };
+      getImg(req).then(function (data) {
+        console.log(data);
+        var img = "";
+        if (user.token) {
+          img = user.avatar;
         } else {
-          mtxAux.push({
-            id: commentsList[i].id,
-            nickname: commentsList[i].nickname,
-            comment: commentsList[i].comment,
-            date: commentsList[i].date,
-            src: commentsList[i].src,
-            reply_id: commentsList[i].reply_id,
-          });
+          img = data;
         }
-      }
-
-      for (let i = 0; i < showAux.length; i++) {
-        var vexAux = new Array();
-        for (let idx = 0; idx < mtxAux.length; idx++) {
-          if (showAux[i].id === mtxAux[idx].reply_id) {
-            var aux = new Array();
-            aux.push({
-              id: mtxAux[idx].id,
-              nickname: mtxAux[idx].nickname,
-              comment: mtxAux[idx].comment,
-              date: mtxAux[idx].date,
-              src: mtxAux[idx].src,
-              reply_id: mtxAux[idx].reply_id,
+        setState({
+          ...state,
+          avatar: img,
+        });
+      });
+      var data = {
+        video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+      };
+      getComment(data, user.token).then(function (data) {
+        var listAux = Array();
+        var today = new Date();
+        var mtxAux = Array();
+        var showAux = Array();
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].reply_id === "") {
+            listAux.push({
+              id: data[i].id,
+              nickname: data[i].nickname,
+              comment: data[i].comment,
+              date: diffDate(today, data[i].date),
+              src: data[i].src,
+              reply_id: data[i].reply_id,
             });
-            vexAux.push(aux);
+            showAux.push({
+              id: data[i].id,
+              dis: false,
+              info: Array,
+            });
+          } else {
+            mtxAux.push({
+              id: data[i].id,
+              nickname: data[i].nickname,
+              comment: data[i].comment,
+              date: diffDate(today, data[i].date),
+              src: data[i].src,
+              reply_id: data[i].reply_id,
+            });
           }
         }
-        showAux[i].info = vexAux;
-      }
 
-      setState({
-        ...state,
-        fetched: true,
-        fiComment: listAux,
-        secComment: mtxAux,
-        dispAns: showAux,
-        avatar: img,
+        for (let i = 0; i < showAux.length; i++) {
+          var vexAux = new Array();
+          for (let idx = 0; idx < mtxAux.length; idx++) {
+            if (showAux[i].id === mtxAux[idx].reply_id) {
+              var aux = new Array();
+              aux.push({
+                id: mtxAux[idx].id,
+                nickname: mtxAux[idx].nickname,
+                comment: mtxAux[idx].comment,
+                date: mtxAux[idx].date,
+                src: mtxAux[idx].src,
+                reply_id: mtxAux[idx].reply_id,
+              });
+              vexAux.push(aux);
+            }
+          }
+          showAux[i].info = vexAux;
+        }
+
+        setState({
+          ...state,
+          fetched: true,
+          fiComment: listAux,
+          secComment: mtxAux,
+          dispAns: showAux,
+        });
       });
     }
   }, []);
@@ -374,7 +335,14 @@ const Comments = ({ user }) => {
                 }}
               >
                 <div style={{ width: "7%", height: "100%" }}>
-                  <img src={item.src} width="44" height="44" />
+                  <img
+                    src={item.src}
+                    width="44"
+                    height="44"
+                    style={{
+                      borderRadius: "40%",
+                    }}
+                  />
                 </div>
                 <div class="showDiv" style={{ width: "90%", color: "white" }}>
                   <div style={{ width: "100%", display: "flex" }}>
@@ -475,7 +443,6 @@ const Comments = ({ user }) => {
                       </div>
                     )}
                   </div>
-
                   {state.dispAns[index].info.length !== 0 && (
                     <div>
                       {state.dispAns[index].dis && (
@@ -490,7 +457,14 @@ const Comments = ({ user }) => {
                               }}
                             >
                               <div style={{ width: "7%", height: "100%" }}>
-                                <img src={itm[0].src} width="44" height="44" />
+                                <img
+                                  src={itm[0].src}
+                                  width="44"
+                                  height="44"
+                                  style={{
+                                    borderRadius: "40%",
+                                  }}
+                                />
                               </div>
                               <div
                                 class="showDivSec"
@@ -613,7 +587,7 @@ const Comments = ({ user }) => {
                                                 sendCom(
                                                   state.AnswersTwo,
                                                   2,
-                                                  state.idAnsTwo,
+                                                  item.id,
                                                   itm[0].nickname
                                                 )
                                               }
