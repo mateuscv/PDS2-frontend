@@ -22,7 +22,8 @@ const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
 
   const handleClick = (route, id = "") => {
-    history.push("/" + route + (id = "" ? "" : "/" + id));
+    console.log(user.avatar);
+    // history.push("/" + route + (id = "" ? "" : "/" + id));
   };
 
   const Logout = () => {
@@ -35,9 +36,7 @@ const TheHeaderDropdown = ({ user, reset }) => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={
-              "http://localhost:3334/media/image/93e124d9-e046-479d-a739-59b8c7668616.png"
-            }
+            src={user.avatar}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
