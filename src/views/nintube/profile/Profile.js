@@ -123,6 +123,26 @@ const Profile = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
+      if (!user) {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
+            {
+              label: "Cancelar",
+              onClick: () => {
+                history.push("/home");
+              },
+            },
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      }
       // console.log(user);
       var data = { token: user.token };
       getProfile(data, user.token).then(function (data) {

@@ -25,6 +25,7 @@ import {
 //Componets
 //Style
 //API
+import { getVideos } from "../../../util/Api";
 
 const videos = [
   {
@@ -127,6 +128,7 @@ const videos = [
 const StackVideo = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
+    videos: "",
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -134,6 +136,11 @@ const StackVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
+      // getVideos(user.token).then(function (data) {
+      //   setState({ ...state, fetched: true, videos: data });
+      // });.catch((err) => {
+      //   setState({ ...state, error: "Dados inválidos", message: "" });
+      // });
       setState({ ...state, fetched: true });
     }
   }, []);

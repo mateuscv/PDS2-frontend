@@ -39,7 +39,7 @@ const modes = [
 ];
 const colors = ["dark"];
 
-const Historic = ({ user }) => {
+const Historic = ({ user, history }) => {
   const [state, setState] = useState({
     fetched: false,
   });

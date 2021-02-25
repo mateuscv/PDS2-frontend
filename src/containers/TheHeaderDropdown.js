@@ -22,8 +22,7 @@ const TheHeaderDropdown = ({ user, reset }) => {
   let history = useHistory();
 
   const handleClick = (route, id = "") => {
-    console.log(user.avatar);
-    // history.push("/" + route + (id = "" ? "" : "/" + id));
+    history.push("/" + route + (id = "" ? "" : "/" + id));
   };
 
   const Logout = () => {

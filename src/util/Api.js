@@ -1,5 +1,5 @@
 import axios from "axios";
-export const API_URL = "http://localhost:3334/";
+// export const API_URL = "http://localhost:3334/";
 //export const API_URL = "http://848251d83377.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
@@ -181,6 +181,15 @@ export const deletComment = (data) => {
 
 export const getComment = (data) => {
   return axios.post(API_URL + "videos/getComment", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const getVideos = (data) => {
+  return axios.post(API_URL + "videos/get", data).then(
     function (res) {
       let data = res.data;
       return data;
