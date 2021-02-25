@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, Component } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   CToggler,
@@ -19,6 +19,7 @@ import {
 import CIcon from "@coreui/icons-react";
 // sidebar nav config
 import navigation from "./_nav";
+import { API_URL, getImg } from "../../src/util/Api";
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,36 @@ const TheSidebar = () => {
   //   const val = [true, "responsive"].includes(show) ? false : "responsive";
   //   dispatch({ type: "set", sidebarShow: val });
   // };
+  const [state, setState] = useState({
+    fetched: false,
+    banner: "",
+    icon: "",
+  });
+
+  useEffect(() => {
+    if (!state.fetched) {
+      var req = {
+        name: "banner_bordWhite",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          banner: img,
+        });
+      });
+      var req = {
+        name: "icon",
+      };
+      getImg(req).then(function (data) {
+        var img = data;
+        setState({
+          ...state,
+          icon: img,
+        });
+      });
+    }
+  }, []);
 
   return (
     <CSidebar
@@ -38,12 +69,12 @@ const TheSidebar = () => {
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-full"
-          src="https://cdn.discordapp.com/attachments/300483456440336385/790994274631155733/banner_4.png"
+          src={console.log(API_URL + "media/nintube/banner_bordWhite")}
         />
         <CImg
           style={{ width: "100%" }}
           className="c-sidebar-brand-minimized"
-          src="https://cdn.discordapp.com/attachments/300483456440336385/790994285977534514/nintube_banner_icon_dark.png"
+          src={API_URL + "media/nintube/icon"}
         />
         {/* <CImg
           style={{ width: "100%" }}

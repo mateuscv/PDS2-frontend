@@ -16,7 +16,8 @@ import Recommended from "../components/Recommended";
 //API
 import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
-import { Inscribe, Report, getVideo } from "../../../util/Api";
+import { Inscribe, Report, watchVideo, API_URL } from "../../../util/Api";
+//Style
 
 const View = ({ user }) => {
   let { id } = useParams();
@@ -25,33 +26,31 @@ const View = ({ user }) => {
     subscribe: false,
     color_like: "",
     color_dislike: "",
-    video: {
-      id: -1,
-      title: "",
-      liked: -1,
-      likes: 0,
-      dislikes: 0,
-      views: "0",
-    },
+    video: "",
   });
 
   const Change = (cond) => {
-    var data = {
-      token: user.token,
-      target_id: "ef89ac6d-7fdb-40ab-8fb7-298d7406ef3e",
-    };
-    console.log(data);
-    Inscribe(data)
-      .then(function (data) {
-        setState({ ...state, subscribe: cond });
-      })
-      .catch((err) => {
-        setState({
-          ...state,
-          error: "Algum problema aconteceu, tente novamente mais tarde!",
-          message: "",
+    if (user.token) {
+      var data = {
+        token: user.token,
+        target_id: state.video.owner_id,
+      };
+
+      console.log(data);
+      Inscribe(data)
+        .then(function (data) {
+          setState({ ...state, subscribe: cond });
+        })
+        .catch((err) => {
+          setState({
+            ...state,
+            error: "Algum problema aconteceu, tente novamente mais tarde!",
+            message: "",
+          });
         });
-      });
+    } else {
+      alert("Login", "Você não está logado!");
+    }
   };
 
   const Liked = (liked) => {
@@ -63,16 +62,15 @@ const View = ({ user }) => {
         var video = state.video;
         if (video.liked === 1) {
           video.likes -= 1;
-          video.liked = -1;
+          video.liked = 0;
           setState({
             ...state,
             color_like: "white",
             video,
           });
-        } else {
+        } else if (video.liked === -1) {
           video.likes += 1;
-          video.dislikes =
-            video.liked === 0 ? video.dislikes - 1 : video.dislikes;
+          video.dislikes -= 1;
           video.liked = 1;
           setState({
             ...state,
@@ -80,26 +78,42 @@ const View = ({ user }) => {
             color_dislike: "white",
             video,
           });
+        } else {
+          video.likes += 1;
+          video.liked = 1;
+          setState({
+            ...state,
+            color_like: "green",
+            video,
+          });
         }
         break;
       case "dislike":
         var video = state.video;
-        if (video.liked === 0) {
+        if (video.liked === -1) {
           video.dislikes -= 1;
-          video.liked = -1;
+          video.liked = 0;
           setState({
             ...state,
             color_dislike: "white",
             video,
           });
-        } else {
+        } else if (video.liked === 1) {
           video.dislikes += 1;
-          video.likes = video.liked === 1 ? video.likes - 1 : video.likes;
-          video.liked = 0;
+          video.likes -= 1;
+          video.liked = -1;
           setState({
             ...state,
             color_dislike: "red",
             color_like: "white",
+            video,
+          });
+        } else {
+          video.dislikes += 1;
+          video.liked = -1;
+          setState({
+            ...state,
+            color_dislike: "red",
             video,
           });
         }
@@ -124,23 +138,29 @@ const View = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
-      var token = user != null ? user.token : "";
-      var data = { video_id: id, token: token };
-      // getVideo(data).then(function (data) {});
-      var video = {
-        id: 1,
-        title: "Titulo do Fisico",
-        liked: -1,
-        likes: 30,
-        dislikes: 45,
-        views: "1.000.648",
-      };
+      if (user.token) {
+        var data = {
+          video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+          token: user.token,
+        };
+      } else {
+        var data = {
+          video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+          token: "",
+        };
+      }
+
+      watchVideo(data).then(function (data) {
+        setState({
+          ...state,
+          video: data,
+          color_like: data.liked === 1 ? "green" : "white",
+          color_dislike: data.liked === -1 ? "red" : "white",
+        });
+      });
       setState({
         ...state,
-        color_like: video.liked === 1 ? "green" : "white",
-        color_dislike: video.liked === 0 ? "red" : "white",
-        video,
+        fetched: true,
       });
     }
   }, []);
@@ -152,10 +172,10 @@ const View = ({ user }) => {
         <Player />
         <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
           <div style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-            <a style={{ color: "lightblue" }}>#TheWeekend</a>
+            <a style={{ color: "lightblue" }}></a>
           </div>
           <h5 style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-            The Weeknd - Blinding Lights (Official Audio)
+            {state.video.title}
           </h5>
           <div
             style={{
@@ -216,7 +236,8 @@ const View = ({ user }) => {
         >
           <div style={{ width: "7%", height: "100%" }}>
             <img
-              src="https://cdn.discordapp.com/attachments/704786714769490101/811992050177278002/unnamed.jpg"
+              src={state.video.owner_avatar}
+              style={{ borderRadius: "40%" }}
               width="44"
               height="44"
             />
@@ -230,12 +251,12 @@ const View = ({ user }) => {
               }}
             >
               <div style={{ width: "90%" }}>
-                <span>The Weeknd</span>
-                <p>23M subscribers</p>
+                <span>{state.video.owner_nick}</span>
+                <p>{state.video.all_subs} subscribers</p>
               </div>
               <div style={{ width: "1%" }}>
                 <>
-                  {state.subscribe === false && (
+                  {state.video.is_subscribed === false && (
                     <CButton
                       id="inscribe"
                       class="inscribe"
@@ -244,7 +265,7 @@ const View = ({ user }) => {
                       Inscrever-se
                     </CButton>
                   )}{" "}
-                  {state.subscribe === true && (
+                  {state.video.is_subscribed === true && (
                     <CButton
                       id="inscribe"
                       class="registered"
@@ -256,11 +277,7 @@ const View = ({ user }) => {
                 </>
               </div>
             </div>
-            <div style={{ color: "white" }}>
-              Official audio for The Weeknd "Blinding Lights" - available
-              everywhere now: http://theweeknd.co/blindinglightsYD​ ►Subscribe
-              to The Weeknd on YouTube: http://theweeknd.co/subscribeYD​
-            </div>
+            <div style={{ color: "white" }}>{state.video.description}</div>
           </div>
         </CBreadcrumb>
         <Comments />

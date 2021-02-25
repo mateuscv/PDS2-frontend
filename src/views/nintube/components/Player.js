@@ -23,6 +23,7 @@ import CIcon from "@coreui/icons-react";
 //Style
 import "../styles/nintube.css";
 //API
+import { getVideo } from "../../../util/Api";
 import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";
 import screenfull from "screenfull";
@@ -36,6 +37,7 @@ const Player = () => {
     volume: 0.5,
     playing: false,
     playbackRate: 1.0,
+    file: "",
     muted: false,
   });
   const [loaded, setLoaded] = useState(0);
@@ -89,7 +91,12 @@ const Player = () => {
   useEffect(() => {
     // var size = useWindowSize();
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      var data = {
+        video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+      };
+      getVideo(data).then(function (data) {
+        setState({ ...state, fetched: true, file: data.file });
+      });
     }
   }, []);
 
@@ -108,7 +115,7 @@ const Player = () => {
           className="react-player"
           ref={ref}
           style={{}}
-          url="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+          url={state.file}
           // width="1000px"
           // height="563px"
           width="100%"
