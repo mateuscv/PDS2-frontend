@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,9 +20,10 @@ import {
 import "../styles/nintube.css";
 //API
 import { uploadVideo } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
 
-const Upload = ({ user }) => {
+const Upload = ({ user, history }) => {
   const [state, setState] = useState({
     upload: "",
     description: "",
@@ -31,6 +32,7 @@ const Upload = ({ user }) => {
     video: null,
     video_name: "",
     thumb: null,
+    fetched: false,
   });
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
@@ -126,6 +128,32 @@ const Upload = ({ user }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (!state.fetched) {
+      if (!user) {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
+            {
+              label: "Cancelar",
+              onClick: () => {
+                history.push("/home");
+              },
+            },
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      }
+      setState({ ...state, fetched: true });
+    }
+  }, []);
 
   return (
     <div>

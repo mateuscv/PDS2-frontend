@@ -21,6 +21,7 @@ import { deletVideo } from "../../../util/Api";
 //Style
 //API
 import data from "./data";
+import { getVideos } from "../../../util/Api";
 
 const fields = [
   { key: "Thumb", _style: { width: "20%" }, sorter: false, filter: false },
@@ -56,6 +57,10 @@ const fields = [
 ];
 
 const Studio = ({ user, history }) => {
+  const [state, setState] = useState({
+    fetched: false,
+    videos: "",
+  });
   const Delet = (video_id) => {
     var data = { token: user.token, video_id: video_id };
     deletVideo(data)
@@ -69,6 +74,17 @@ const Studio = ({ user, history }) => {
         );
       });
   };
+
+  useEffect(() => {
+    if (!state.fetched) {
+      // getVideos(user.token).then(function (data) {
+      //   setState({ ...state, fetched: true, videos: data });
+      // });.catch((err) => {
+      //   setState({ ...state, error: "Dados inválidos", message: "" });
+      // });
+      setState({ ...state, fetched: true });
+    }
+  }, []);
 
   return (
     <div>

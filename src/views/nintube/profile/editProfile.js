@@ -164,6 +164,26 @@ const Profile = ({ user }) => {
   useEffect(() => {
     if (!state.fetched) {
       // console.log(user);
+      if (!user) {
+        alert(
+          "Houve um problema",
+          "Você não está logado para realizar essa ação por favor realize o login.",
+          [
+            {
+              label: "Cancelar",
+              onClick: () => {
+                history.push("/home");
+              },
+            },
+            {
+              label: "Login",
+              onClick: () => {
+                history.push("/login");
+              },
+            },
+          ]
+        );
+      }
       var data = { token: user.token };
       getProfile(data, user.token).then(function (data) {
         // console.log(data.birthdate.substring(0, 10));
