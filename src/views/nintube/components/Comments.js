@@ -184,19 +184,11 @@ const Comments = ({ user }) => {
       var req = {
         name: "default",
       };
+      var img;
       getImg(req).then(function (data) {
-        console.log(data);
-        var img = "";
-        if (user.token) {
-          img = user.avatar;
-        } else {
-          img = data;
-        }
-        setState({
-          ...state,
-          avatar: img,
-        });
+        state.avatar = data;
       });
+
       var data = {
         video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
       };
@@ -257,6 +249,7 @@ const Comments = ({ user }) => {
           fiComment: listAux,
           secComment: mtxAux,
           dispAns: showAux,
+          // avatar,
         });
       });
     }

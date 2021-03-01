@@ -47,16 +47,16 @@ const TheSidebar = () => {
           banner: img,
         });
       });
-      var req = {
-        name: "icon",
-      };
-      getImg(req).then(function (data) {
-        var img = data;
-        setState({
-          ...state,
-          icon: img,
-        });
-      });
+      // var req = {
+      //   name: "icon",
+      // };
+      // getImg(req).then(function (data) {
+      //   var img = data;
+      //   setState({
+      //     ...state,
+      //     icon: img,
+      //   });
+      // });
     }
   }, []);
 
