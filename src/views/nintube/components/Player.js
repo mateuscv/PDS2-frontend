@@ -93,6 +93,7 @@ const Player = () => {
     if (!state.fetched) {
       var data = {
         video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+        // video_id: id,
       };
       getVideo(data).then(function (data) {
         setState({ ...state, fetched: true, file: data.file });

@@ -21,26 +21,18 @@ import { deletVideo } from "../../../util/Api";
 //Style
 //API
 import data from "./data";
-import { getVideos } from "../../../util/Api";
+import { myVideos } from "../../../util/Api";
 
 const fields = [
-  { key: "Thumb", _style: { width: "20%" }, sorter: false, filter: false },
-  { key: "Titulo", _style: { width: "35%" } },
+  { key: "thumb", _style: { width: "20%" }, sorter: false, filter: false },
+  { key: "title", _style: { width: "35%" } },
   {
-    key: "Visibilidade",
+    key: "privacy",
     _style: { width: "5%" },
 
     filter: false,
   },
-  { key: "Restrições", filter: false },
-  { key: "Data", _style: { width: "40%" } },
-  { key: "Visualizações", filter: false },
-  {
-    key: "Comentários",
-    classes: "centerTd",
-    filter: false,
-  },
-  { key: "Likes", filter: false },
+  { key: "created_at", _style: { width: "40%" } },
   {
     key: "Editar",
     label: "",
@@ -77,12 +69,17 @@ const Studio = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      // getVideos(user.token).then(function (data) {
-      //   setState({ ...state, fetched: true, videos: data });
-      // });.catch((err) => {
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
-      setState({ ...state, fetched: true });
+      console.log(user.token);
+      var data = { token: user.token };
+      myVideos(data)
+        .then(function (data) {
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data[0] });
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
+      // setState({ ...state, fetched: true });
     }
   }, []);
 
@@ -95,7 +92,7 @@ const Studio = ({ user, history }) => {
         <CCardHeader>Conteúdo do Canal</CCardHeader>
         <CCardBody>
           <CDataTable
-            items={data}
+            items={state.videos}
             fields={fields}
             hover
             striped
@@ -108,14 +105,14 @@ const Studio = ({ user, history }) => {
             scopedSlots={{
               Thumb: (item) => (
                 <td>
-                  <CImg
+                  <img
                     style={{
                       width: "100%",
                       cursor: "pointer",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.Thumb}
+                    src={item.thumb}
                   />
                 </td>
               ),

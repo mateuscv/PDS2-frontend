@@ -181,13 +181,17 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var req = {
-        name: "default",
-      };
-      var img;
-      getImg(req).then(function (data) {
-        state.avatar = data;
-      });
+      if (!user.token) {
+        var req = {
+          name: "default",
+        };
+        var img;
+        getImg(req).then(function (data) {
+          state.avatar = data;
+        });
+      } else {
+        state.avatar = user.avatar;
+      }
 
       var data = {
         video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
