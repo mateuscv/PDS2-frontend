@@ -56,13 +56,7 @@ const Confirm = ({ history }) => {
         name: "banner_bordBlack",
       };
       getImg(req).then(function (data) {
-        var img = data;
-
-        setState({
-          ...state,
-          img: img,
-          fetched: true,
-        });
+        state.img = data;
       });
       if (!id) {
         history.push("/login");

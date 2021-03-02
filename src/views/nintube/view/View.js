@@ -6,8 +6,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
-import { CRow, CCol, CButton, CBreadcrumb } from "@coreui/react";
+import { CRow, CCol, CButton, CBreadcrumb, CInput } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { confirmAlert } from "react-confirm-alert"; // Import
 //Componets
 import Player from "../components/Player";
 import Comments from "../components/Comments";
@@ -16,7 +17,13 @@ import Recommended from "../components/Recommended";
 //API
 import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
-import { Inscribe, Report, watchVideo, API_URL } from "../../../util/Api";
+import {
+  Inscribe,
+  Report,
+  watchVideo,
+  API_URL,
+  newLiked,
+} from "../../../util/Api";
 //Style
 
 const View = ({ user }) => {
@@ -27,6 +34,7 @@ const View = ({ user }) => {
     color_like: "",
     color_dislike: "",
     video: "",
+    report: "",
   });
 
   const Change = (cond) => {
@@ -39,7 +47,14 @@ const View = ({ user }) => {
       console.log(data);
       Inscribe(data)
         .then(function (data) {
-          setState({ ...state, subscribe: cond });
+          let video = state.video;
+          if (cond) {
+            video.all_subs += 1;
+          } else {
+            video.all_subs -= 1;
+          }
+          video.is_subscribed = cond;
+          setState({ ...state, video });
         })
         .catch((err) => {
           setState({
@@ -119,11 +134,49 @@ const View = ({ user }) => {
         }
         break;
     }
+    var video = state.video;
+
+    var data = {
+      token: user.token,
+      video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+      liked: video.liked,
+    };
+
+    newLiked(data).then(function (data) {});
     // });
   };
 
   const reportVideo = () => {
     var data = { token: user.token, video_id: state.video.id, type: "video" };
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="custom-ui">
+            <h1>Report</h1>
+            <p>Escreva o Motivo do report abaixo:</p>
+            <label style={{ color: "black" }}>Motivo:</label>
+            <CInput
+              type="text"
+              onChange={(e) => {
+                setState({ ...state, report: e.target.value });
+              }}
+            ></CInput>
+            <button class="myBut" onClick={onClose}>
+              Enviar
+            </button>
+            <button class="myBut" onClick={sendReport} onClick={onClose}>
+              Sair
+            </button>
+          </div>
+        );
+      },
+    });
+  };
+
+  const sendReport = () => {
+    var data = {
+      report_text: state.report,
+    };
     Report(data)
       .then(function (data) {
         alert("Reporte", "Seu reporte foi enviado com sucesso!");
@@ -151,6 +204,7 @@ const View = ({ user }) => {
       }
 
       watchVideo(data).then(function (data) {
+        console.log(data);
         setState({
           ...state,
           video: data,
