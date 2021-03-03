@@ -165,7 +165,7 @@ export const newLiked = (data) => {
 };
 
 export const Report = (data) => {
-  return axios.put(API_URL + "/report", data).then(
+  return axios.put(API_URL + "videos/report", data).then(
     function (res) {
       let data = res.data;
       return data;
