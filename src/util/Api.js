@@ -226,3 +226,12 @@ export const myVideos = (data) => {
     }.bind(this)
   );
 };
+
+export const feedVideos = (data) => {
+  return axios.post(API_URL + "home/get", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};

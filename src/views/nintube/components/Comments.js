@@ -53,7 +53,8 @@ const Comments = ({ user }) => {
   });
 
   let history = useHistory();
-  const video_id = "06abdd82-f539-46d3-98b5-4bbd0f960440";
+  let { id } = useParams();
+  const video_id = id;
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -80,7 +81,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id,
+        video_id: id,
         reply_id: "",
       };
       console.log(data);
@@ -94,7 +95,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id,
+        video_id: id,
         reply_id,
       };
       console.log(data);
@@ -108,7 +109,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text: "@" + aux + " " + text,
-        video_id: video_id,
+        video_id: id,
         reply_id,
       };
       console.log(data);
@@ -194,8 +195,9 @@ const Comments = ({ user }) => {
       }
 
       var data = {
-        video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+        video_id: id,
       };
+      console.log(id);
       getComment(data, user.token).then(function (data) {
         var listAux = Array();
         var today = new Date();

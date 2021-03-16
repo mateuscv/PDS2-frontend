@@ -79,175 +79,181 @@ const View = ({ user }) => {
 
   const Liked = (liked) => {
     if (user.token) {
-      switch (liked) {
-        case "like":
-          var video = state.video;
-          if (video.liked === 1) {
-            video.likes -= 1;
-            video.liked = 0;
-            setState({
-              ...state,
-              color_like: "white",
-              video,
-            });
-          } else if (video.liked === -1) {
-            video.likes += 1;
-            video.dislikes -= 1;
-            video.liked = 1;
-            setState({
-              ...state,
-              color_like: "green",
-              color_dislike: "white",
-              video,
-            });
-          } else {
-            video.likes += 1;
-            video.liked = 1;
-            setState({
-              ...state,
-              color_like: "green",
-              video,
-            });
-          }
-          break;
-        case "dislike":
-          var video = state.video;
-          if (video.liked === -1) {
-            video.dislikes -= 1;
-            video.liked = 0;
-            setState({
-              ...state,
-              color_dislike: "white",
-              video,
-            });
-          } else if (video.liked === 1) {
-            video.dislikes += 1;
-            video.likes -= 1;
-            video.liked = -1;
-            setState({
-              ...state,
-              color_dislike: "red",
-              color_like: "white",
-              video,
-            });
-          } else {
-            video.dislikes += 1;
-            video.liked = -1;
-            setState({
-              ...state,
-              color_dislike: "red",
-              video,
-            });
-          }
-          break;
+      if (!state.video.owner) {
+        switch (liked) {
+          case "like":
+            var video = state.video;
+            if (video.liked === 1) {
+              video.likes -= 1;
+              video.liked = 0;
+              setState({
+                ...state,
+                color_like: "white",
+                video,
+              });
+            } else if (video.liked === -1) {
+              video.likes += 1;
+              video.dislikes -= 1;
+              video.liked = 1;
+              setState({
+                ...state,
+                color_like: "green",
+                color_dislike: "white",
+                video,
+              });
+            } else {
+              video.likes += 1;
+              video.liked = 1;
+              setState({
+                ...state,
+                color_like: "green",
+                video,
+              });
+            }
+            break;
+          case "dislike":
+            var video = state.video;
+            if (video.liked === -1) {
+              video.dislikes -= 1;
+              video.liked = 0;
+              setState({
+                ...state,
+                color_dislike: "white",
+                video,
+              });
+            } else if (video.liked === 1) {
+              video.dislikes += 1;
+              video.likes -= 1;
+              video.liked = -1;
+              setState({
+                ...state,
+                color_dislike: "red",
+                color_like: "white",
+                video,
+              });
+            } else {
+              video.dislikes += 1;
+              video.liked = -1;
+              setState({
+                ...state,
+                color_dislike: "red",
+                video,
+              });
+            }
+            break;
+        }
+        var video = state.video;
+
+        var data = {
+          token: user.token,
+          video_id: id,
+          liked: video.liked,
+        };
+
+        newLiked(data).then(function (data) {});
       }
-      var video = state.video;
-
-      var data = {
-        token: user.token,
-        video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
-        liked: video.liked,
-      };
-
-      newLiked(data).then(function (data) {});
     } else {
-      alert("Reporte", "Tens que tar logado pra reportar");
+      alert("Ops..", "Tens que tar logado pra reportar");
     }
 
     // });
   };
 
   const reportVideo = () => {
-    var data = { token: user.token, video_id: state.video.id, type: "video" };
     if (!state.video.reported) {
       if (user.token) {
-        confirmAlert({
-          customUI: ({ onClose }) => {
-            var text,
-              option = "";
-            return (
-              <div className="custom-ui">
-                <h1>Report</h1>
-                <CFormGroup row>
-                  <CCol md="9">
-                    <p>
-                      Selecione o motivo que melhor encaixe no report abaixo:
-                    </p>
-                    <CFormGroup variant="checkbox">
-                      <CInputRadio
-                        className="form-check-input"
-                        id="radio1"
-                        name="radios"
-                        value={"Violencia Explicita"}
-                        onClick={(e) => {
-                          option = e.target.value;
-                        }}
-                      />
-                      <CLabel
-                        variant="checkbox"
-                        style={{ color: "black" }}
-                        htmlFor="radio1"
-                      >
-                        Violencia Explicita
-                      </CLabel>
-                    </CFormGroup>
-                    <CFormGroup variant="checkbox">
-                      <CInputRadio
-                        className="form-check-input"
-                        id="radio2"
-                        name="radios"
-                        value="Conteudo Sexual"
-                        onClick={(e) => {
-                          option = e.target.value;
-                        }}
-                      />
-                      <CLabel
-                        variant="checkbox"
-                        style={{ color: "black" }}
-                        htmlFor="radio2"
-                      >
-                        Conteudo Sexual
-                      </CLabel>
-                    </CFormGroup>
-                    <CFormGroup variant="checkbox">
-                      <CInputRadio
-                        className="form-check-input"
-                        id="radio3"
-                        name="radios"
-                        value="outros"
-                        onClick={(e) => {
-                          option = e.target.value;
-                        }}
-                      />
-                      <CLabel
-                        variant="checkbox"
-                        style={{ color: "black" }}
-                        htmlFor="radio3"
-                      >
-                        Outros
-                      </CLabel>
-                    </CFormGroup>
-                  </CCol>
-                </CFormGroup>
-                <p>Detalhe o motivo do report abaixo:</p>
+        if (!state.video.owner) {
+          confirmAlert({
+            customUI: ({ onClose }) => {
+              var text,
+                option = "";
+              return (
+                <div className="custom-ui">
+                  <h1>Report</h1>
+                  <CFormGroup row>
+                    <CCol md="9">
+                      <p>
+                        Selecione o motivo que melhor encaixe no report abaixo:
+                      </p>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="radio1"
+                          name="radios"
+                          value={"Violencia Explicita"}
+                          onClick={(e) => {
+                            option = e.target.value;
+                          }}
+                        />
+                        <CLabel
+                          variant="checkbox"
+                          style={{ color: "black" }}
+                          htmlFor="radio1"
+                        >
+                          Violencia Explicita
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="radio2"
+                          name="radios"
+                          value="Conteudo Sexual"
+                          onClick={(e) => {
+                            option = e.target.value;
+                          }}
+                        />
+                        <CLabel
+                          variant="checkbox"
+                          style={{ color: "black" }}
+                          htmlFor="radio2"
+                        >
+                          Conteudo Sexual
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="radio3"
+                          name="radios"
+                          value="outros"
+                          onClick={(e) => {
+                            option = e.target.value;
+                          }}
+                        />
+                        <CLabel
+                          variant="checkbox"
+                          style={{ color: "black" }}
+                          htmlFor="radio3"
+                        >
+                          Outros
+                        </CLabel>
+                      </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+                  <p>Detalhe o motivo do report abaixo:</p>
 
-                <CInput
-                  type="text"
-                  onChange={(e) => {
-                    text = e.target.value;
-                    // setReport({ ...re, text: e.target.value });
-                  }}
-                ></CInput>
-                <button class="myBut" onClick={onClose}>
-                  Sair
-                </button>
-                <button class="myBut" onClick={() => sendReport(text, option)}>
-                  Enviar
-                </button>
-              </div>
-            );
-          },
-        });
+                  <CInput
+                    type="text"
+                    onChange={(e) => {
+                      text = e.target.value;
+                      // setReport({ ...re, text: e.target.value });
+                    }}
+                  ></CInput>
+                  <button class="myBut" onClick={onClose}>
+                    Sair
+                  </button>
+                  <button
+                    class="myBut"
+                    onClick={() => sendReport(text, option)}
+                  >
+                    Enviar
+                  </button>
+                </div>
+              );
+            },
+          });
+        }
       } else {
         alert("Reporte", "Tens que estar logado pra reportar");
       }
@@ -258,7 +264,7 @@ const View = ({ user }) => {
 
   const sendReport = (text, option) => {
     var data = {
-      video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+      video_id: id,
       token: user.token,
       report_text: text,
       report_option: option,
@@ -285,12 +291,12 @@ const View = ({ user }) => {
     if (!state.fetched) {
       if (user.token) {
         var data = {
-          video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+          video_id: id,
           token: user.token,
         };
       } else {
         var data = {
-          video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+          video_id: id,
           token: "",
         };
       }
@@ -310,7 +316,6 @@ const View = ({ user }) => {
       });
     }
   }, []);
-  console.log(state.report);
   return (
     <div style={{ display: "flex", width: "100%" }}>
       {/* <CRow>
@@ -403,23 +408,27 @@ const View = ({ user }) => {
               </div>
               <div style={{ width: "1%" }}>
                 <>
-                  {state.video.is_subscribed === false && (
-                    <CButton
-                      id="inscribe"
-                      class="inscribe"
-                      onClick={() => Change(true)}
-                    >
-                      Inscrever-se
-                    </CButton>
-                  )}{" "}
-                  {state.video.is_subscribed === true && (
-                    <CButton
-                      id="inscribe"
-                      class="registered"
-                      onClick={() => Change(false)}
-                    >
-                      Inscrito
-                    </CButton>
+                  {state.video.owner === false && (
+                    <>
+                      {state.video.is_subscribed === false && (
+                        <CButton
+                          id="inscribe"
+                          class="inscribe"
+                          onClick={() => Change(true)}
+                        >
+                          Inscrever-se
+                        </CButton>
+                      )}{" "}
+                      {state.video.is_subscribed === true && (
+                        <CButton
+                          id="inscribe"
+                          class="registered"
+                          onClick={() => Change(false)}
+                        >
+                          Inscrito
+                        </CButton>
+                      )}
+                    </>
                   )}
                 </>
               </div>

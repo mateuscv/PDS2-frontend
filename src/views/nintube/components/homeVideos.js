@@ -23,6 +23,8 @@ import {
 //Componets
 //Style
 //API
+import { feedVideos } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
   {
@@ -116,7 +118,9 @@ const videos = [
 
 const HomeVideos = ({ user }) => {
   const [state, setState] = useState({
+    videos: [],
     fetched: false,
+    today: new Date(),
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -124,14 +128,19 @@ const HomeVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      var data = {
+        numberSkip: 0,
+      };
+      feedVideos(data).then(function (data) {
+        setState({ ...state, fetched: true, videos: data });
+      });
     }
   }, []);
   return (
     <div>
       <CContainer fluid>
         <CRow>
-          {videos.map((item, index) => (
+          {state.videos.map((item, index) => (
             <CCol sm="4">
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
@@ -180,7 +189,10 @@ const HomeVideos = ({ user }) => {
                       <CCardText
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
-                      >{`${item.views} • ${item.date}`}</CCardText>{" "}
+                      >{`${item.views} • ${diffDate(
+                        state.today,
+                        item.date
+                      )}`}</CCardText>{" "}
                     </CCardText>
                   </CCardBody>
                 </div>
