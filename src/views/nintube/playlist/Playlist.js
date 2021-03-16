@@ -7,6 +7,7 @@ import * as actions from "../../../store/actions";
 //CoreUI
 import { CProgress } from "@coreui/react";
 //Componets
+import PlaylistVideos from "../components/playlistVideos";
 //Style
 //API
 
@@ -18,10 +19,10 @@ const Playlist = ({ user }) => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
     }
-  }, []);
+  }, [state]);
   return (
     <div>
-      <h1>Playlist</h1>
+      <PlaylistVideos/>
     </div>
   );
 };
