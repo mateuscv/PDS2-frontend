@@ -219,7 +219,7 @@ const UploadEdit = ({ user }) => {
                 setState({ ...state, privacy: e.target.checked })
               }
             />
-            {state.privacy ? "Privado" : "Publico"}
+            Privado
           </div>
           <div style={{ marginBottom: "5%" }}>
             <label className="fileThumb" for="file_thumb">
