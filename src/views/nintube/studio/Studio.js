@@ -51,7 +51,7 @@ const fields = [
 const Studio = ({ user, history }) => {
   const [state, setState] = useState({
     fetched: false,
-    videos: "",
+    videos: [],
   });
   const Delet = (video_id) => {
     var data = { token: user.token, video_id: video_id };
@@ -69,12 +69,12 @@ const Studio = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      console.log(user.token);
+      // console.log(user.token);
       var data = { token: user.token };
       myVideos(data)
         .then(function (data) {
           console.log(data);
-          setState({ ...state, fetched: true, videos: data[0] });
+          setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
           setState({ ...state, error: "Dados inválidos", message: "" });
@@ -91,19 +91,31 @@ const Studio = ({ user, history }) => {
       <CCard>
         <CCardHeader>Conteúdo do Canal</CCardHeader>
         <CCardBody>
+          {/* {state.videos.map((item, index) => (
+            <CCard>
+
+              <CImg
+                style={{
+                  width: "30%",
+                }}
+                src={item[0].thumb}
+              ></CImg>
+              <span>item[0].title</span>
+            </CCard>
+          ))} */}
           <CDataTable
             items={state.videos}
             fields={fields}
             hover
             striped
-            columnFilter
+            // columnFilter
             itemsPerPageSelect
             itemsPerPage={5}
-            sorter
+            // sorter
             // dark="true"
             pagination
             scopedSlots={{
-              Thumb: (item) => (
+              thumb: (item) => (
                 <td>
                   <img
                     style={{
@@ -112,10 +124,15 @@ const Studio = ({ user, history }) => {
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.thumb}
+                    src={item[0].thumb}
                   />
                 </td>
               ),
+              title: (item) => <td>{item[0].title}</td>,
+              privacy: (item) => (
+                <td>{item[0].privacy ? "Privado" : "Publico"}</td>
+              ),
+              created_at: (item) => <td>{item[0].created_at}</td>,
               Editar: (item) => (
                 <td className="align-middle">
                   <CButton

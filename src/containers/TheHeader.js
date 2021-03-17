@@ -95,7 +95,6 @@ const TheHeader = ({ user, setuser }) => {
   };
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
-  console.log(typeof user);
   const logged = user ? true : false;
 
   const toggleSidebar = () => {
