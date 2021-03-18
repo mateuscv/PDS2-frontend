@@ -21,7 +21,7 @@ import {
   CImg,
 } from "@coreui/react";
 
-const playlist = { title: "titulobatata", privacy: true };
+const playlist = { title: "Minha Playlist", privacy: true };
 
 const videos = [
   {
@@ -64,6 +64,38 @@ const videos = [
     thumb:
       "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
+  {
+    id: 5,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 7,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 8,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 9,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
 ];
 
 const PlaylistVideos = ({ user }) => {
@@ -83,8 +115,7 @@ const PlaylistVideos = ({ user }) => {
       <CRow>
         {state.videos.map((item, index) => (
           <CCol sm="4">
-            <CCard style={{ border: "2px solid #B3272C" }}>
-              <CImg
+            <CCard style={{ width:"80%", border: "2px solid #B3272C" }}>             <CImg
                 style={{
                   width: "100%",
                   cursor: "pointer",
