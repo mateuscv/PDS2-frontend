@@ -20,8 +20,10 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //API
 import { listPlaylist } from "../../../util/Api";
+import { cilAlignCenter } from "@coreui/icons";
 
 const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
 
@@ -108,6 +110,20 @@ const videos = [
   },
 ];
 
+/*const Delet = (video_id) => {
+  var data = { token: user.token, video_id: video_id };
+  deletVideo(data)
+    .then(function (data) {
+      alert("Ação", "Video foi deletado com sucesso!");
+    })
+    .catch((err) => {
+      alert(
+        "Ação",
+        "Ouve algume erro ao deletar o video, por favor tentar novamente mais tarde!"
+      );
+    });
+};*/
+
 const PlaylistVideos = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
@@ -128,7 +144,7 @@ const PlaylistVideos = ({ user }) => {
       <h1>{state.playlist.title}</h1>
       <CRow>
         <CCol sm="3">
-          <CCard class="bg-black border border-dark" style={{ position:"relative",textAlign:"center", width:"100%", height:"20%", border: "2px solid #B3272C" }}>
+          <CCard class="bg-black" style={{ border:"none", position:"relative",textAlign:"center", width:"100%", height:"20%", border: "2px solid #B3272C" }}>
             <div>
               <CCardBody
                 style={{ height: "100px" }}
@@ -175,6 +191,13 @@ const PlaylistVideos = ({ user }) => {
               }}
             >
               <CCardBody style={{ margin: "0" }}>
+              <CButton style={{float: "left",}}
+                    color="btn btn-ghost-danger"
+                    title="Deletar"
+                    //onClick={() => Delet(item.id)}
+                  >
+                    <CIcon name="cil-trash" />
+                </CButton>
                 <CImg
                   style={{
                     width: "125px",
@@ -187,19 +210,18 @@ const PlaylistVideos = ({ user }) => {
                   }}
                   src={item.thumb}
                 />
-                <CCardText>
-                  <CCardText>
-                    <h5
-                      style={{ cursor: "pointer" }}
-                    >
-                      {item.title.substring(0, 100) + "..."}
-                    </h5>
-                    <span>
-                      {item.channel}
-                    </span>{" "}
+                  <CCardText row>
+                    <CCol style={{padding:"0"}} md="12">
+                      <h5
+                        style={{ cursor: "pointer" }}
+                      >
+                        {item.title.substring(0, 100) + "..."}
+                      </h5>
+                      <span>
+                        {item.channel}
+                      </span>{" "}
+                    </CCol>
                   </CCardText>
-
-                </CCardText>
               </CCardBody>
             </CCard>
           ))}
