@@ -20,6 +20,8 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+//API
+import { listPlaylist } from "../../../util/Api";
 
 const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
 
@@ -114,82 +116,97 @@ const PlaylistVideos = ({ user }) => {
   });
   useEffect(() => {
     if (!state.fetched) {
+      var data = {token: user.token};
+      /*listPlaylist(data).then(function (data){
+        setState({ ...state, fetched:true, playlist: data.playlist, videos: data.videos});
+      });*/
       setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
-  }, [state]);
+  }, [state, user.token]);
   return (<div>
     <CContainer fluid>
-      <h1>{ state.playlist.title }</h1>
+      <h1>{state.playlist.title}</h1>
       <CRow>
-          <CCol sm="4">
-            <CCard class="bg-black border border-dark" style={{ width:"100%", border: "2px solid #B3272C" }}>
-              <div>
-                <CCardBody
-                  className=" float-left"
-                  style={{ height: "100px" }}
-                >
-                </CCardBody>
-                  <CCardText
-                    style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                  >
-                    {state.playlist.privacy ? (
-                      <p> Privada • {state.videos.length} vídeos • {state.playlist.views} visualizações</p>
-                    ) : (<p> Pública • {state.videos.length} vídeos • {state.playlist.views} visualizações </p>)}
+        <CCol sm="3">
+          <CCard class="bg-black border border-dark" style={{ position:"relative",textAlign:"center", width:"100%", height:"20%", border: "2px solid #B3272C" }}>
+            <div>
+              <CCardBody
+                style={{ height: "100px" }}
+              >
+                  {state.videos.length !== 0 && (
+                    <CImg
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      cursor: "pointer",
+                      float: "left",
+                      marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
+                    }}
+                    src={state.videos[0].thumb}
+                  />
+                  )}
 
-                    {" "}
-                    <span
-                      style={{ cursor: "pointer" }}
-                    >
-                    </span>{" "}
-                  </CCardText>
-              </div>
-            </CCard>
-          </CCol>
-      </CRow>
-      <CRow>
-        {state.videos.map((item, index) => (
-          <CCol sm="4">
-            <CCard style={{ width:"100%", border: "2px solid #B3272C" }}>
-              <CImg
-                style={{
-                  width: "100%",
-                  cursor: "pointer",
-                  borderBottom: "1px solid black",
-                  borderBottomLeftRadius: "10px",
-                  borderBottomRightRadius: "10px",
-                }}
-                src={item.thumb}
-              />
-              <div>
-                <CCardBody
-                  className=" float-left"
-                  style={{ height: "100px" }}
+              </CCardBody>
+                <CCardText
+                  style={{position: "absolute", left:"20%", bottom:"0", marginBottom: "-1%", marginTop: "1.5%" }}
                 >
-                </CCardBody>
-                <CCardBody>
-                  <CCardSubtitle
+                  {state.playlist.privacy ? (
+                    <p> Privada • {state.videos.length} vídeos • {state.playlist.views} visualizações</p>
+                  ) : (<p> Pública • {state.videos.length} vídeos • {state.playlist.views} visualizações </p>)}
+
+                  {" "}
+                  <span
                     style={{ cursor: "pointer" }}
                   >
-                    {item.title.substring(0, 100) + "..."}
-                  </CCardSubtitle>{" "}
-                  <CCardText
-                    style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                  >
-                    {" "}
-                    <span
+                  </span>{" "}
+                </CCardText>
+            </div>
+          </CCard>
+        </CCol>
+        <CCol sm="9">
+          {videos.map((item, index) => (
+            <CCard
+              style={{
+                height: "8%",
+                marginBottom: "1%",
+                border: "2px solid #B3272C",
+              }}
+            >
+              <CCardBody style={{ margin: "0" }}>
+                <CImg
+                  style={{
+                    width: "125px",
+                    height: "75px",
+                    cursor: "pointer",
+                    float: "left",
+                    marginRight: "1%",
+                    borderBottom: "1px solid black",
+                    borderRadius: "10px",
+                  }}
+                  src={item.thumb}
+                />
+                <CCardText>
+                  <CCardText>
+                    <h5
                       style={{ cursor: "pointer" }}
                     >
+                      {item.title.substring(0, 100) + "..."}
+                    </h5>
+                    <span>
                       {item.channel}
                     </span>{" "}
                   </CCardText>
-                </CCardBody>
-              </div>
+
+                </CCardText>
+              </CCardBody>
             </CCard>
-          </CCol>
-        ))}
+          ))}
+        </CCol>
       </CRow>
-    </CContainer> </div>);
-};
+    </CContainer>
+  </div>)};
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);

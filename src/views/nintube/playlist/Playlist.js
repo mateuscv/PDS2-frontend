@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
 //CoreUI
-import { CProgress } from "@coreui/react";
 //Componets
 import PlaylistVideos from "../components/playlistVideos";
 //Style
@@ -39,7 +38,7 @@ const Playlist = ({ user, history }) => {
       }
       setState({ ...state, fetched: true });
     }
-  }, [state]);
+  }, [history, state, user]);
   return (
     <div>
       <PlaylistVideos/>
