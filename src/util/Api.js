@@ -1,9 +1,8 @@
 import axios from "axios";
-export const API_URL = "http://localhost:3334/";
-//export const API_URL = "http://848251d83377.ngrok.io/";
+// export const API_URL = "http://localhost:3334/";
+export const API_URL = "http://61055c0a83f4.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
-// export const API_URL = "http://3576c2a11286.ngrok.io/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(
@@ -70,6 +69,15 @@ export const uploadVideo = (data, token) => {
   );
 };
 
+export const getUploadVideo = (data, token) => {
+  return axios.post(API_URL + "videos/getData", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
 export const checkEmail = (data) => {
   return axios.post(API_URL + "email/confirm_email", data).then(
     function (res) {
@@ -116,8 +124,11 @@ export const watchVideo = (data) => {
   );
 };
 
-export const editVideo = (data) => {
-  return axios.put(API_URL + "video/edit", data).then(
+export const editVideo = (data, token) => {
+  const config = {
+    headers: { authorization: token },
+  };
+  return axios.put(API_URL + "videos/edit", data, config).then(
     function (res) {
       let data = res.data;
       return data;
@@ -143,8 +154,17 @@ export const Inscribe = (data) => {
   );
 };
 
+export const newLiked = (data) => {
+  return axios.post(API_URL + "videos/liked", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
 export const Report = (data) => {
-  return axios.put(API_URL + "/report", data).then(
+  return axios.put(API_URL + "videos/report", data).then(
     function (res) {
       let data = res.data;
       return data;
@@ -181,6 +201,33 @@ export const deletComment = (data) => {
 
 export const getComment = (data) => {
   return axios.post(API_URL + "videos/getComment", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const getVideos = (data) => {
+  return axios.post(API_URL + "videos/get", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const myVideos = (data) => {
+  return axios.post(API_URL + "videos/myVideos", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }.bind(this)
+  );
+};
+
+export const feedVideos = (data) => {
+  return axios.post(API_URL + "home/get", data).then(
     function (res) {
       let data = res.data;
       return data;

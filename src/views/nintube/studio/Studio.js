@@ -21,25 +21,18 @@ import { deletVideo } from "../../../util/Api";
 //Style
 //API
 import data from "./data";
+import { myVideos } from "../../../util/Api";
 
 const fields = [
-  { key: "Thumb", _style: { width: "20%" }, sorter: false, filter: false },
-  { key: "Titulo", _style: { width: "35%" } },
+  { key: "thumb", _style: { width: "20%" }, sorter: false, filter: false },
+  { key: "title", _style: { width: "35%" } },
   {
-    key: "Visibilidade",
+    key: "privacy",
     _style: { width: "5%" },
 
     filter: false,
   },
-  { key: "Restrições", filter: false },
-  { key: "Data", _style: { width: "40%" } },
-  { key: "Visualizações", filter: false },
-  {
-    key: "Comentários",
-    classes: "centerTd",
-    filter: false,
-  },
-  { key: "Likes", filter: false },
+  { key: "created_at", _style: { width: "40%" } },
   {
     key: "Editar",
     label: "",
@@ -56,6 +49,10 @@ const fields = [
 ];
 
 const Studio = ({ user, history }) => {
+  const [state, setState] = useState({
+    fetched: false,
+    videos: [],
+  });
   const Delet = (video_id) => {
     var data = { token: user.token, video_id: video_id };
     deletVideo(data)
@@ -70,6 +67,22 @@ const Studio = ({ user, history }) => {
       });
   };
 
+  useEffect(() => {
+    if (!state.fetched) {
+      // console.log(user.token);
+      var data = { token: user.token };
+      myVideos(data)
+        .then(function (data) {
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
+      // setState({ ...state, fetched: true });
+    }
+  }, []);
+
   return (
     <div>
       <CButton color="success" onClick={() => history.push("/upload")}>
@@ -78,31 +91,48 @@ const Studio = ({ user, history }) => {
       <CCard>
         <CCardHeader>Conteúdo do Canal</CCardHeader>
         <CCardBody>
+          {/* {state.videos.map((item, index) => (
+            <CCard>
+
+              <CImg
+                style={{
+                  width: "30%",
+                }}
+                src={item[0].thumb}
+              ></CImg>
+              <span>item[0].title</span>
+            </CCard>
+          ))} */}
           <CDataTable
-            items={data}
+            items={state.videos}
             fields={fields}
             hover
             striped
-            columnFilter
+            // columnFilter
             itemsPerPageSelect
             itemsPerPage={5}
-            sorter
+            // sorter
             // dark="true"
             pagination
             scopedSlots={{
-              Thumb: (item) => (
+              thumb: (item) => (
                 <td>
-                  <CImg
+                  <img
                     style={{
                       width: "100%",
                       cursor: "pointer",
                       borderBottom: "1px solid black",
                       borderRadius: "10px",
                     }}
-                    src={item.Thumb}
+                    src={item[0].thumb}
                   />
                 </td>
               ),
+              title: (item) => <td>{item[0].title}</td>,
+              privacy: (item) => (
+                <td>{item[0].privacy ? "Privado" : "Publico"}</td>
+              ),
+              created_at: (item) => <td>{item[0].created_at}</td>,
               Editar: (item) => (
                 <td className="align-middle">
                   <CButton

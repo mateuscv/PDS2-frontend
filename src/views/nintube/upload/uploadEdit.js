@@ -22,7 +22,7 @@ import Player from "../components/Player";
 //Style
 import "../styles/nintube.css";
 //API
-import { getVideo, editVideo } from "../../../util/Api";
+import { getUploadVideo, editVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
 
@@ -33,10 +33,8 @@ const UploadEdit = ({ user }) => {
     title: "",
     privacy: "",
     video: null,
-    video_name: "",
     fetched: false,
-    video_url: "",
-    thumb: "",
+    thumb: null,
   });
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
@@ -54,7 +52,7 @@ const UploadEdit = ({ user }) => {
     // };
   };
 
-  const editVideo = () => {
+  const Edit = async () => {
     setState({
       ...state,
       error: "",
@@ -63,100 +61,112 @@ const UploadEdit = ({ user }) => {
     console.log(state.video);
     console.log(state.description);
     console.log(state.title);
-    const data = new FormData();
-    if (state.thumb || state.video) {
-      if (!state.description || !state.title) {
-        setState({
-          ...state,
-          error: "Campos não podem ficar em branco!",
-          message: "",
-        });
-      } else {
-        data.append("title", state.title);
-        data.append("description", state.description);
-        data.append("privacy", state.privacy);
-        editVideo(data, user.token)
-          .then(function (data) {
-            setState({
-              ...state,
-              error: "",
-              message: "Alterações salvas com sucesso!",
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            setState({
-              ...state,
-              error: "Algum erro aconteceu, tente novamente mais tarde!",
-              message: "",
-            });
-          });
-      }
+    // const data = new FormData();
+    // if (state.thumb || state.video) {
+    if (!state.title) {
+      setState({
+        ...state,
+        error: "Campos não podem ficar em branco!",
+        message: "",
+      });
     } else {
-      if (!state.description || !state.title) {
-        setState({
-          ...state,
-          error: "Campos não podem ficar em branco!",
-          message: "",
+      // data.append("title", state.title);
+      // data.append("description", state.description);
+      // data.append("privacy", state.privacy);
+      const toBase64 = (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
         });
-      } else {
-        var type_video = state.video.type.split("/");
-        if (type_video[0] !== "video") {
+      var values = {
+        video_id: id,
+        title: state.title,
+        privacy: state.privacy,
+        description: state.description,
+        file: !state.video ? null : await toBase64(state.video),
+        thumb: !state.thumb ? null : await toBase64(state.thumb),
+      };
+      console.log(values);
+      editVideo(values, user.token)
+        .then(function (data) {
           setState({
             ...state,
-            error: "Formato do video está errado!",
+            error: "",
+            message: "Alterações salvas com sucesso!",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({
+            ...state,
+            error: "Algum erro aconteceu, tente novamente mais tarde!",
             message: "",
           });
-        } else {
-          data.append("file", state.video);
-          data.append("title", state.title);
-          data.append("description", state.description);
-          data.append("privacy", state.privacy);
-          editVideo(data, user.token)
-            .then(function (data) {
-              setState({
-                ...state,
-                error: "",
-                message: "Alterações salvas com sucesso!",
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-              setState({
-                ...state,
-                error: "Algum erro aconteceu, tente novamente mais tarde!",
-                message: "",
-              });
-            });
-        }
-      }
+        });
     }
+    // } else {
+    //   if (!state.description || !state.title) {
+    //     setState({
+    //       ...state,
+    //       error: "Campos não podem ficar em branco!",
+    //       message: "",
+    //     });
+    //   } else {
+    //     var type_video = !state.video ? "video" : state.video.type.split("/");
+    //     if (type_video[0] !== "video") {
+    //       setState({
+    //         ...state,
+    //         error: "Formato do video está errado!",
+    //         message: "",
+    //       });
+    //     } else {
+    //       data.append("file", state.video);
+    //       data.append("title", state.title);
+    //       data.append("description", state.description);
+    //       data.append("privacy", state.privacy);
+    //       console.log(data);
+    //       editVideo(data, user.token)
+    //         .then(function (data) {
+    //           setState({
+    //             ...state,
+    //             error: "",
+    //             message: "Alterações salvas com sucesso!",
+    //           });
+    //         })
+    //         .catch((err) => {
+    //           console.log(err);
+    //           setState({
+    //             ...state,
+    //             error: "Algum erro aconteceu, tente novamente mais tarde!",
+    //             message: "",
+    //           });
+    //         });
+    //     }
+    //   }
+    // }
   };
 
   useEffect(() => {
     if (!state.fetched) {
-      var data = { id: id };
-      console.log(data);
-      // getUploadVideo(data)
-      //   .then(function (data) {
-      //     //console.log(user);
-      //     // console.log(data.token);
-      //     // console.log(data);
-      setState({
-        ...state,
-        fetched: true,
-        description: dataVideo.description,
-        title: dataVideo.title,
-        privacy: dataVideo.privacy,
-        thumb_url: dataVideo.thumb,
-        video_url: dataVideo.link,
-        video_name: "Nome do video",
-      });
-
-      //   })
-      //   .catch((err) => {
-      //     setState({ ...state, error: "Dados inválidos", message: "" });
-      //   });
+      var data = { video_id: id, token: user.token };
+      getUploadVideo(data)
+        .then(function (data) {
+          //console.log(user);
+          // console.log(data.token);
+          setState({
+            ...state,
+            fetched: true,
+            description: data.description,
+            title: data.title,
+            privacy: data.privacy,
+            thumb_url: data.thumb,
+          });
+        })
+        .catch((err) => {
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   }, []);
   return (
@@ -209,7 +219,7 @@ const UploadEdit = ({ user }) => {
                 setState({ ...state, privacy: e.target.checked })
               }
             />
-            {state.privacy ? "Privado" : "Publico"}
+            Privado
           </div>
           <div style={{ marginBottom: "5%" }}>
             <label className="fileThumb" for="file_thumb">
@@ -221,13 +231,12 @@ const UploadEdit = ({ user }) => {
                 setState({
                   ...state,
                   thumb: e.target.files[0],
-                  thumb_name: e.target.files[0].name,
                 })
               }
               type="file"
             ></input>{" "}
             <span style={{ color: "white" }}>
-              {state.thumb_name} <CImg src={state.thumb_url} />
+              <CImg src={state.thumb_url} />
             </span>
           </div>
 
@@ -254,7 +263,7 @@ const UploadEdit = ({ user }) => {
           <p style={{ color: "white" }}>{state.video_name}</p>
           <CButton
             style={{ color: "white", width: "50%", border: "1px solid red" }}
-            onClick={() => editVideo()}
+            onClick={() => Edit()}
           >
             Enviar
           </CButton>

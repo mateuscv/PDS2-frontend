@@ -53,7 +53,8 @@ const Comments = ({ user }) => {
   });
 
   let history = useHistory();
-  const video_id = "06abdd82-f539-46d3-98b5-4bbd0f960440";
+  let { id } = useParams();
+  const video_id = id;
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -80,7 +81,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id,
+        video_id: id,
         reply_id: "",
       };
       console.log(data);
@@ -94,7 +95,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text,
-        video_id: video_id,
+        video_id: id,
         reply_id,
       };
       console.log(data);
@@ -108,7 +109,7 @@ const Comments = ({ user }) => {
       var data = {
         token: user.token,
         text: "@" + aux + " " + text,
-        video_id: video_id,
+        video_id: id,
         reply_id,
       };
       console.log(data);
@@ -181,25 +182,22 @@ const Comments = ({ user }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      var req = {
-        name: "default",
-      };
-      getImg(req).then(function (data) {
-        console.log(data);
-        var img = "";
-        if (user.token) {
-          img = user.avatar;
-        } else {
-          img = data;
-        }
-        setState({
-          ...state,
-          avatar: img,
+      if (!user.token) {
+        var req = {
+          name: "default",
+        };
+        var img;
+        getImg(req).then(function (data) {
+          state.avatar = data;
         });
-      });
+      } else {
+        state.avatar = user.avatar;
+      }
+
       var data = {
-        video_id: "06abdd82-f539-46d3-98b5-4bbd0f960440",
+        video_id: id,
       };
+      console.log(id);
       getComment(data, user.token).then(function (data) {
         var listAux = Array();
         var today = new Date();
@@ -257,6 +255,7 @@ const Comments = ({ user }) => {
           fiComment: listAux,
           secComment: mtxAux,
           dispAns: showAux,
+          // avatar,
         });
       });
     }
