@@ -21,7 +21,7 @@ import {
   CImg,
 } from "@coreui/react";
 
-const playlist = { title: "titulobatata", privacy: true };
+const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
 
 const videos = [
   {
@@ -64,6 +64,46 @@ const videos = [
     thumb:
       "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
+  {
+    id: 6,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 7,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 8,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 9,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 10,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
 ];
 
 const PlaylistVideos = ({ user }) => {
@@ -81,9 +121,35 @@ const PlaylistVideos = ({ user }) => {
     <CContainer fluid>
       <h1>{ state.playlist.title }</h1>
       <CRow>
+          <CCol sm="4">
+            <CCard class="bg-black border border-dark" style={{ width:"100%", border: "2px solid #B3272C" }}>
+              <div>
+                <CCardBody
+                  className=" float-left"
+                  style={{ height: "100px" }}
+                >
+                </CCardBody>
+                  <CCardText
+                    style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                  >
+                    {state.playlist.privacy ? (
+                      <p> Privada • {state.videos.length} vídeos • {state.playlist.views} visualizações</p>
+                    ) : (<p> Pública • {state.videos.length} vídeos • {state.playlist.views} visualizações </p>)}
+
+                    {" "}
+                    <span
+                      style={{ cursor: "pointer" }}
+                    >
+                    </span>{" "}
+                  </CCardText>
+              </div>
+            </CCard>
+          </CCol>
+      </CRow>
+      <CRow>
         {state.videos.map((item, index) => (
           <CCol sm="4">
-            <CCard style={{ border: "2px solid #B3272C" }}>
+            <CCard style={{ width:"100%", border: "2px solid #B3272C" }}>
               <CImg
                 style={{
                   width: "100%",
