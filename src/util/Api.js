@@ -1,6 +1,6 @@
 import axios from "axios";
-// export const API_URL = "http://localhost:3334/";
-export const API_URL = "http://61055c0a83f4.ngrok.io/";
+ export const API_URL = "http://localhost:3334/";
+//export const API_URL = "http://61055c0a83f4.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
@@ -9,7 +9,7 @@ export const getImg = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -18,7 +18,7 @@ export const registerUser = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -27,7 +27,7 @@ export const loginUser = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -39,7 +39,7 @@ export const getProfile = (data, token) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -52,7 +52,7 @@ export const editProfile = (data, token) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -65,7 +65,7 @@ export const uploadVideo = (data, token) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -74,7 +74,7 @@ export const getUploadVideo = (data, token) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -83,7 +83,7 @@ export const checkEmail = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -93,7 +93,7 @@ export const editPass = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -102,7 +102,7 @@ export const sendEmail = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -111,7 +111,7 @@ export const getVideo = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -120,7 +120,7 @@ export const watchVideo = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -132,7 +132,7 @@ export const editVideo = (data, token) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -141,7 +141,7 @@ export const deletVideo = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -150,7 +150,7 @@ export const Inscribe = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -159,7 +159,7 @@ export const newLiked = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -168,7 +168,7 @@ export const Report = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -177,7 +177,7 @@ export const sendComment = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -186,7 +186,7 @@ export const editComment = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -195,7 +195,7 @@ export const deletComment = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -204,7 +204,7 @@ export const getComment = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -213,7 +213,7 @@ export const getVideos = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -222,7 +222,7 @@ export const myVideos = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
 
@@ -231,6 +231,16 @@ export const feedVideos = (data) => {
     function (res) {
       let data = res.data;
       return data;
-    }.bind(this)
+    }
   );
 };
+
+export const listPlaylist = (data) => {
+  return axios.post(API_URL + "playlist/list", data).then(
+    function (res) {
+      let data = res.data;
+      return data;
+    }
+  );
+};
+
