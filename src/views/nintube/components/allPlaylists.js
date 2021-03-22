@@ -1,6 +1,6 @@
 //REACT
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,8 +20,6 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
-//Componets
-//Style
 //API
 
 const videos = [
@@ -114,11 +112,11 @@ const videos = [
   },
 ];
 
-const HomeVideos = ({ user }) => {
+const AllPlaylists = ({ user }) => {
+  let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
   });
-
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -153,9 +151,15 @@ const HomeVideos = ({ user }) => {
                       onClick={() => handleClick("view", item.id)}
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
-                      {item.title.substring(0, 100) + "..."}
+                      {item.title}
                     </h3>{" "}
-                    <CCardText
+                    <span
+                      onClick={() => handleClick("playlist", item.id)}
+                      style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                    >
+                      Ver Playlist Completa
+                    </span>
+                    {/* <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
                       <span
@@ -168,7 +172,7 @@ const HomeVideos = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
                       >{`${item.views} • ${item.date}`}</CCardText>{" "}
-                    </CCardText>
+                    </CCardText> */}
                   </CCardBody>
                 </div>
               </CCard>
@@ -180,6 +184,4 @@ const HomeVideos = ({ user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(HomeVideos);
+export default AllPlaylists;
