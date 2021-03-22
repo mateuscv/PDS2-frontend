@@ -49,7 +49,7 @@ const TheHeaderDropdown = ({ user, reset }) => {
           <CIcon name="cil-user" className="mfe-2" />
           &nbsp;Perfil
         </CDropdownItem>
-        <CDropdownItem onClick={() => handleClick("channel", 1)}>
+        <CDropdownItem onClick={() => handleClick("channel", 0)}>
           <CIcon name="cilTv" className="mfe-2" />
           Canal
         </CDropdownItem>

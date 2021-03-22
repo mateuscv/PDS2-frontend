@@ -32,7 +32,7 @@ const routes = [
   { path: "/view/:id", name: "View", component: View },
   { path: "/profile", name: "Profile", component: Profile },
   { path: "/edit/profile", name: "EditProfile", component: EditProfile },
-  { path: "/playlist", name: "Playlist", component: Playlist },
+  { path: "/playlist/:id", name: "Playlist", component: Playlist },
   { path: "/channel/:id", name: "Channel", component: Channel },
   { path: "/historic", name: "Historic", component: Historic },
   { path: "/upload/", name: "Upload", component: Upload },
