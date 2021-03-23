@@ -35,7 +35,7 @@ import {
 } from "../../../util/Api";
 //Style
 
-const View = ({ user }) => {
+const View = ({ user, history }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
@@ -46,6 +46,11 @@ const View = ({ user }) => {
     op_report: "",
     report: "",
   });
+
+  const handleClick = (route, id) => {
+    history.push("/" + route + "/" + id);
+  };
+
   const Change = (cond) => {
     if (user.token) {
       var data = {
@@ -388,8 +393,9 @@ const View = ({ user }) => {
         >
           <div style={{ width: "7%", height: "100%" }}>
             <img
+              onClick={() => handleClick("channel", state.video.owner_id)}
               src={state.video.owner_avatar}
-              style={{ borderRadius: "40%" }}
+              style={{ borderRadius: "40%", cursor: "pointer" }}
               width="44"
               height="44"
             />
@@ -403,7 +409,12 @@ const View = ({ user }) => {
               }}
             >
               <div style={{ width: "90%" }}>
-                <span>{state.video.owner_nick}</span>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleClick("channel", state.video.owner_id)}
+                >
+                  {state.video.owner_nick}
+                </span>
                 <p>{state.video.all_subs} subscribers</p>
               </div>
               <div style={{ width: "1%" }}>

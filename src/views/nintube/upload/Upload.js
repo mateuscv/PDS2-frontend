@@ -14,11 +14,13 @@ import {
   CSwitch,
   CButton,
   CLabel,
+  CImg,
 } from "@coreui/react";
 //Componets
 //Style
 import "../styles/nintube.css";
 //API
+import Player from "../components/Player";
 import { uploadVideo } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
@@ -33,9 +35,16 @@ const Upload = ({ user, history }) => {
     video_name: "",
     thumb: null,
     fetched: false,
+    image: "",
+    video_url: "",
   });
   const onDrop = (files) => {
-    setState({ ...state, video: files[0], video_name: files[0].path });
+    setState({
+      ...state,
+      video: files[0],
+      video_name: files[0].path,
+      video_url: files[0],
+    });
 
     // const options = {
     //   onUploadProgess: (progressEvent) => {
@@ -75,43 +84,42 @@ const Upload = ({ user, history }) => {
           message: "",
         });
       } else {
-
         /*const data = new FormData();
-        data.append("file", state.video);
-        data.append("title", state.title);
-        data.append("description", state.description);
-        data.append("privacy", state.privacy);
-        data.append("thumb", state.thumb);
+data.append("file", state.video);
+data.append("title", state.title);
+data.append("description", state.description);
+data.append("privacy", state.privacy);
+data.append("thumb", state.thumb);
 
-        console.log(data);*/
+console.log(data);*/
 
         /*var data = {
-          file: state.video,
-          title: state.title,
-          description: state.description,
-          privacy: state.privacy,
-          thumb: state.thumb,
-        };*/
+file: state.video,
+title: state.title,
+description: state.description,
+privacy: state.privacy,
+thumb: state.thumb,
+};*/
 
-        const toBase64 = file => new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = error => reject(error);
-        });
+        const toBase64 = (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+          });
 
         const data = {
           title: state.title,
           file: await toBase64(state.video),
           thumb: await toBase64(state.thumb),
           description: state.description,
-          privacy: state.privacy
+          privacy: state.privacy,
         };
 
         console.log(data);
 
         //submitForm("application/json", data, (msg) => console.log(msg));
-
 
         uploadVideo(data, user.token)
           .then(function (data) {
@@ -126,6 +134,28 @@ const Upload = ({ user, history }) => {
             setState({ ...state, error: "Dados inválidos", message: "" });
           });
       }
+    }
+  };
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setState({
+        ...state,
+        thumb: event.target.files[0],
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+      // var thumb = event.target.files[0];
+      // var thumb_name = event.target.files[0].name;
+      // let reader = new FileReader();
+      // reader.onload = (e) => {
+      //   setState({
+      //     ...state,
+      //     thumb: thumb,
+      //     thumb_name: thumb_name,
+      //     image: e.target.result,
+      //   });
+      // };
+      // reader.readAsDataURL(event.target.files[0]);
     }
   };
 
@@ -156,7 +186,7 @@ const Upload = ({ user, history }) => {
   }, []);
 
   return (
-    <div>
+    <div style={{ border: "1px solid white", borderRadius: "10px" }}>
       {state.message && (
         <CCard className="border-success" style={{ textAlign: "center" }}>
           {state.message}
@@ -167,84 +197,151 @@ const Upload = ({ user, history }) => {
           {state.error}
         </CCard>
       )}
-      <CFormGroup row style={{ width: "50%" }}>
-        <CCol md="12">
+      <CFormGroup
+        row
+        style={{
+          marginLeft: "2%",
+          marginTop: "1%",
+        }}
+      >
+        <CCol md="6">
+          <h3 style={{ color: "white" }}>Título</h3>
           <CInput
-            placeholder="Titulo"
+            // style={{ height: "100%" }}
+            // placeholder="Titulo"
             onChange={(e) => setState({ ...state, title: e.target.value })}
           />
         </CCol>
-      </CFormGroup>
-      <CFormGroup row style={{ width: "50%" }}>
-        <CCol md="12">
-          <CTextarea
-            placeholder="Descrição"
-            onChange={(e) =>
-              setState({ ...state, description: e.target.value })
-            }
-          />
+        <CCol md="6">
+          <div
+            style={{
+              color: "white",
+
+              // justifyContent: "space-between",
+            }}
+          >
+            <h3 style={{ color: "white" }}>Thumb e Privacidade</h3>
+
+            <div style={{ display: "flex" }}>
+              <div>
+                <label className="fileThumb" for="file_thumb">
+                  Selecione a imagem para a thumb &#187;
+                </label>
+                <input
+                  id="file_thumb"
+                  onChange={(e) => onImageChange(e)}
+                  type="file"
+                ></input>{" "}
+              </div>
+              <div style={{ marginTop: "0.5%", display: "flex" }}>
+                <CSwitch
+                  className={"mx-1"}
+                  color={"success"}
+                  onChange={(e) =>
+                    setState({ ...state, privacy: e.target.checked })
+                  }
+                />
+                <span>Privado</span>
+              </div>
+            </div>
+          </div>
+          {/* <div style={{ color: "white" }}> */}
         </CCol>
       </CFormGroup>
-      <div
-        style={{
-          color: "white",
-          display: "flex",
-          // justifyContent: "space-between",
-        }}
-      >
-        {" "}
-        <CSwitch
-          className={"mx-1"}
-          color={"info"}
-          onChange={(e) => setState({ ...state, privacy: e.target.checked })}
-        />
-        {state.privacy ? "Privado" : "Publico"}
-      </div>
-      <div>
-        <label className="fileThumb" for="file_thumb">
-          Selecione a imagem para a thumb &#187;
-        </label>
-        <input
-          id="file_thumb"
-          onChange={(e) =>
-            setState({
-              ...state,
-              thumb: e.target.files[0],
-              thumb_name: e.target.files[0].name,
-            })
-          }
-          type="file"
-        ></input>{" "}
-        <span style={{ color: "white" }}>{state.thumb_name}</span>
-      </div>
-      <h3>Arraste ou Selecione o video abaixo!</h3>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
-          {({ getRootProps, getInputProps }) => (
+      {/* <CFormGroup row style={{ width: "50%" }}>
+      <CCol md="12">
+      <CTextarea
+      placeholder="Descrição"
+      style={{ height: "140%" }}
+      onChange={(e) =>
+      setState({
+      ...state,
+      description: e.target.value,
+      })
+      }
+      />
+      </CCol>
+      </CFormGroup> */}
+      <CFormGroup row style={{ marginLeft: "2%" }}>
+        <CCol md="6">
+          <h3 style={{ color: "white" }}>Descrição</h3>
+          <CTextarea
+            // placeholder="Descrição"
+            style={{ height: "30%" }}
+            onChange={(e) =>
+              setState({
+                ...state,
+                description: e.target.value,
+              })
+            }
+          />
+
+          {/* </div> */}
+        </CCol>
+        <CCol md="6">
+          <div style={{}}>
+            <h3 style={{ color: "white", alignItems: "center" }}>
+              Arraste ou Selecione o video abaixo!
+            </h3>
+
             <div
               style={{
-                width: "300px",
-                height: "240px",
-                border: "1px solid lightgray",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "space-between",
               }}
-              {...getRootProps()}
             >
-              <input {...getInputProps()} />
-              <CIcon name="cilDataTransferUp" />
+              <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
+                {({ getRootProps, getInputProps }) => (
+                  <div
+                    style={{
+                      width: "300px",
+                      height: "240px",
+                      border: "1px solid lightgray",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    {...getRootProps()}
+                  >
+                    <input {...getInputProps()} />
+                    <CIcon name="cilDataTransferUp" />
+                  </div>
+                )}
+              </Dropzone>
+            </div>
+          </div>
+          <p style={{ color: "white" }}>{state.video_name}</p>
+        </CCol>
+      </CFormGroup>
+      {/* <div style={{ width: "50%" }}>
+        <Player url={state.video_url} />
+      </div> */}
+      <CFormGroup row style={{ marginLeft: "2%" }}>
+        <CCol md="6">
+          {state.image && (
+            <div align="center">
+              <h3 style={{ color: "white" }}>Imagem Escolhida</h3>
+              <img style={{ width: "60%" }} src={state.image} />
             </div>
           )}
-        </Dropzone>
+        </CCol>
+        <CCol md="6">
+          {state.video_url && (
+            <div align="center">
+              <h3 style={{ color: "white" }}>Vídeo Escolhida</h3>
+              <iframe src={state.video_url}></iframe>
+            </div>
+          )}
+        </CCol>
+      </CFormGroup>
+      <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
+        <CButton
+          style={{ color: "white", border: "1px solid red" }}
+          onClick={() => sendVideo()}
+        >
+          Enviar
+        </CButton>
       </div>
-      <p style={{ color: "white" }}>{state.video_name}</p>
-      <CButton
-        style={{ color: "white", border: "1px solid red" }}
-        onClick={() => sendVideo()}
-      >
-        Enviar
-      </CButton>
     </div>
   );
 };

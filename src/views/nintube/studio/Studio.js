@@ -25,14 +25,14 @@ import { myVideos } from "../../../util/Api";
 
 const fields = [
   { key: "thumb", _style: { width: "20%" }, sorter: false, filter: false },
-  { key: "title", _style: { width: "35%" } },
+  { key: "titulo", _style: { width: "35%" } },
   {
-    key: "privacy",
+    key: "privacidade",
     _style: { width: "5%" },
 
     filter: false,
   },
-  { key: "created_at", _style: { width: "40%" } },
+  { key: "criado", _style: { width: "40%" } },
   {
     key: "Editar",
     label: "",
@@ -51,7 +51,7 @@ const fields = [
 const Studio = ({ user, history }) => {
   const [state, setState] = useState({
     fetched: false,
-    videos: "",
+    videos: [],
   });
   const Delet = (video_id) => {
     var data = { token: user.token, video_id: video_id };
@@ -69,12 +69,29 @@ const Studio = ({ user, history }) => {
 
   useEffect(() => {
     if (!state.fetched) {
-      console.log(user.token);
+      // console.log(user.token);
       var data = { token: user.token };
       myVideos(data)
         .then(function (data) {
           console.log(data);
-          setState({ ...state, fetched: true, videos: data[0] });
+          var videos = [];
+          for (let i = 0; i < data.length; i++) {
+            var date = new Date(data[i][0].created_at);
+            videos.push({
+              id: data[i][0].id,
+              thumb: data[i][0].thumb,
+              titulo: data[i][0].title,
+              privacidade: data[i][0].privacy,
+              criado:
+                date.getDate() +
+                "/" +
+                (date.getMonth() + 1) +
+                "/" +
+                date.getFullYear(),
+            });
+          }
+
+          setState({ ...state, fetched: true, videos });
         })
         .catch((err) => {
           setState({ ...state, error: "Dados inválidos", message: "" });
@@ -82,66 +99,117 @@ const Studio = ({ user, history }) => {
       // setState({ ...state, fetched: true });
     }
   }, []);
-
   return (
-    <div>
-      <CButton color="success" onClick={() => history.push("/upload")}>
-        <CIcon name="cil-cloud-upload" /> Enviar Vídeo
-      </CButton>
-      <CCard>
-        <CCardHeader>Conteúdo do Canal</CCardHeader>
-        <CCardBody>
-          <CDataTable
-            items={state.videos}
-            fields={fields}
-            hover
-            striped
-            columnFilter
-            itemsPerPageSelect
-            itemsPerPage={5}
-            sorter
-            // dark="true"
-            pagination
-            scopedSlots={{
-              Thumb: (item) => (
-                <td>
-                  <img
-                    style={{
-                      width: "100%",
-                      cursor: "pointer",
-                      borderBottom: "1px solid black",
-                      borderRadius: "10px",
-                    }}
-                    src={item.thumb}
-                  />
-                </td>
-              ),
-              Editar: (item) => (
-                <td className="align-middle">
-                  <CButton
-                    title="Editar"
-                    color="btn btn-ghost-dark"
-                    onClick={() => history.push("/edit/upload/" + item.id)}
-                  >
-                    <CIcon name="cil-pencil" />
-                  </CButton>
-                </td>
-              ),
-              Deletar: (item) => (
-                <td className="align-middle">
-                  <CButton
-                    color="btn btn-ghost-danger"
-                    title="Deletar"
-                    onClick={() => Delet(item.id)}
-                  >
-                    <CIcon name="cil-trash" />
-                  </CButton>
-                </td>
-              ),
-            }}
-          />
-        </CCardBody>
-      </CCard>
+    <div
+      style={{
+        height: "100%",
+      }}
+    >
+      {state.videos.length !== 0 ? (
+        <div>
+          <CCard>
+            <CCardHeader>Conteúdo do Canal</CCardHeader>
+            <CCardBody>
+              {/* {state.videos.map((item, index) => (
+            <CCard>
+
+              <CImg
+                style={{
+                  width: "30%",
+                }}
+                src={item[0].thumb}
+              ></CImg>
+              <span>item[0].title</span>
+            </CCard>
+          ))} */}
+
+              <div align="center">
+                <CButton
+                  color="success"
+                  onClick={() => history.push("/upload")}
+                >
+                  <CIcon name="cil-cloud-upload" /> Enviar Vídeo
+                </CButton>
+              </div>
+
+              <CDataTable
+                items={state.videos}
+                fields={fields}
+                hover
+                striped
+                // columnFilter
+                itemsPerPageSelect
+                itemsPerPage={5}
+                // sorter
+                // dark="true"
+                pagination
+                scopedSlots={{
+                  thumb: (item) => (
+                    <td>
+                      <img
+                        style={{
+                          width: "100%",
+                          height: "160px",
+                          // cursor: "pointer",
+                          borderBottom: "1px solid black",
+                          borderRadius: "10px",
+                        }}
+                        src={item.thumb}
+                      />
+                    </td>
+                  ),
+                  titulo: (item) => <td>{item.titulo}</td>,
+                  privacidade: (item) => (
+                    <td>{item.privacidade ? "Privado" : "Publico"}</td>
+                  ),
+                  criado: (item) => <td>{item.criado}</td>,
+                  Editar: (item) => (
+                    <td className="align-middle">
+                      <CButton
+                        title="Editar"
+                        color="btn btn-ghost-dark"
+                        onClick={() => history.push("/edit/upload/" + item.id)}
+                      >
+                        <CIcon name="cil-pencil" />
+                      </CButton>
+                    </td>
+                  ),
+                  Deletar: (item) => (
+                    <td className="align-middle">
+                      <CButton
+                        color="btn btn-ghost-danger"
+                        title="Deletar"
+                        onClick={() => Delet(item.id)}
+                      >
+                        <CIcon name="cil-trash" />
+                      </CButton>
+                    </td>
+                  ),
+                }}
+              />
+            </CCardBody>
+          </CCard>
+        </div>
+      ) : (
+        <div
+          align="center"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          className="c-app c-default-layout flex-row align-items-center"
+        >
+          {" "}
+          <div style={{ marginTop: "-20%" }} className="justify-content-center">
+            <h3 style={{ color: "white" }}>Não há videos no seu canal!</h3>{" "}
+            <h3 style={{ color: "white" }}>Click Abaixo</h3>
+            <CButton color="success" onClick={() => history.push("/upload")}>
+              <CIcon name="cil-cloud-upload" /> Enviar Primeiro Vídeo
+            </CButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
