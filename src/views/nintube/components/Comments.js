@@ -87,6 +87,11 @@ const Comments = ({ user }) => {
       console.log(data);
       sendComment(data).then(function (data) {
         if (data.status === 1) {
+          // let comments = state.fiComment;
+          // comments.push({
+          //   id: data.id,
+          //   user_id,
+          // });
           exitComment();
         }
       });
