@@ -287,3 +287,18 @@ progress::-moz-progress-bar {
 .form-control {
   resize: none;
 }
+
+.channel_button {
+  border: 1px solid;
+  width: 100%;
+  height: 130%;
+  outline: none;
+}
+
+.channel_button:hover,
+.channel_button:focus {
+  background-color: #666;
+  color: white;
+  border: 1px solid red;
+  outline: none;
+}

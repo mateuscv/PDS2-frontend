@@ -214,7 +214,7 @@ const TheHeader = ({ user, setuser }) => {
       {logged ? (
         <>
           <CHeaderNav className="px-3">
-            <TheHeaderDropdownNotif />
+            {/* <TheHeaderDropdownNotif /> */}
             {/* <TheHeaderDropdownTasks /> */}
             {/* <TheHeaderDropdownMssg /> */}
             <TheHeaderDropdown />
