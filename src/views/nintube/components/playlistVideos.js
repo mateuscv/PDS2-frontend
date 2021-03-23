@@ -125,11 +125,73 @@ const videos = [
 };*/
 
 const PlaylistVideos = ({ user }) => {
+
   const [state, setState] = useState({
     fetched: false,
     playlist: "",
     videos: [],
   });
+
+  const Delete = (id, idx) => {
+    let vet_playlist = [];
+    for (let index = 0; index < state.videos.length; index++) {
+      if (index !== idx){
+        vet_playlist.push(state.videos[index]);
+      }
+    }
+    setState({ ...state, videos: vet_playlist});
+  }
+
+  const buildPlaylist = () => {
+    console.log("xablau")
+    return (state.videos.map((item, index) => { console.log(item); return (
+      <CCard
+        id = {"card-"+index}
+        key = {"card-"+index}
+        style={{
+          height: "8%",
+          marginBottom: "1%",
+          border: "2px solid #B3272C",
+        }}
+      >
+        <CCardBody style={{ margin: "0" }}>
+
+          <CImg
+            style={{
+              width: "125px",
+              height: "75px",
+              cursor: "pointer",
+              float: "left",
+              marginRight: "1%",
+              borderBottom: "1px solid black",
+              borderRadius: "10px",
+            }}
+            src={item.thumb}
+          />
+            <CCardText row>
+              <CCol style={{padding:"0"}} md="12">
+                <h5
+                  style={{ cursor: "pointer" }}
+                >
+                  {item.title.substring(0, 100) + "..."}
+                </h5>
+                <span>
+                  {item.channel}
+                </span>{" "}
+              </CCol>
+            </CCardText>
+        </CCardBody>
+        <CButton style={{float: "left",}}
+              color="btn btn-ghost-danger"
+              title="Deletar"
+              onClick={() => Delete(item.id, index)}
+            >
+              <CIcon name="cil-trash" />
+          </CButton>
+      </CCard>
+    )}))
+  };
+
   useEffect(() => {
     if (!state.fetched) {
       var data = {token: user.token};
@@ -139,6 +201,7 @@ const PlaylistVideos = ({ user }) => {
       setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
   }, [state, user.token]);
+  console.log(state.videos);
   return (<div>
     <CContainer fluid>
       <h1>{state.playlist.title}</h1>
@@ -182,49 +245,7 @@ const PlaylistVideos = ({ user }) => {
           </CCard>
         </CCol>
         <CCol sm="9">
-          {videos.map((item, index) => (
-            <CCard
-              style={{
-                height: "8%",
-                marginBottom: "1%",
-                border: "2px solid #B3272C",
-              }}
-            >
-              <CCardBody style={{ margin: "0" }}>
-              <CButton style={{float: "left",}}
-                    color="btn btn-ghost-danger"
-                    title="Deletar"
-                    //onClick={() => Delet(item.id)}
-                  >
-                    <CIcon name="cil-trash" />
-                </CButton>
-                <CImg
-                  style={{
-                    width: "125px",
-                    height: "75px",
-                    cursor: "pointer",
-                    float: "left",
-                    marginRight: "1%",
-                    borderBottom: "1px solid black",
-                    borderRadius: "10px",
-                  }}
-                  src={item.thumb}
-                />
-                  <CCardText row>
-                    <CCol style={{padding:"0"}} md="12">
-                      <h5
-                        style={{ cursor: "pointer" }}
-                      >
-                        {item.title.substring(0, 100) + "..."}
-                      </h5>
-                      <span>
-                        {item.channel}
-                      </span>{" "}
-                    </CCol>
-                  </CCardText>
-              </CCardBody>
-            </CCard>
-          ))}
+          { buildPlaylist() }
         </CCol>
       </CRow>
     </CContainer>
