@@ -34,6 +34,7 @@ const Channel = ({ user }) => {
     fetched: false,
     content: 1,
     subscribe: false,
+    is_owner: true,
   });
   useEffect(() => {
     if (!state.fetched) {
@@ -181,7 +182,7 @@ const Channel = ({ user }) => {
                     // alignItems: "center",
                   }}
                 >
-                  {state.subscribe === false && id !== 0 && (
+                  {state.subscribe === false && state.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",
@@ -197,7 +198,7 @@ const Channel = ({ user }) => {
                       </CButton>
                     </div>
                   )}
-                  {state.subscribe === true && id !== 0 && (
+                  {state.subscribe === true && state.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",

@@ -22,6 +22,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
+import { listAllPlaylists } from "../../../util/Api";
 
 const videos = [
   {
@@ -29,7 +30,7 @@ const videos = [
     title:
       "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "1",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -38,7 +39,7 @@ const videos = [
     title:
       "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "2",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -47,7 +48,7 @@ const videos = [
     title:
       "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "62",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -56,7 +57,7 @@ const videos = [
     title:
       "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "135",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -65,7 +66,7 @@ const videos = [
     title:
       "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "1305",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -73,7 +74,7 @@ const videos = [
     id: 6,
     title: "COMO MIGRAR PARA REACT HOOKS | Dicas e Truques #01",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "69",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -82,7 +83,7 @@ const videos = [
     title:
       "PRÉ-REQUISITOS | Criando uma Rede Social com React.js e .NET Core #01",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "232",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -91,7 +92,7 @@ const videos = [
     title:
       "GIT E GITHUB | Criando uma Rede Social com React.js e .NET Core #04",
     channel: "Lucas Nhimi",
-    total: "3",
+    total: "150",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
   },
@@ -101,6 +102,7 @@ const AllPlaylists = ({ user }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
+    videos: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -108,14 +110,23 @@ const AllPlaylists = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      var data = {
+        channel_id: id,
+        // token: user.token,
+      };
+      // listAllPlaylists(data).then(function(data){
+      setState({ ...state, fetched: true, videos: videos });
+      // })          .catch((err) => {
+      //   console.log(err);
+      //   setState({ ...state, error: "Dados inválidos", message: "" });
+      // });
     }
   }, []);
   return (
     <div>
       <CContainer fluid>
         <CRow>
-          {videos.map((item, index) => (
+          {state.videos.map((item, index) => (
             <CCol style={{ width: "5%" }} sm="2">
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <div

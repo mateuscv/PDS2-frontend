@@ -123,11 +123,29 @@ thumb: state.thumb,
 
         uploadVideo(data, user.token)
           .then(function (data) {
-            setState({
-              ...state,
-              error: "",
-              message: "Video criado com sucesso!",
-            });
+            alert(
+              "Sucesso!",
+              "Seu vídeo foi criado com sucesso, escolha agora entre ver o seu vídeo ou adicionar novo vídeo",
+              [
+                {
+                  label: "Novo Vídeo",
+                  onClick: () => {
+                    window.location.reload();
+                  },
+                },
+                {
+                  label: "Ver Vídeo",
+                  onClick: () => {
+                    history.push("/view/" + data.id);
+                  },
+                },
+              ]
+            );
+            // setState({
+            //   ...state,
+            //   error: "",
+            //   message: "Video criado com sucesso!",
+            // });
           })
           .catch((err) => {
             console.log(err);
