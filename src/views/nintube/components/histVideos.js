@@ -25,10 +25,10 @@ import {
 //Componets
 //Style
 //API
-import { riseVideos } from "../../../util/Api";
+import { historic } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
-const StackVideo = ({ user }) => {
+const HistVideo = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
     videos: [],
@@ -41,14 +41,16 @@ const StackVideo = ({ user }) => {
     if (!state.fetched) {
       var data = {
         numberSkip: 0,
+        token: user.token,
       };
       console.log(data);
-      riseVideos(data).then(function (data) {
+      historic(data).then(function (data) {
         // var array = new Array;
         // for (let i = 0; i < aray.length; i++) {
         //   const element = array[i];
 
         // }
+        console.log(data);
         setState({ ...state, fetched: true, videos: data });
       });
     }
@@ -84,7 +86,8 @@ const StackVideo = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.v_id)}
                       >
-                        {item.title.substring(0, 100) + "..."}
+                        {item.title}
+                        {/* {item.title.substring(0, 100) + "..."} */}
                       </h5>
                       <span onClick={() => handleClick("channel", item.v_id)}>
                         {item.channel}
@@ -118,4 +121,4 @@ const StackVideo = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(StackVideo);
+export default connect(mapStateToProps, mapDispatchToProps)(HistVideo);
