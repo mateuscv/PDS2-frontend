@@ -25,6 +25,7 @@ import {
 //Componets
 //Style
 //API
+import { recommend } from "../../../util/Api";
 
 const videos = [
   {
@@ -134,14 +135,21 @@ const StackVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      // recommend.then(function(data){
+      setState({ ...state, fetched: true, videos: videos });
+
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      //   setState({ ...state, error: "Dados inválidos", message: "" });
+      // });
     }
   }, []);
   return (
     <div>
       <CRow>
         <CCol sm="12">
-          {videos.map((item, index) => (
+          {state.videos.map((item, index) => (
             <CCard
               style={{
                 marginBottom: "1%",
