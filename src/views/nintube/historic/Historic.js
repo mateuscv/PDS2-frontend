@@ -25,7 +25,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-import StackVideo from "../components/stackVideo";
+import HistVideo from "../components/histVideos";
 import LogoutPage from "../components/logoutPage";
 //Style
 //API
@@ -98,7 +98,7 @@ const Historic = ({ user, history }) => {
               GERENCIAR TODAS AS ATIVIDADES
             </CButton>
           </div>
-          <StackVideo />
+          <HistVideo />
         </>
       ) : (
         <LogoutPage />

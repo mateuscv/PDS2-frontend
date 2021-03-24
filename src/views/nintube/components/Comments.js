@@ -75,52 +75,106 @@ const Comments = ({ user }) => {
   };
 
   const sendCom = (text, nvl, reply_id, aux) => {
-    console.log("send");
     if (nvl === 0) {
-      console.log("nvl 0");
       var data = {
         token: user.token,
         text,
         video_id: id,
         reply_id: "",
       };
-      console.log(data);
       sendComment(data).then(function (data) {
-        if (data.status === 1) {
-          // let comments = state.fiComment;
-          // comments.push({
-          //   id: data.id,
-          //   user_id,
-          // });
-          exitComment();
+        if (data !== "") {
+          let comment = state.fiComment;
+          let dis = state.dispAns;
+
+          console.log(comment);
+          comment.push({
+            id: data.id,
+            nickname: data.username,
+            comment: data.text,
+            date: diffDate(new Date(), data.created_at),
+            src: data.src,
+            reply_id: data.reply_id,
+          });
+          dis.push({
+            id: data.id,
+            dis: false,
+            info: Array(0),
+          });
+          setState({
+            ...state,
+            fiComment: comment,
+            dispAns: dis,
+            newComment: "",
+            showComment: false,
+          });
         }
       });
     } else if (nvl === 1) {
-      console.log("nvl 1");
       var data = {
         token: user.token,
         text,
         video_id: id,
         reply_id,
       };
-      console.log(data);
       sendComment(data).then(function (data) {
-        if (data.status === 1) {
-          exitAns(1);
+        if (data !== "") {
+          let comment = state.dispAns;
+          for (let i = 0; i < comment.length; i++) {
+            if (comment[i].id === data.reply_id) {
+              var aux = new Array();
+              aux.push({
+                id: data.user_id,
+                nickname: data.username,
+                comment: data.text,
+                date: diffDate(new Date(), data.created_at),
+                src: data.src,
+                reply_id: data.reply_id,
+              });
+              comment[i].info.push(aux);
+            }
+          }
+          setState({
+            ...state,
+            dispAns: comment,
+            AnswersOne: "",
+            showAns: false,
+            idAns: "",
+          });
         }
       });
     } else {
-      console.log("nvl 2 ");
       var data = {
         token: user.token,
         text: "@" + aux + " " + text,
         video_id: id,
         reply_id,
       };
-      console.log(data);
+
       sendComment(data).then(function (data) {
-        if (data.status === 1) {
-          exitAns(2);
+        if (data !== "") {
+          let comment = state.dispAns;
+          for (let i = 0; i < comment.length; i++) {
+            if (comment[i].id === data.reply_id) {
+              var aux = new Array();
+              aux.push({
+                id: data.user_id,
+                nickname: data.username,
+                comment: data.text,
+                date: diffDate(new Date(), data.created_at),
+                src: data.src,
+                reply_id: data.reply_id,
+              });
+              comment[i].info.push(aux);
+            }
+          }
+          setState({
+            ...state,
+            dispAns: comment,
+            newComment: "",
+            showAnsTwo: false,
+            idAnsTwo: "",
+          });
         }
       });
     }
@@ -155,7 +209,6 @@ const Comments = ({ user }) => {
   const showAns = (ind, id) => {
     let dispAns = state.dispAns;
     dispAns[ind].dis = !dispAns[ind].dis;
-    // console.log(display);
     setState({ ...state, dispAns });
   };
 
@@ -200,9 +253,9 @@ const Comments = ({ user }) => {
       }
 
       var data = {
+        numberSkip: 0,
         video_id: id,
       };
-      console.log(id);
       getComment(data, user.token).then(function (data) {
         var listAux = Array();
         var today = new Date();
@@ -424,7 +477,6 @@ const Comments = ({ user }) => {
                               ></input>
                             </div>
                           </div>
-
                           <div style={{ width: "100%", marginTop: "3px" }}>
                             <a
                               class="myCancel"
