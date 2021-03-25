@@ -153,12 +153,9 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
-<<<<<<< Updated upstream
     cilMenu,
-=======
     cilPlus,
     cilPlaylistAdd,
->>>>>>> Stashed changes
     cilCaretBottom,
     cilCaretTop,
     cilFlagAlt,
