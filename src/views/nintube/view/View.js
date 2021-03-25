@@ -22,6 +22,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import Player from "../components/Player";
 import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
+import SavePlaylist from "../components/savePlaylist"
 //Style
 //API
 import Dropzone from "react-dropzone";
@@ -32,6 +33,7 @@ import {
   watchVideo,
   API_URL,
   newLiked,
+  
 } from "../../../util/Api";
 //Style
 
@@ -45,7 +47,10 @@ const View = ({ user, history }) => {
     video: "",
     op_report: "",
     report: "",
+    playlistComp: ""
   });
+
+  
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -163,6 +168,12 @@ const View = ({ user, history }) => {
 
     // });
   };
+
+  const closeSavePlaylist = () => {
+    console.log("entrou")
+    console.log(state)
+    setState({...state, playlistComp:''})
+  }
 
   const reportVideo = () => {
     if (!state.video.reported) {
@@ -385,6 +396,14 @@ const View = ({ user, history }) => {
               >
                 <CIcon name="cilFlagAlt" /> Reportar
               </CButton>
+              <CButton
+                style={{ color: "white" }}
+                onClick={() =>
+                  setState({...state, playlistComp: <SavePlaylist video_id={id} kill={closeSavePlaylist}/>})
+                }
+              >
+                <CIcon name="cil-playlist-add" /> Salvar
+              </CButton>
             </div>
           </div>
         </CBreadcrumb>
@@ -454,6 +473,7 @@ const View = ({ user, history }) => {
       <div style={{ marginLeft: "auto", width: "25%" }}>
         <Recommended />
       </div>
+      {state.playlistComp}
       {/* </CCol>
       </CRow> */}
     </div>

@@ -1,6 +1,8 @@
 import axios from "axios";
+
 export const API_URL = "http://localhost:3334/";
-//export const API_URL = "http://61055c0a83f4.ngrok.io/";
+// export const API_URL = "http://faea128b34dd.ngrok.io/";
+
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
@@ -219,3 +221,24 @@ export const listPlaylist = (data) => {
     return data;
   });
 };
+
+export const getPlaylistWithVideoId = async (data) => {
+  const res = await axios.post(API_URL + "playlist/list_videoid", data);
+  return res.data
+};
+
+export const addVideoToPlaylist = async (data) => {
+  const res = await axios.post(API_URL + "playlist/add", data);
+  return res.data
+};
+
+export const removeVideoFromPlaylist = async (data) => {
+  const res = await axios.post(API_URL + "playlist/remove", data);
+  return res.data
+};
+
+export const createPlaylist = async (data) => {
+  const res = await axios.post(API_URL + "playlist/create", data);
+  return res.data
+};
+

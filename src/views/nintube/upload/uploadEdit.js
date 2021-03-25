@@ -26,7 +26,7 @@ import { getUploadVideo, editVideo } from "../../../util/Api";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
 
-const UploadEdit = ({ user }) => {
+const UploadEdit = ({ user, history }) => {
   let { id } = useParams();
   const [state, setState] = useState({
     description: "",
@@ -92,11 +92,29 @@ const UploadEdit = ({ user }) => {
       console.log(values);
       editVideo(values, user.token)
         .then(function (data) {
-          setState({
-            ...state,
-            error: "",
-            message: "Alterações salvas com sucesso!",
-          });
+          alert(
+            "Sucesso!",
+            "Seu vídeo foi alterado com sucesso, escolha agora entre ver o seu vídeo ou voltar ao Studio",
+            [
+              {
+                label: "Studio",
+                onClick: () => {
+                  history.push("/studio");
+                },
+              },
+              {
+                label: "Ver Vídeo",
+                onClick: () => {
+                  history.push("/view/" + data.id);
+                },
+              },
+            ]
+          );
+          // setState({
+          //   ...state,
+          //   error: "",
+          //   message: "Alterações salvas com sucesso!",
+          // });
         })
         .catch((err) => {
           console.log(err);
