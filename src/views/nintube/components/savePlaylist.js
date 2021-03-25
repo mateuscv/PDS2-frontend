@@ -14,7 +14,8 @@ import {
   CCard,
   CCardBody,
   CRow,
-  CCardFooter
+  CCardFooter,
+  CInput
 } from "@coreui/react";
 //Componets
 import CIcon from "@coreui/icons-react";
@@ -27,16 +28,13 @@ import { API_URL, getPlaylistWithVideoId, addVideoToPlaylist, removeVideoFromPla
 
 
 const SavePlaylist = ({ user, video_id, kill}) => {
-  console.log(video_id)
+ 
   const [state, setState] = useState({
     playlists:[],
   });
 
-  const [nPlaylist, setNPlaylist] = useState({name:"", public_bool: "", closed: true});
+  const [nPlaylist, setNPlaylist] = useState({name:"", public_bool: true, closed: true});
 
-  const save = data => {
-    console.log(data);
-  }
 
   const playlistsPopup = () => {
     
@@ -49,8 +47,8 @@ const SavePlaylist = ({ user, video_id, kill}) => {
                 option = [];
               return (
                 <CCard style={{backgroundColor: "lightgrey"}}>
-                            <CCardBody>
-                <div className="custom-ui">
+                  <CCardBody>
+                  <div className="custom-ui">
                   
                   <CFormGroup row>
                     <CCol >
@@ -90,22 +88,29 @@ const SavePlaylist = ({ user, video_id, kill}) => {
                       
                     </CCol>
                   </CFormGroup>
-                  {/* <button class="myBut" onClick={onClose}>
-                    Sair
-                  </button> */}
-                  {/* <button
-                    class="myBut"
-                    onClick={() => save(option)}
-                  >
-                    Enviar
-                  </button> */}
                 </div>
                 </CCardBody>
                 <CCardFooter style={{backgroundColor: "lightgrey"}}>
                 {nPlaylist.closed ?
                         <CButton onClick={() => {setNPlaylist({...nPlaylist, closed:false})}}><CIcon name="cil-plus"/><CLabel style={{color: "black"}} > Nova Playlist</CLabel></CButton>
                       :
-                         <CButton onClick={() => {setNPlaylist({...nPlaylist, closed:true})}}>click</CButton>
+                         <CFormGroup row>
+                           <CCol sm="1">
+                           {nPlaylist.public_bool ?
+                            <CIcon name="cil-globe-alt" style={{height: "100%"}} onClick={() => {setNPlaylist({...nPlaylist, public_bool:false})}}/>
+                              :
+                            <CIcon name="cil-lock-locked" style={{height: "100%"}} onClick={() => {setNPlaylist({...nPlaylist, public_bool:true})}}/>
+                            }
+                            </CCol>
+                            <CCol>
+                           <CInput onChange={(e)=>{setNPlaylist({...nPlaylist,name:e.target.value})}}>
+
+                           </CInput>
+                           </CCol>
+                           <CCol sm="3">
+                             <CButton onChange={playlistCreate} class="btn btn-outline-dark">Criar</CButton>
+                           </CCol>
+                         </CFormGroup>
                           
                       }
                 </CCardFooter>
@@ -118,70 +123,78 @@ const SavePlaylist = ({ user, video_id, kill}) => {
     
       
   };
-  console.log(nPlaylist)
   const playlistClick = async (index) => {
-    console.log(index)
     let playlists = JSON.parse(JSON.stringify(state.playlists))
     // for(let i =0; i < playlists.length; i++){
       
     // }
     playlists[index].inside = !playlists[index].inside
+    var response;
     if(playlists[index].inside){
-      await addToPlaylist(playlists[index].id)
+      response = await addToPlaylist(playlists[index].id)
     }else{
-      await removeFromPlaylist(playlists[index].id)
+      response = await removeFromPlaylist(playlists[index].id)
     }
-    setState({...state, playlists})
+    if(response){
+      setState({...state, playlists})
+    }
   }
 
-  
+  const playlistCreate = async () => {
+    if(nPlaylist.name !== "Vídeos curtidos"){
+      var response = await createPlaylist();
+      if(response.status){
+        let playlists = JSON.parse(JSON.stringify(state.playlists))
+        playlists.push({id:response.playlist_id, name:nPlaylist.name, public:nPlaylist.public_bool, inside: false})
+        setState({...state, playlists})
+        setNPlaylist({name:"", public_bool: true, closed: true})
+        playlistClick(playlists.length)
+      }
+    }
+  }
 
-  const createPlaylist = async (name, public_bool) => {
-    var data = {token:user.token, name, public:public_bool}
+  const createPlaylist = async () => {
+    var data = {token:user.token, name: nPlaylist.name, public:nPlaylist.public_bool}
     var response = await createPlaylist(data)
-    console.log(response)
   }
 
   const addToPlaylist = async (playlist_id) => {
     var data = {token:user.token, video_id, playlist_id}
-    var response = await addVideoToPlaylist(data)
-    console.log(response)
+    return await addVideoToPlaylist(data)
+    
   }
 
   const removeFromPlaylist = async (playlist_id) => {
     var data = {token:user.token, video_id, playlist_id}
-    var response = await removeVideoFromPlaylist(data)
-    console.log(response)
+    return await removeVideoFromPlaylist(data)
   }
 
   const getPlaylists = async () => {
     var data = { token: user.token, video_id:video_id};
     const dt =  await getPlaylistWithVideoId(data)
-    console.log(dt)
+    
     var playlists = [];
     for (let i = 0; i < dt[0].length; i++) {
-      console.log(i)
       var playlist = {
         id: dt[0][i].id,
         name: dt[0][i].name,
         public: dt[0][i].public,
-        inside: (dt[0][i].id in dt[1])
+        inside: dt[1].includes(dt[0][i].id)
       }
       playlists.push(playlist)
     }
-    console.log(playlists);
+    
     setState({...state, playlists})
   }
 
   useEffect(() => {
     getPlaylists()
-    
   }, []);
 
   useEffect(() => {
     playlistsPopup();
   },[state.playlists, nPlaylist])
-  console.log(state)
+  
   return <div />;
 };
 
