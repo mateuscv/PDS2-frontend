@@ -34,6 +34,7 @@ const Channel = ({ user }) => {
     fetched: false,
     content: 1,
     subscribe: false,
+    is_owner: true,
   });
   useEffect(() => {
     if (!state.fetched) {
@@ -91,60 +92,101 @@ const Channel = ({ user }) => {
         <CCard style={{ height: "100%" }}>
           <CCardBody style={{ width: "100%" }}>
             <div>
-              <div
-                style={{
-                  display: "flex",
-                  // justifyContent: "space-between",
-                  // margin: "0",
-                  // verticalAlign: "middle",
-                  // flexDirection: "row",
-                  // flexWrap: "nowrap",
-                  marginBottom: "1%",
-                }}
-              >
-                <div
-                  style={{
-                    width: "5%",
-                    marginRight: "1%",
-                  }}
-                >
-                  <CImg src="avatars/7.jpg" className="c-avatar-img" />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    alignItems: "center",
-                  }}
-                >
+              <CRow>
+                <CCol sm="3">
                   <div
                     style={{
-                      height: "100%",
                       display: "flex",
-                      alignItems: "center",
-                      flexDirection: "row",
+                      // justifyContent: "space-between",
+                      // margin: "0",
+                      // verticalAlign: "middle",
+                      // flexDirection: "row",
+                      // flexWrap: "nowrap",
+                      marginBottom: "1%",
                     }}
                   >
-                    {/*  */}
-                    <span>
-                      <span
-                        className="h2"
-                        style={
-                          {
-                            // margin: "auto",
-                          }
-                        }
+                    <div
+                      style={{
+                        width: "30%",
+                        marginRight: "1%",
+                      }}
+                    >
+                      <CImg src="avatars/7.jpg" className="c-avatar-img" />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          // height: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
                       >
-                        Manual do Mundo
-                      </span>{" "}
-                      <br />
-                      10 Mil de inscritos
-                    </span>
+                        <span>
+                          <span
+                            className="h2"
+                            style={
+                              {
+                                // margin: "auto",
+                              }
+                            }
+                          >
+                            Manual do Mundo
+                          </span>{" "}
+                          <br />
+                          10 Mil de inscritos
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  {state.subscribe === false && id !== user.token && (
+                </CCol>
+                <CCol sm="3" sm="3" style={{ display: "flex" }}>
+                  <div
+                    style={{ width: "100%", height: "50%", marginTop: "auto" }}
+                  >
+                    <CButton
+                      onClick={() => {
+                        changeContent("video");
+                      }}
+                      className="channel_button"
+                    >
+                      Vídeos
+                    </CButton>
+                  </div>
+                </CCol>
+                <CCol sm="3" style={{ display: "flex" }}>
+                  <div
+                    style={{ width: "100%", height: "50%", marginTop: "auto" }}
+                  >
+                    <CButton
+                      onClick={() => {
+                        changeContent("playlist");
+                      }}
+                      className="channel_button"
+                    >
+                      Playlists
+                    </CButton>
+                  </div>
+                </CCol>
+                <CCol
+                  sm="3"
+                  style={{
+                    display: "flex",
+                    // justifyContent: "center",
+                    // alignItems: "center",
+                  }}
+                >
+                  {state.subscribe === false && state.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",
+                        marginTop: "auto",
                       }}
                     >
                       <CButton
@@ -156,10 +198,11 @@ const Channel = ({ user }) => {
                       </CButton>
                     </div>
                   )}
-                  {state.subscribe === true && id !== user.token && (
+                  {state.subscribe === true && state.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",
+                        marginTop: "auto",
                       }}
                     >
                       <CButton
@@ -171,49 +214,7 @@ const Channel = ({ user }) => {
                       </CButton>
                     </div>
                   )}
-                </div>
-              </div>
-              <CRow>
-                {/* <CCol sm="4">
-                  <CButton
-                    onClick={() => {
-                      changeContent("init");
-                    }}
-                    className="channel_button"
-                  >
-                    Início
-                  </CButton>
-                </CCol> */}
-                <CCol sm="6">
-                  <CButton
-                    onClick={() => {
-                      changeContent("video");
-                    }}
-                    className="channel_button"
-                  >
-                    Vídeos
-                  </CButton>
                 </CCol>
-                <CCol sm="6">
-                  <CButton
-                    onClick={() => {
-                      changeContent("playlist");
-                    }}
-                    className="channel_button"
-                  >
-                    Playlists
-                  </CButton>
-                </CCol>
-                {/* <CCol sm="3">
-                <CButton
-                  onClick={() => {
-                    changeContent("about");
-                  }}
-                  style={{ border: "1px solid", width: "100%", height: "130%" }}
-                >
-                  Sobre
-                </CButton>
-              </CCol>*/}
               </CRow>
             </div>
           </CCardBody>

@@ -8,7 +8,7 @@ export const diffDate = (dateOne, dateTwo) => {
   var minutes = diffDur.asMinutes();
 
   if (minutes < 1) {
-    return "Há " + diffDur.seconds() + " Secondo(s)";
+    return "Há " + diffDur.seconds() + " Segundo(s)";
   } else if (minutes <= 60) {
     return "Há " + diffDur.minutes() + " Minuto(s)";
   } else if (minutes <= 1440) {

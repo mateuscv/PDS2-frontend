@@ -307,7 +307,7 @@ const View = ({ user, history }) => {
       }
 
       watchVideo(data).then(function (data) {
-        console.log(data);
+        // console.log(data);
         setState({
           ...state,
           video: data,

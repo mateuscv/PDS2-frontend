@@ -23,6 +23,7 @@ import {
 //Componets
 //Style
 //API
+import { getVideos } from "../../../util/Api";
 
 const videos = [
   {
@@ -116,6 +117,7 @@ const videos = [
 
 const HomeVideos = ({ user }) => {
   const [state, setState] = useState({
+    videos: [],
     fetched: false,
   });
 
@@ -125,14 +127,21 @@ const HomeVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
+      // getVideos
+      //   .then(function (data) {
+      setState({ ...state, fetched: true, videos: videos });
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      //   setState({ ...state, error: "Dados inválidos", message: "" });
+      // });
     }
   }, []);
   return (
     <div>
       <CContainer fluid>
         <CRow>
-          {videos.map((item, index) => (
+          {state.videos.map((item, index) => (
             <CCol style={{ width: "5%" }} sm="2">
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
