@@ -22,7 +22,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import Player from "../components/Player";
 import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
-import SavePlaylist from "../components/savePlaylist"
+import SavePlaylist from "../components/savePlaylist";
 //Style
 //API
 import Dropzone from "react-dropzone";
@@ -33,7 +33,6 @@ import {
   watchVideo,
   API_URL,
   newLiked,
-  
 } from "../../../util/Api";
 //Style
 
@@ -47,10 +46,8 @@ const View = ({ user, history }) => {
     video: "",
     op_report: "",
     report: "",
-    playlistComp: ""
+    playlistComp: "",
   });
-
-  
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
@@ -63,7 +60,7 @@ const View = ({ user, history }) => {
         target_id: state.video.owner_id,
       };
 
-      console.log(data);
+      // console.log(data);
       Inscribe(data)
         .then(function (data) {
           let video = state.video;
@@ -170,10 +167,8 @@ const View = ({ user, history }) => {
   };
 
   const closeSavePlaylist = () => {
-    console.log("entrou")
-    console.log(state)
-    setState({...state, playlistComp:''})
-  }
+    setState({ ...state, playlistComp: "" });
+  };
 
   const reportVideo = () => {
     if (!state.video.reported) {
@@ -285,7 +280,6 @@ const View = ({ user, history }) => {
       report_text: text,
       report_option: option,
     };
-    console.log(data);
     if (text !== "" && option !== "") {
       Report(data)
         .then(function (data) {
@@ -399,7 +393,12 @@ const View = ({ user, history }) => {
               <CButton
                 style={{ color: "white" }}
                 onClick={() =>
-                  setState({...state, playlistComp: <SavePlaylist video_id={id} kill={closeSavePlaylist}/>})
+                  setState({
+                    ...state,
+                    playlistComp: (
+                      <SavePlaylist video_id={id} kill={closeSavePlaylist} />
+                    ),
+                  })
                 }
               >
                 <CIcon name="cil-playlist-add" /> Salvar
