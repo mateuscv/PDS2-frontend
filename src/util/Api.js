@@ -224,21 +224,20 @@ export const listPlaylist = (data) => {
 
 export const getPlaylistWithVideoId = async (data) => {
   const res = await axios.post(API_URL + "playlist/list_videoid", data);
-  return res.data
+  return res.data;
 };
 
 export const addVideoToPlaylist = async (data) => {
   const res = await axios.post(API_URL + "playlist/add", data);
-  return res.data
+  return res.data;
 };
 
 export const removeVideoFromPlaylist = async (data) => {
   const res = await axios.post(API_URL + "playlist/remove", data);
-  return res.data
+  return res.data;
 };
 
 export const createPlaylist = async (data) => {
   const res = await axios.post(API_URL + "playlist/create", data);
-  return res.data
+  return res.data;
 };
-

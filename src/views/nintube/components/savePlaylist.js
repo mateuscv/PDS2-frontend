@@ -15,6 +15,7 @@ import {
   CCardBody,
   CRow,
   CCardFooter,
+  CInput,
 } from "@coreui/react";
 //Componets
 import CIcon from "@coreui/icons-react";
@@ -38,13 +39,9 @@ const SavePlaylist = ({ user, video_id, kill }) => {
 
   const [nPlaylist, setNPlaylist] = useState({
     name: "",
-    public_bool: "",
+    public_bool: true,
     closed: true,
   });
-
-  const save = (data) => {
-    console.log(data);
-  };
 
   const playlistsPopup = () => {
     if (user.token) {
@@ -97,15 +94,6 @@ const SavePlaylist = ({ user, video_id, kill }) => {
                       ))}
                     </CCol>
                   </CFormGroup>
-                  {/* <button class="myBut" onClick={onClose}>
-                    Sair
-                  </button> */}
-                  {/* <button
-                    class="myBut"
-                    onClick={() => save(option)}
-                  >
-                    Enviar
-                  </button> */}
                 </div>
               </CCardBody>
               <CCardFooter style={{ backgroundColor: "lightgrey" }}>
@@ -119,13 +107,42 @@ const SavePlaylist = ({ user, video_id, kill }) => {
                     <CLabel style={{ color: "black" }}> Nova Playlist</CLabel>
                   </CButton>
                 ) : (
-                  <CButton
-                    onClick={() => {
-                      setNPlaylist({ ...nPlaylist, closed: true });
-                    }}
-                  >
-                    click
-                  </CButton>
+                  <CFormGroup row>
+                    <CCol sm="1">
+                      {nPlaylist.public_bool ? (
+                        <CIcon
+                          name="cil-globe-alt"
+                          style={{ height: "100%" }}
+                          onClick={() => {
+                            setNPlaylist({ ...nPlaylist, public_bool: false });
+                          }}
+                        />
+                      ) : (
+                        <CIcon
+                          name="cil-lock-locked"
+                          style={{ height: "100%" }}
+                          onClick={() => {
+                            setNPlaylist({ ...nPlaylist, public_bool: true });
+                          }}
+                        />
+                      )}
+                    </CCol>
+                    <CCol>
+                      <CInput
+                        onChange={(e) => {
+                          setNPlaylist({ ...nPlaylist, name: e.target.value });
+                        }}
+                      ></CInput>
+                    </CCol>
+                    <CCol sm="3">
+                      <CButton
+                        onClick={playlistCreate}
+                        class="btn btn-outline-dark"
+                      >
+                        Criar
+                      </CButton>
+                    </CCol>
+                  </CFormGroup>
                 )}
               </CCardFooter>
             </CCard>
@@ -135,42 +152,68 @@ const SavePlaylist = ({ user, video_id, kill }) => {
     }
   };
   const playlistClick = async (index) => {
-    console.log(index);
     let playlists = JSON.parse(JSON.stringify(state.playlists));
     // for(let i =0; i < playlists.length; i++){
 
     // }
     playlists[index].inside = !playlists[index].inside;
+    var response;
     if (playlists[index].inside) {
-      await addToPlaylist(playlists[index].id);
+      response = await addToPlaylist(playlists[index].id);
     } else {
-      await removeFromPlaylist(playlists[index].id);
+      response = await removeFromPlaylist(playlists[index].id);
     }
-    setState({ ...state, playlists });
+    if (response) {
+      setState({ ...state, playlists });
+    }
   };
 
-  const createPlaylist = async (name, public_bool) => {
-    var data = { token: user.token, name, public: public_bool };
-    var response = await createPlaylist(data);
-    console.log(response);
+  const playlistCreate = async () => {
+    if (
+      nPlaylist.name !== null &&
+      nPlaylist.name !== "Vídeos curtidos" &&
+      nPlaylist.name.trim() !== ""
+    ) {
+      var response = await reqCreatePlaylist();
+      if (response.status) {
+        let playlists = JSON.parse(JSON.stringify(state.playlists));
+        playlists.push({
+          id: response.id,
+          name: nPlaylist.name,
+          public: nPlaylist.public_bool,
+          inside: true,
+        });
+        setState({ ...state, playlists });
+        setNPlaylist({ name: "", public_bool: true, closed: true });
+      }
+    }
+  };
+
+  const reqCreatePlaylist = async () => {
+    var data = {
+      token: user.token,
+      name: nPlaylist.name,
+      is_public: nPlaylist.public_bool,
+      video_id: video_id,
+    };
+    console.log(data);
+    return await createPlaylist(data);
   };
 
   const addToPlaylist = async (playlist_id) => {
     var data = { token: user.token, video_id, playlist_id };
-    var response = await addVideoToPlaylist(data);
-    console.log(response);
+    return await addVideoToPlaylist(data);
   };
 
   const removeFromPlaylist = async (playlist_id) => {
     var data = { token: user.token, video_id, playlist_id };
-    var response = await removeVideoFromPlaylist(data);
-    console.log(response);
+    return await removeVideoFromPlaylist(data);
   };
 
   const getPlaylists = async () => {
     var data = { token: user.token, video_id: video_id };
     const dt = await getPlaylistWithVideoId(data);
-    console.log(dt);
+
     var playlists = [];
     for (let i = 0; i < dt[0].length; i++) {
       var playlist = {
@@ -179,9 +222,9 @@ const SavePlaylist = ({ user, video_id, kill }) => {
         public: dt[0][i].public,
         inside: dt[1].includes(dt[0][i].id),
       };
-      // console.log(dt[0][i].id);
       playlists.push(playlist);
     }
+
     setState({ ...state, playlists });
   };
 
@@ -192,6 +235,7 @@ const SavePlaylist = ({ user, video_id, kill }) => {
   useEffect(() => {
     playlistsPopup();
   }, [state.playlists, nPlaylist]);
+
   return <div />;
 };
 
