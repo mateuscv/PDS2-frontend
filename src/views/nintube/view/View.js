@@ -158,7 +158,7 @@ const View = ({ user, history }) => {
         newLiked(data).then(function (data) {});
       }
     } else {
-      alert("Ops..", "Tens que tar logado pra reportar");
+      alert("Ops..", "Tens que tar logado para curtir um video");
     }
 
     // });
