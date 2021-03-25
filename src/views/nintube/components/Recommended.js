@@ -127,6 +127,7 @@ const videos = [
 
 const StackVideo = ({ user }) => {
   const [state, setState] = useState({
+    videos:[],
     fetched: false,
   });
   let history = useHistory();
