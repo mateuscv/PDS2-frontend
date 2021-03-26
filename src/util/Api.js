@@ -1,10 +1,8 @@
 import axios from "axios";
-
-export const API_URL = "http://localhost:3334/";
-// export const API_URL = "http://faea128b34dd.ngrok.io/";
-
-// export const API_URL =
-//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+// export const API_URL = "http://localhost:3334/";
+// export const API_URL = "http://2fb5e21d1484.ngrok.io/";
+export const API_URL =
+  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {

@@ -129,6 +129,7 @@ const StackVideo = ({ user }) => {
   const [state, setState] = useState({
     videos:[],
     fetched: false,
+    videos: [],
   });
   let history = useHistory();
   const handleClick = (route, id) => {
