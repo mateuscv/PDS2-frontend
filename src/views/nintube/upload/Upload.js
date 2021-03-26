@@ -138,7 +138,7 @@ thumb: state.thumb,
                 {
                   label: "Ver Vídeo",
                   onClick: () => {
-                    history.push("/view/" + data.id);
+                    history.push("/view/" + data);
                   },
                 },
               ]
@@ -207,17 +207,17 @@ thumb: state.thumb,
 
   return (
     <div style={{ border: "1px solid white", borderRadius: "10px" }}>
-      {state.message && (
-        <CCard className="border-success" style={{ textAlign: "center" }}>
-          {state.message}
-        </CCard>
-      )}
-      {state.error && (
-        <CCard className="border-danger" style={{ textAlign: "center" }}>
-          {state.error}
-        </CCard>
-      )}
       <div style={{ padding: "1%" }}>
+        {state.message && (
+          <CCard className="border-success" style={{ textAlign: "center" }}>
+            {state.message}
+          </CCard>
+        )}
+        {state.error && (
+          <CCard className="border-danger" style={{ textAlign: "center" }}>
+            {state.error}
+          </CCard>
+        )}
         <CFormGroup
           row
           style={{
@@ -305,7 +305,7 @@ thumb: state.thumb,
           <CCol md="6">
             <div style={{}}>
               <h3 style={{ color: "white", alignItems: "center" }}>
-                Arraste ou Selecione o video abaixo!
+                Arraste ou Selecione o video!
               </h3>
 
               <div
@@ -345,7 +345,7 @@ thumb: state.thumb,
           <CCol md="6">
             {state.image && (
               <div align="center">
-                <h3 style={{ color: "white" }}>Imagem Escolhida</h3>
+                <h3 style={{ color: "white" }}>Imagem Escolhido</h3>
                 <img style={{ width: "60%" }} src={state.image} />
               </div>
             )}

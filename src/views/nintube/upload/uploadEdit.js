@@ -106,7 +106,7 @@ const UploadEdit = ({ user, history }) => {
               {
                 label: "Ver Vídeo",
                 onClick: () => {
-                  history.push("/view/" + data.id);
+                  history.push("/view/" + id);
                 },
               },
             ]
@@ -173,17 +173,17 @@ const UploadEdit = ({ user, history }) => {
   }, []);
   return (
     <div style={{ border: "1px solid white", borderRadius: "10px" }}>
-      {state.message && (
-        <CCard className="border-success" style={{ textAlign: "center" }}>
-          {state.message}
-        </CCard>
-      )}
-      {state.error && (
-        <CCard className="border-danger" style={{ textAlign: "center" }}>
-          {state.error}
-        </CCard>
-      )}
       <div style={{ padding: "1%" }}>
+        {state.message && (
+          <CCard className="border-success" style={{ textAlign: "center" }}>
+            {state.message}
+          </CCard>
+        )}
+        {state.error && (
+          <CCard className="border-danger" style={{ textAlign: "center" }}>
+            {state.error}
+          </CCard>
+        )}
         <CFormGroup
           row
           style={{
@@ -249,7 +249,7 @@ const UploadEdit = ({ user, history }) => {
           <CCol md="6">
             <div style={{}}>
               <h3 style={{ color: "white", alignItems: "center" }}>
-                Arraste ou Selecione o video abaixo!
+                Arraste ou Selecione o video!
               </h3>
 
               <div
@@ -294,7 +294,7 @@ const UploadEdit = ({ user, history }) => {
           </CCol>
           <CCol md="6">
             <div align="center">
-              <h3 style={{ color: "white" }}>Vídeo Escolhida</h3>
+              <h3 style={{ color: "white" }}>Vídeo Escolhido</h3>
               <div style={{ width: "100%" }}>
                 <Player />
               </div>

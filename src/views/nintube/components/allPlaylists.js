@@ -22,14 +22,14 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
-import { listAllPlaylists } from "../../../util/Api";
+import { getPlaylists } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
   {
     id: 1,
     title:
       "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
-    channel: "Lucas Nhimi",
     total: "1",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -38,7 +38,6 @@ const videos = [
     id: 2,
     title:
       "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
-    channel: "Lucas Nhimi",
     total: "2",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -47,7 +46,6 @@ const videos = [
     id: 3,
     title:
       "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
     total: "62",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -56,7 +54,6 @@ const videos = [
     id: 4,
     title:
       "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
     total: "135",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -65,7 +62,6 @@ const videos = [
     id: 5,
     title:
       "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
     total: "1305",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -73,7 +69,6 @@ const videos = [
   {
     id: 6,
     title: "COMO MIGRAR PARA REACT HOOKS | Dicas e Truques #01",
-    channel: "Lucas Nhimi",
     total: "69",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -82,7 +77,6 @@ const videos = [
     id: 7,
     title:
       "PRÉ-REQUISITOS | Criando uma Rede Social com React.js e .NET Core #01",
-    channel: "Lucas Nhimi",
     total: "232",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -91,7 +85,6 @@ const videos = [
     id: 8,
     title:
       "GIT E GITHUB | Criando uma Rede Social com React.js e .NET Core #04",
-    channel: "Lucas Nhimi",
     total: "150",
     thumb:
       "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
@@ -103,6 +96,7 @@ const AllPlaylists = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,
     videos: [],
+    today: new Date(),
   });
   let history = useHistory();
   const handleClick = (route, id) => {
@@ -111,15 +105,18 @@ const AllPlaylists = ({ user }) => {
   useEffect(() => {
     if (!state.fetched) {
       var data = {
-        channel_id: id,
-        // token: user.token,
+        id_target: id !== "0" ? id : "",
+        token: user.token,
       };
-      // listAllPlaylists(data).then(function(data){
-      setState({ ...state, fetched: true, videos: videos });
-      // })          .catch((err) => {
-      //   console.log(err);
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
+      getPlaylists(data)
+        .then(function (data) {
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   }, []);
   return (
@@ -150,7 +147,11 @@ const AllPlaylists = ({ user }) => {
                         borderBottomLeftRadius: "10px",
                         borderBottomRightRadius: "10px",
                       }}
-                      src={item.thumb}
+                      src={
+                        item.thumb === "undefined"
+                          ? "https://i.ytimg.com/img/no_thumbnail.jpg"
+                          : item.thumb
+                      }
                     />
                   </div>
                   <div
@@ -177,7 +178,7 @@ const AllPlaylists = ({ user }) => {
                         // flexDirection: "row",
                       }}
                     >
-                      <span>{item.total}</span>
+                      <span>{item.all_videos}</span>
                       <div>
                         <CIcon size="2xl" name="cilMenu"></CIcon>
                       </div>
@@ -190,14 +191,18 @@ const AllPlaylists = ({ user }) => {
                       onClick={() => handleClick("view", item.id)}
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
-                      {item.title}
+                      {item.name}
                     </h3>{" "}
-                    <span
-                      onClick={() => handleClick("playlist", item.id)}
-                      style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                    >
-                      Ver Playlist Completa
-                    </span>
+                    <div>
+                      {`${diffDate(state.today, item.created_at)}`}
+                      <br />
+                      <span
+                        onClick={() => handleClick("playlist", item.id)}
+                        style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                      >
+                        Ver Playlist Completa
+                      </span>
+                    </div>
                     {/* <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
@@ -223,4 +228,9 @@ const AllPlaylists = ({ user }) => {
   );
 };
 
-export default AllPlaylists;
+const mapStateToProps = (state) => ({ user: state.user });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(AllPlaylists));

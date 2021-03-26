@@ -29,7 +29,7 @@ const Library = ({ history, user }) => {
       {user != null ? (
         <>
           <h1>Biblioteca</h1>
-          <CButton onClick={() => handleClick()}>Playlist</CButton>
+          {/* <CButton onClick={() => handleClick()}>Playlist</CButton> */}
           <h4>Histórico</h4>
           <ShowVideos />
           <h4>Assistir mais tarde</h4>
