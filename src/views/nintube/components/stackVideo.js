@@ -69,7 +69,8 @@ const StackVideo = ({ user }) => {
                   <CImg
                     onClick={() => handleClick("view", item.v_id)}
                     style={{
-                      width: "25%",
+                      width: "15%",
+                      height: "150px",
                       cursor: "pointer",
                       float: "left",
                       marginRight: "1%",
