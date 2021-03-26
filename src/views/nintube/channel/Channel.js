@@ -23,10 +23,11 @@ import {
 //Componets
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
+import ChannelVideos from "./channelVideos";
 //Style
 import "../styles/nintube.css";
 //API
-import { Inscribe } from "../../../util/Api";
+import { Inscribe, channelData } from "../../../util/Api";
 
 const Channel = ({ user }) => {
   let { id } = useParams();
@@ -34,12 +35,25 @@ const Channel = ({ user }) => {
     fetched: false,
     content: 1,
     subscribe: false,
-    is_owner: true,
+    channel: { nick: "", subs: 0, avatar: "", is_sub: false, is_owner: false },
   });
   useEffect(() => {
     if (!state.fetched) {
-      setState({ ...state, fetched: true });
-      changeContent("video");
+      var data = {
+        user_id: id !== "0" ? id : "",
+        token: user.token,
+      };
+      // changeContent("video");
+      channelData(data).then(function (data) {
+        console.log(data);
+        var channel = { ...state.channel };
+        channel.nick = data.channel_nick;
+        channel.avatar = data.channel_avatar;
+        channel.subs = data.all_subs;
+        channel.is_sub = data.is_subs;
+        channel.is_owner = data.is_owner;
+        setState({ ...state, fetched: true, channel, content: 2 });
+      });
     }
   }, []);
 
@@ -48,7 +62,9 @@ const Channel = ({ user }) => {
       var data = { token: user.token, target_id: id };
       Inscribe(data)
         .then(function (data) {
-          setState({ ...state, subscribe: cond });
+          var channel = { ...state.channel };
+          channel.is_sub = cond;
+          setState({ ...state, channel });
         })
         .catch((err) => {
           setState({
@@ -111,7 +127,10 @@ const Channel = ({ user }) => {
                         marginRight: "1%",
                       }}
                     >
-                      <CImg src="avatars/7.jpg" className="c-avatar-img" />
+                      <CImg
+                        src={state.channel.avatar}
+                        className="c-avatar-img"
+                      />
                     </div>
                     <div
                       style={{
@@ -137,10 +156,10 @@ const Channel = ({ user }) => {
                               }
                             }
                           >
-                            Manual do Mundo
+                            {state.channel.nick}
                           </span>{" "}
                           <br />
-                          10 Mil de inscritos
+                          {state.channel.subs}
                         </span>
                       </div>
                     </div>
@@ -182,7 +201,7 @@ const Channel = ({ user }) => {
                     // alignItems: "center",
                   }}
                 >
-                  {state.subscribe === false && state.is_owner && (
+                  {state.channel.is_sub === false && !state.channel.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",
@@ -198,7 +217,7 @@ const Channel = ({ user }) => {
                       </CButton>
                     </div>
                   )}
-                  {state.subscribe === true && state.is_owner && (
+                  {state.channel.is_sub === true && !state.channel.is_owner && (
                     <div
                       style={{
                         marginLeft: "auto",
@@ -221,7 +240,7 @@ const Channel = ({ user }) => {
         </CCard>
       </header>
       {/* {state.content === 1 ? <h1>Inicio</h1> : null} */}
-      {state.content === 2 ? <ShowVideos /> : null}
+      {state.content === 2 ? <ChannelVideos /> : null}
       {state.content === 3 ? <AllPlaylists /> : null}
       {/* {state.content === 4 ? <h1>Sobre</h1> : null} */}
     </div>

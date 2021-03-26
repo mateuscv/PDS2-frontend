@@ -101,7 +101,7 @@ const HomeVideos = ({ user }) => {
                       <CCardText
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
-                      >{`${item.views} • ${diffDate(
+                      >{`${item.views} Visualizações • ${diffDate(
                         state.today,
                         item.date
                       )}`}</CCardText>{" "}

@@ -1,8 +1,8 @@
 import axios from "axios";
 // export const API_URL = "http://localhost:3334/";
-// export const API_URL = "http://2fb5e21d1484.ngrok.io/";
-export const API_URL =
-  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+export const API_URL = "http://af849b3be2a4.ngrok.io/";
+// export const API_URL =
+//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {
@@ -237,5 +237,20 @@ export const removeVideoFromPlaylist = async (data) => {
 
 export const createPlaylist = async (data) => {
   const res = await axios.post(API_URL + "playlist/create", data);
+  return res.data;
+};
+
+export const channelData = async (data) => {
+  const res = await axios.post(API_URL + "channel/info", data);
+  return res.data;
+};
+
+export const channelGetVideos = async (data) => {
+  const res = await axios.post(API_URL + "channel/videos", data);
+  return res.data;
+};
+
+export const getPlaylists = async (data) => {
+  const res = await axios.post(API_URL + "playlist/get", data);
   return res.data;
 };
