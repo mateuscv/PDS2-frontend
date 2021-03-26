@@ -504,6 +504,7 @@ const Comments = ({ user }) => {
               liked: data[i].liked,
               color: data[i].liked === 1 ? "green" : "white",
               edited: data[i].edited,
+              is_owner: data[i].is_owner,
             });
             showAux.push({
               id: data[i].id,
@@ -523,6 +524,7 @@ const Comments = ({ user }) => {
               liked: data[i].liked,
               color: data[i].liked === 1 ? "green" : "white",
               edited: data[i].edited,
+              is_owner: data[i].is_owner,
             });
           }
         }
@@ -544,6 +546,7 @@ const Comments = ({ user }) => {
                 liked: mtxAux[idx].liked,
                 color: mtxAux[idx].liked === 1 ? "green" : "white",
                 edited: mtxAux[idx].edited,
+                is_owner: mtxAux[idx].is_owner,
               });
               vexAux.push(aux);
             }
@@ -560,7 +563,7 @@ const Comments = ({ user }) => {
       });
     }
   }, []);
-
+  console.log(state.dispAns);
   return (
     <div>
       <CRow>
@@ -639,12 +642,14 @@ const Comments = ({ user }) => {
                     src={item.src}
                     width="44"
                     height="44"
+                    onClick={() => handleClick("channel", item.user_id)}
                     style={{
                       borderRadius: "40%",
+                      cursor: "pointer",
                     }}
                   />
                 </div>
-                {item.user_id === user.token &&
+                {item.is_owner &&
                 item.id === display.idEdit &&
                 display.editing ? (
                   <div
@@ -716,9 +721,18 @@ const Comments = ({ user }) => {
                   <div class="showDiv" style={{ width: "90%", color: "white" }}>
                     <div style={{ width: "100%", display: "flex" }}>
                       <span style={{ width: "98%" }}>
-                        {item.nickname} {item.date} {item.edited && "(editado)"}
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleClick("channel", item.channel_id)
+                          }
+                        >
+                          {item.nickname}
+                        </span>
+                        <span>{item.date} </span>
+                        <span>{item.edited && "(editado)"}</span>
                       </span>
-                      {item.user_id === user.token ? (
+                      {item.is_owner ? (
                         <div
                           style={{
                             display: "flex",
@@ -867,12 +881,16 @@ const Comments = ({ user }) => {
                                     src={itm[0].src}
                                     width="44"
                                     height="44"
+                                    onClick={() =>
+                                      handleClick("channel", itm[0].user_id)
+                                    }
                                     style={{
                                       borderRadius: "40%",
+                                      cursor: "pointer",
                                     }}
                                   />
                                 </div>
-                                {itm[0].user_id === user.token &&
+                                {itm[0].is_owner &&
                                 itm[0].id === display.idEdit &&
                                 display.editing ? (
                                   <div
@@ -959,12 +977,20 @@ const Comments = ({ user }) => {
                                     <div
                                       style={{ width: "100%", display: "flex" }}
                                     >
-                                      <span style={{ width: "98%" }}>
-                                        {itm[0].nickname} {itm[0].date}{" "}
+                                      <span
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() =>
+                                          handleClick("channel", itm[0].user_id)
+                                        }
+                                      >
+                                        {itm[0].nickname}
+                                      </span>
+                                      <span>{itm[0].date} </span>
+                                      <span>
                                         {itm[0].edited && "(editado)"}
                                       </span>
 
-                                      {user.token === itm[0].user_id ? (
+                                      {itm[0].is_owner ? (
                                         <div
                                           style={{
                                             display: "flex",
