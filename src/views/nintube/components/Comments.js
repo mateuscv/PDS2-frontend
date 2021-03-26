@@ -28,7 +28,15 @@ import CIcon from "@coreui/icons-react";
 //API
 // import { Report } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
-import { API_URL, getImg, sendComment, getComment } from "../../../util/Api";
+import {
+  API_URL,
+  getImg,
+  sendComment,
+  getComment,
+  commentLiked,
+  deletComment,
+  editComment,
+} from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 
@@ -41,15 +49,17 @@ const Comments = ({ user }) => {
     newComment: "",
     AnswersOne: "",
     AnswersTwo: "",
-    showComment: false,
-    showAns: false,
     idAns: "",
-    showAnsTwo: false,
     idAnsTwo: "",
     dispAns: [],
     fiComment: [],
     secComment: [],
     showSec: [],
+  });
+  const [display, setDisplay] = useState({
+    showComment: false,
+    showAns: false,
+    showAnsTwo: false,
   });
 
   let history = useHistory();
@@ -62,10 +72,13 @@ const Comments = ({ user }) => {
 
   const comment = () => {
     if (user.token) {
-      if (!state.showComment) {
+      if (!display.showComment) {
         setState({
           ...state,
           newComment: "",
+        });
+        setDisplay({
+          ...display,
           showComment: true,
         });
       }
@@ -82,22 +95,31 @@ const Comments = ({ user }) => {
         video_id: id,
         reply_id: "",
       };
+      setDisplay({
+        ...display,
+        showComment: false,
+      });
       sendComment(data).then(function (data) {
         if (data !== "") {
           let comment = state.fiComment;
           let dis = state.dispAns;
-
-          console.log(comment);
-          comment.push({
-            id: data.id,
-            nickname: data.username,
-            comment: data.text,
-            date: diffDate(new Date(), data.created_at),
-            src: data.src,
-            reply_id: data.reply_id,
-          });
+          var comm = [
+            {
+              id: data.id.id,
+              user_id: user.token,
+              nickname: data.username,
+              comment: data.text,
+              date: diffDate(new Date(), data.created_at),
+              src: data.src,
+              reply_id: data.reply_id,
+              likes: 0,
+              liked: 0,
+              color: "white",
+            },
+          ];
+          comment = comm.concat(comment);
           dis.push({
-            id: data.id,
+            id: data.id.id,
             dis: false,
             info: Array(0),
           });
@@ -106,7 +128,6 @@ const Comments = ({ user }) => {
             fiComment: comment,
             dispAns: dis,
             newComment: "",
-            showComment: false,
           });
         }
       });
@@ -117,6 +138,10 @@ const Comments = ({ user }) => {
         video_id: id,
         reply_id,
       };
+      setDisplay({
+        ...display,
+        showAns: false,
+      });
       sendComment(data).then(function (data) {
         if (data !== "") {
           let comment = state.dispAns;
@@ -124,12 +149,17 @@ const Comments = ({ user }) => {
             if (comment[i].id === data.reply_id) {
               var aux = new Array();
               aux.push({
-                id: data.user_id,
+                id: data.id.id,
+                user_id: user.token,
                 nickname: data.username,
                 comment: data.text,
                 date: diffDate(new Date(), data.created_at),
                 src: data.src,
                 reply_id: data.reply_id,
+
+                likes: 0,
+                liked: 0,
+                color: "white",
               });
               comment[i].info.push(aux);
             }
@@ -138,7 +168,6 @@ const Comments = ({ user }) => {
             ...state,
             dispAns: comment,
             AnswersOne: "",
-            showAns: false,
             idAns: "",
           });
         }
@@ -150,7 +179,10 @@ const Comments = ({ user }) => {
         video_id: id,
         reply_id,
       };
-
+      setDisplay({
+        ...display,
+        showAnsTwo: false,
+      });
       sendComment(data).then(function (data) {
         if (data !== "") {
           let comment = state.dispAns;
@@ -158,12 +190,15 @@ const Comments = ({ user }) => {
             if (comment[i].id === data.reply_id) {
               var aux = new Array();
               aux.push({
-                id: data.user_id,
+                id: data.id.id,
                 nickname: data.username,
                 comment: data.text,
                 date: diffDate(new Date(), data.created_at),
                 src: data.src,
                 reply_id: data.reply_id,
+                likes: 0,
+                liked: 0,
+                color: "white",
               });
               comment[i].info.push(aux);
             }
@@ -172,7 +207,6 @@ const Comments = ({ user }) => {
             ...state,
             dispAns: comment,
             newComment: "",
-            showAnsTwo: false,
             idAnsTwo: "",
           });
         }
@@ -184,6 +218,9 @@ const Comments = ({ user }) => {
     setState({
       ...state,
       newComment: "",
+    });
+    setDisplay({
+      ...display,
       showComment: false,
     });
   };
@@ -193,15 +230,21 @@ const Comments = ({ user }) => {
       setState({
         ...state,
         AnswersOne: "",
-        showAns: false,
         idAns: "",
+      });
+      setDisplay({
+        ...display,
+        showAns: false,
       });
     } else {
       setState({
         ...state,
         newComment: "",
-        showAnsTwo: false,
         idAnsTwo: "",
+      });
+      setDisplay({
+        ...display,
+        showAnsTwo: false,
       });
     }
   };
@@ -218,15 +261,21 @@ const Comments = ({ user }) => {
         setState({
           ...state,
           AnswersOne: "",
-          showAns: true,
           idAns: id,
+        });
+        setDisplay({
+          ...display,
+          showAns: true,
         });
       } else {
         setState({
           ...state,
           newComment: "",
-          showAnsTwo: true,
           idAnsTwo: id,
+        });
+        setDisplay({
+          ...display,
+          showAnsTwo: true,
         });
       }
     } else {
@@ -234,8 +283,117 @@ const Comments = ({ user }) => {
     }
   };
 
-  const reportVideo = () => {
+  const Liked = (liked, nvl, id, id2) => {
+    if (user.token) {
+      if (nvl === 0) {
+        let comment = state.fiComment;
+        for (let i = 0; i < comment.length; i++) {
+          if (id === comment[i].id) {
+            switch (liked) {
+              case "like":
+                if (comment[i].liked === 1) {
+                  comment[i].likes -= 1;
+                  comment[i].liked = 0;
+                  comment[i].color = "white";
+                  setState({
+                    ...state,
+                    fiComment: comment,
+                  });
+                } else {
+                  comment[i].likes += 1;
+                  comment[i].liked = 1;
+                  comment[i].color = "green";
+                  setState({
+                    ...state,
+                    fiComment: comment,
+                  });
+                }
+                break;
+            }
+            var data = {
+              token: user.token,
+              comment_id: id,
+              liked: comment[i].liked,
+            };
+          }
+        }
+      } else {
+        let comment = state.dispAns;
+        for (let i = 0; i < comment.length; i++) {
+          if (id2 === comment[i].id) {
+            for (let w = 0; w < comment[i].info.length; w++) {
+              if (id === comment[i].info[w][0].id) {
+                switch (liked) {
+                  case "like":
+                    if (comment[i].info[w][0].liked === 1) {
+                      comment[i].info[w][0].likes -= 1;
+                      comment[i].info[w][0].liked = 0;
+                      comment[i].info[w][0].color = "white";
+                      setState({
+                        ...state,
+                        dispAns: comment,
+                      });
+                    } else {
+                      comment[i].info[w][0].likes += 1;
+                      comment[i].info[w][0].liked = 1;
+                      comment[i].info[w][0].color = "green";
+                      setState({
+                        ...state,
+                        dispAns: comment,
+                      });
+                    }
+                    break;
+                }
+                var data = {
+                  token: user.token,
+                  comment_id: id,
+                  liked: comment[i].info[w][0].liked,
+                };
+              }
+            }
+          }
+        }
+      }
+      commentLiked(data).then(function (data) {});
+    }
+  };
+
+  const reportComment = () => {
     alert("Reporte", "Seu reporte foi enviado com sucesso!");
+  };
+  const deletCom = (comment_id, nvl, id) => {
+    var data = {
+      comment_id,
+    };
+    if (nvl === 0) {
+      let comment = state.fiComment;
+      let aux = [];
+      for (let i = 0; i < comment.length; i++) {
+        if (comment_id !== comment[i].id) {
+          aux.push(comment[i]);
+        }
+      }
+      setState({ ...state, fiComment: aux });
+    } else {
+      let sec_comment = state.dispAns;
+      let aux = [];
+      for (let i = 0; i < sec_comment.length; i++) {
+        aux.push(sec_comment[i]);
+        let auxInfo = [];
+
+        if (id === sec_comment[i].id) {
+          // aux[]
+          for (let w = 0; w < sec_comment[i].info.length; w++) {
+            if (comment_id !== sec_comment[i].info[w][0].id) {
+              auxInfo.push(sec_comment[i].info[w]);
+            }
+          }
+          aux[i].info = auxInfo;
+        }
+      }
+      setState({ ...state, dispAns: aux });
+    }
+    deletComment(data).then(function (data) {});
   };
 
   useEffect(() => {
@@ -255,6 +413,7 @@ const Comments = ({ user }) => {
       var data = {
         numberSkip: 0,
         video_id: id,
+        token: user.token,
       };
       getComment(data, user.token).then(function (data) {
         var listAux = Array();
@@ -265,11 +424,15 @@ const Comments = ({ user }) => {
           if (data[i].reply_id === "") {
             listAux.push({
               id: data[i].id,
+              user_id: data[i].user_id,
               nickname: data[i].nickname,
               comment: data[i].comment,
               date: diffDate(today, data[i].date),
               src: data[i].src,
               reply_id: data[i].reply_id,
+              likes: data[i].likes,
+              liked: data[i].liked,
+              color: data[i].liked === 1 ? "green" : "white",
             });
             showAux.push({
               id: data[i].id,
@@ -279,11 +442,15 @@ const Comments = ({ user }) => {
           } else {
             mtxAux.push({
               id: data[i].id,
+              user_id: data[i].user_id,
               nickname: data[i].nickname,
               comment: data[i].comment,
               date: diffDate(today, data[i].date),
               src: data[i].src,
               reply_id: data[i].reply_id,
+              likes: data[i].likes,
+              liked: data[i].liked,
+              color: data[i].liked === 1 ? "green" : "white",
             });
           }
         }
@@ -295,29 +462,32 @@ const Comments = ({ user }) => {
               var aux = new Array();
               aux.push({
                 id: mtxAux[idx].id,
+                user_id: mtxAux[idx].user_id,
                 nickname: mtxAux[idx].nickname,
                 comment: mtxAux[idx].comment,
                 date: mtxAux[idx].date,
                 src: mtxAux[idx].src,
                 reply_id: mtxAux[idx].reply_id,
+                likes: mtxAux[idx].likes,
+                liked: mtxAux[idx].liked,
+                color: mtxAux[idx].liked === 1 ? "green" : "white",
               });
               vexAux.push(aux);
             }
           }
           showAux[i].info = vexAux;
         }
-
         setState({
           ...state,
           fetched: true,
           fiComment: listAux,
-          secComment: mtxAux,
+          // secComment: mtxAux,
           dispAns: showAux,
-          // avatar,
         });
       });
     }
   }, []);
+  console.log(state.fiComment);
   return (
     <div>
       <CRow>
@@ -362,7 +532,7 @@ const Comments = ({ user }) => {
                     ></input>
                   </div>
                 </div>
-                {state.showComment && (
+                {display.showComment && (
                   <div style={{ width: "100%", marginTop: "3px" }}>
                     <a
                       class="myCancel"
@@ -406,27 +576,63 @@ const Comments = ({ user }) => {
                     <span style={{ width: "98%" }}>
                       {item.nickname} {item.date}
                     </span>
-                    <div
-                      class="showReport"
-                      style={{
-                        width: "3%",
-                        alignItems: "center",
-                      }}
-                      onClick={() => reportVideo()}
-                    >
-                      <CIcon name="cilFlagAlt" style={{ marginLeft: "5px" }} />
-                    </div>
+                    {item.user_id === user.token ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "3%",
+                        }}
+                      >
+                        <div
+                          class="showReport"
+                          style={{
+                            // width: "1.5%",
+                            alignItems: "center",
+                          }}
+                          // onClick={() => reportComment()}
+                        >
+                          <CIcon
+                            name="cil-pencil"
+                            style={{ marginLeft: "5px" }}
+                          />
+                        </div>
+                        <div
+                          class="showReport"
+                          style={{
+                            // width: "1.5%",
+                            alignItems: "center",
+                          }}
+                          onClick={() => deletCom(item.id, 0, 0)}
+                        >
+                          <CIcon
+                            name="cil-trash"
+                            style={{ marginLeft: "5px" }}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        class="showReport"
+                        style={{
+                          width: "3%",
+                          alignItems: "center",
+                        }}
+                        onClick={() => reportComment()}
+                      >
+                        <CIcon
+                          name="cilFlagAlt"
+                          style={{ marginLeft: "5px" }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <p>{item.comment}</p>
                   <div>
                     <CButton
-                      style={{ color: state.color_like, marginLeft: "-1.1%" }}
-                      // onClick={() => Liked("like")}
+                      style={{ color: item.color, marginLeft: "-1.1%" }}
+                      onClick={() => Liked("like", 0, item.id, 0)}
                     >
-                      <CIcon name="cilThumbUp" /> 45
-                    </CButton>
-                    <CButton style={{ color: state.color_dislike }}>
-                      <CIcon name="cilThumbDown" />
+                      <CIcon name="cilThumbUp" /> {item.likes}
                     </CButton>
                     <CButton
                       style={{ color: "white" }}
@@ -434,7 +640,7 @@ const Comments = ({ user }) => {
                     >
                       Responder
                     </CButton>
-                    {state.showAns && state.idAns === item.id && (
+                    {display.showAns && state.idAns === item.id && (
                       <div
                         style={{
                           width: "95%",
@@ -530,30 +736,74 @@ const Comments = ({ user }) => {
                                   <span style={{ width: "98%" }}>
                                     {itm[0].nickname} {itm[0].date}
                                   </span>
-                                  <div
-                                    class="showReportSec"
-                                    style={{
-                                      width: "3%",
-                                      alignItems: "center",
-                                    }}
-                                    onClick={() => reportVideo()}
-                                  >
-                                    <CIcon
-                                      name="cilFlagAlt"
-                                      style={{ marginLeft: "5px" }}
-                                    />
-                                  </div>
+
+                                  {user.token === itm[0].user_id ? (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        width: "3%",
+                                      }}
+                                    >
+                                      <div
+                                        class="showReportSec"
+                                        style={{
+                                          alignItems: "center",
+                                        }}
+                                        // onClick={() => reportComment()}
+                                      >
+                                        <CIcon
+                                          name="cil-pencil"
+                                          style={{ marginLeft: "5px" }}
+                                        />
+                                      </div>
+                                      <div
+                                        class="showReportSec"
+                                        style={{
+                                          alignItems: "center",
+                                        }}
+                                        onClick={() =>
+                                          deletCom(itm[0].id, 1, item.id)
+                                        }
+                                      >
+                                        <CIcon
+                                          name="cil-trash"
+                                          style={{ marginLeft: "5px" }}
+                                        />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      class="showReportSec"
+                                      style={{
+                                        width: "3%",
+                                        alignItems: "center",
+                                      }}
+                                      onClick={() => reportComment()}
+                                    >
+                                      <CIcon
+                                        name="cilFlagAlt"
+                                        style={{ marginLeft: "5px" }}
+                                      />
+                                    </div>
+                                  )}
                                 </div>
                                 <p>{itm[0].comment}</p>
                                 <div>
                                   <CButton
                                     style={{
-                                      color: state.color_like,
+                                      color: itm[0].color,
                                       marginLeft: "-1.1%",
                                     }}
-                                    // onClick={() => Liked("like")}
+                                    onClick={() =>
+                                      Liked(
+                                        "like",
+                                        1,
+                                        itm[0].id,
+                                        state.dispAns[index].id
+                                      )
+                                    }
                                   >
-                                    <CIcon name="cilThumbUp" /> 45
+                                    <CIcon name="cilThumbUp" /> {itm[0].likes}
                                   </CButton>
                                   <CButton
                                     style={{ color: state.color_dislike }}
@@ -566,7 +816,7 @@ const Comments = ({ user }) => {
                                   >
                                     Responder
                                   </CButton>
-                                  {state.showAnsTwo &&
+                                  {display.showAnsTwo &&
                                     state.idAnsTwo === itm[0].id && (
                                       <div
                                         style={{

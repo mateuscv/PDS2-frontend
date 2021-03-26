@@ -22,6 +22,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import Player from "../components/Player";
 import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
+import SavePlaylist from "../components/savePlaylist";
 //Style
 //API
 import Dropzone from "react-dropzone";
@@ -45,6 +46,7 @@ const View = ({ user, history }) => {
     video: "",
     op_report: "",
     report: "",
+    playlistComp: "",
   });
 
   const handleClick = (route, id) => {
@@ -58,7 +60,7 @@ const View = ({ user, history }) => {
         target_id: state.video.owner_id,
       };
 
-      console.log(data);
+      // console.log(data);
       Inscribe(data)
         .then(function (data) {
           let video = state.video;
@@ -158,10 +160,14 @@ const View = ({ user, history }) => {
         newLiked(data).then(function (data) {});
       }
     } else {
-      alert("Ops..", "Tens que tar logado pra reportar");
+      alert("Ops..", "Tens que tar logado para curtir um video");
     }
 
     // });
+  };
+
+  const closeSavePlaylist = () => {
+    setState({ ...state, playlistComp: "" });
   };
 
   const reportVideo = () => {
@@ -274,7 +280,6 @@ const View = ({ user, history }) => {
       report_text: text,
       report_option: option,
     };
-    console.log(data);
     if (text !== "" && option !== "") {
       Report(data)
         .then(function (data) {
@@ -385,6 +390,19 @@ const View = ({ user, history }) => {
               >
                 <CIcon name="cilFlagAlt" /> Reportar
               </CButton>
+              <CButton
+                style={{ color: "white" }}
+                onClick={() =>
+                  setState({
+                    ...state,
+                    playlistComp: (
+                      <SavePlaylist video_id={id} kill={closeSavePlaylist} />
+                    ),
+                  })
+                }
+              >
+                <CIcon name="cil-playlist-add" /> Salvar
+              </CButton>
             </div>
           </div>
         </CBreadcrumb>
@@ -454,6 +472,7 @@ const View = ({ user, history }) => {
       <div style={{ marginLeft: "auto", width: "25%" }}>
         <Recommended />
       </div>
+      {state.playlistComp}
       {/* </CCol>
       </CRow> */}
     </div>

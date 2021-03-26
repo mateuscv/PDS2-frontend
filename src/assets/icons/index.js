@@ -27,9 +27,11 @@ import {
   cibPaypal,
   cibGooglePay,
   cibCcAmex,
+  
 } from "@coreui/icons";
 import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons";
 import {
+  cilPlus,
   cilAlignCenter,
   cilAlignLeft,
   cilAlignRight,
@@ -96,6 +98,7 @@ import {
   cilPencil,
   cilPeople,
   cilPhone,
+  cilPlaylistAdd,
   cilPrint,
   cilPuzzle,
   cilSave,
@@ -151,6 +154,8 @@ export const icons = Object.assign(
   },
   {
     cilMenu,
+    cilPlus,
+    cilPlaylistAdd,
     cilCaretBottom,
     cilCaretTop,
     cilFlagAlt,
