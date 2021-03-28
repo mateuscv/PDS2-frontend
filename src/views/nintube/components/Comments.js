@@ -60,6 +60,10 @@ const Comments = ({ user }) => {
     showComment: false,
     showAns: false,
     showAnsTwo: false,
+    editing: false,
+    editText: "",
+    idEdit: "",
+    oldComment: "",
   });
 
   let history = useHistory();
@@ -68,6 +72,66 @@ const Comments = ({ user }) => {
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
+  };
+
+  const editingComment = (text, id) => {
+    setDisplay({
+      ...display,
+      editing: true,
+      oldComment: text,
+      idEdit: id,
+    });
+  };
+
+  const sendEdit = (text, id, nvl) => {
+    exitEdit();
+    var data = { text, comment_id: id };
+    if (nvl == 0) {
+      editComment(data).then(function (data) {
+        let comment = state.fiComment;
+        for (let i = 0; i < comment.length; i++) {
+          if (data.comment_id === comment[i].id) {
+            console.log(comment[i]);
+            comment[i].comment = data.text;
+            comment[i].edited = data.edited;
+            comment[i].date = diffDate(new Date(), data.created_at);
+            setState({
+              ...state,
+              fiComment: comment,
+            });
+          }
+        }
+      });
+    } else {
+      editComment(data).then(function (data) {
+        let comment = state.dispAns;
+        for (let w = 0; w < comment.length; w++) {
+          for (let i = 0; i < comment[w].info.length; i++) {
+            if (data.comment_id === comment[w].info[i][0].id) {
+              comment[w].info[i][0].comment = data.text;
+              comment[w].info[i][0].edited = data.edited;
+              comment[w].info[i][0].date = diffDate(
+                new Date(),
+                data.created_at
+              );
+              setState({
+                ...state,
+                dispAns: comment,
+              });
+            }
+          }
+        }
+      });
+    }
+  };
+
+  const exitEdit = () => {
+    setDisplay({
+      ...display,
+      editing: false,
+      oldComment: "",
+      idEdit: "",
+    });
   };
 
   const comment = () => {
@@ -115,14 +179,18 @@ const Comments = ({ user }) => {
               likes: 0,
               liked: 0,
               color: "white",
+              edited: false,
             },
           ];
           comment = comm.concat(comment);
-          dis.push({
-            id: data.id.id,
-            dis: false,
-            info: Array(0),
-          });
+          var aux = [
+            {
+              id: data.id.id,
+              dis: false,
+              info: Array(0),
+            },
+          ];
+          dis = aux.concat(dis);
           setState({
             ...state,
             fiComment: comment,
@@ -156,10 +224,10 @@ const Comments = ({ user }) => {
                 date: diffDate(new Date(), data.created_at),
                 src: data.src,
                 reply_id: data.reply_id,
-
                 likes: 0,
                 liked: 0,
                 color: "white",
+                edited: false,
               });
               comment[i].info.push(aux);
             }
@@ -199,6 +267,7 @@ const Comments = ({ user }) => {
                 likes: 0,
                 liked: 0,
                 color: "white",
+                edited: false,
               });
               comment[i].info.push(aux);
             }
@@ -361,6 +430,7 @@ const Comments = ({ user }) => {
   const reportComment = () => {
     alert("Reporte", "Seu reporte foi enviado com sucesso!");
   };
+
   const deletCom = (comment_id, nvl, id) => {
     var data = {
       comment_id,
@@ -433,6 +503,8 @@ const Comments = ({ user }) => {
               likes: data[i].likes,
               liked: data[i].liked,
               color: data[i].liked === 1 ? "green" : "white",
+              edited: data[i].edited,
+              is_owner: data[i].is_owner,
             });
             showAux.push({
               id: data[i].id,
@@ -451,6 +523,8 @@ const Comments = ({ user }) => {
               likes: data[i].likes,
               liked: data[i].liked,
               color: data[i].liked === 1 ? "green" : "white",
+              edited: data[i].edited,
+              is_owner: data[i].is_owner,
             });
           }
         }
@@ -471,6 +545,8 @@ const Comments = ({ user }) => {
                 likes: mtxAux[idx].likes,
                 liked: mtxAux[idx].liked,
                 color: mtxAux[idx].liked === 1 ? "green" : "white",
+                edited: mtxAux[idx].edited,
+                is_owner: mtxAux[idx].is_owner,
               });
               vexAux.push(aux);
             }
@@ -566,385 +642,575 @@ const Comments = ({ user }) => {
                     src={item.src}
                     width="44"
                     height="44"
+                    onClick={() => handleClick("channel", item.user_id)}
                     style={{
                       borderRadius: "40%",
+                      cursor: "pointer",
                     }}
                   />
                 </div>
-                <div class="showDiv" style={{ width: "90%", color: "white" }}>
-                  <div style={{ width: "100%", display: "flex" }}>
-                    <span style={{ width: "98%" }}>
-                      {item.nickname} {item.date}
-                    </span>
-                    {item.user_id === user.token ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "3%",
-                        }}
-                      >
-                        <div
-                          class="showReport"
-                          style={{
-                            // width: "1.5%",
-                            alignItems: "center",
-                          }}
-                          // onClick={() => reportComment()}
-                        >
-                          <CIcon
-                            name="cil-pencil"
-                            style={{ marginLeft: "5px" }}
-                          />
+                {item.is_owner &&
+                item.id === display.idEdit &&
+                display.editing ? (
+                  <div
+                    style={{
+                      width: "95%",
+                      // marginLeft: "1.7%",
+                      // display: "flex",
+                    }}
+                  >
+                    <CBreadcrumb
+                      style={{
+                        width: "95%",
+                        marginLeft: "1.7%",
+                        display: "flex",
+                      }}
+                    >
+                      <div style={{ width: "90%" }}>
+                        <div style={{ width: "100%", color: "white" }}>
+                          <div style={{ width: "100%" }}>
+                            <input
+                              // id="contenteditable-root"
+
+                              dir="auto"
+                              value={display.oldComment}
+                              placeholder="Adicionar um comentário público.."
+                              // class="style-scope yt-formatted-string"
+                              // value
+                              onChange={(e) => {
+                                setDisplay({
+                                  ...display,
+                                  oldComment: e.target.value,
+                                });
+                              }}
+                              style={{
+                                color: "white",
+                                width: "100%",
+                                border: "1px solid white",
+                                borderTop: "none",
+                                borderRight: "none",
+                                borderLeft: "none",
+                                background: "transparent",
+                              }}
+                            ></input>
+                          </div>
                         </div>
-                        <div
-                          class="showReport"
-                          style={{
-                            // width: "1.5%",
-                            alignItems: "center",
-                          }}
-                          onClick={() => deletCom(item.id, 0, 0)}
-                        >
-                          <CIcon
-                            name="cil-trash"
-                            style={{ marginLeft: "5px" }}
-                          />
+
+                        <div style={{ width: "100%", marginTop: "3px" }}>
+                          <a
+                            class="myCancel"
+                            onClick={() => exitEdit()}
+                            style={{ marginLeft: "50%", color: "white" }}
+                          >
+                            Cancelar
+                          </a>
+                          <a
+                            class="myBut "
+                            onClick={() =>
+                              sendEdit(display.oldComment, display.idEdit, 0)
+                            }
+                            style={{ marginLeft: "1%" }}
+                          >
+                            Enviar
+                          </a>
                         </div>
                       </div>
-                    ) : (
-                      <div
-                        class="showReport"
-                        style={{
-                          width: "3%",
-                          alignItems: "center",
-                        }}
-                        onClick={() => reportComment()}
-                      >
-                        <CIcon
-                          name="cilFlagAlt"
-                          style={{ marginLeft: "5px" }}
-                        />
-                      </div>
-                    )}
+                    </CBreadcrumb>
                   </div>
-                  <p>{item.comment}</p>
-                  <div>
-                    <CButton
-                      style={{ color: item.color, marginLeft: "-1.1%" }}
-                      onClick={() => Liked("like", 0, item.id, 0)}
-                    >
-                      <CIcon name="cilThumbUp" /> {item.likes}
-                    </CButton>
-                    <CButton
-                      style={{ color: "white" }}
-                      onClick={() => answers(1, item.id)}
-                    >
-                      Responder
-                    </CButton>
-                    {display.showAns && state.idAns === item.id && (
-                      <div
-                        style={{
-                          width: "95%",
-                          marginLeft: "1.7%",
-                          display: "flex",
-                        }}
-                      >
-                        <div style={{ width: "7%", height: "100%" }}>
-                          <img
-                            src={state.avatar}
+                ) : (
+                  <div class="showDiv" style={{ width: "90%", color: "white" }}>
+                    <div style={{ width: "100%", display: "flex" }}>
+                      <span style={{ width: "98%" }}>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleClick("channel", item.user_id)}
+                        >
+                          {item.nickname}
+                        </span>
+                        <span>{item.date} </span>
+                        <span>{item.edited && "(editado)"}</span>
+                      </span>
+                      {item.is_owner ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            width: "3%",
+                          }}
+                        >
+                          <div
+                            class="showReport"
                             style={{
-                              borderRadius: "40%",
+                              // width: "1.5%",
+                              alignItems: "center",
                             }}
-                            width="44"
-                            height="44"
+                            onClick={() =>
+                              editingComment(item.comment, item.id)
+                            }
+                          >
+                            <CIcon
+                              name="cil-pencil"
+                              style={{ marginLeft: "5px" }}
+                            />
+                          </div>
+                          <div
+                            class="showReport"
+                            style={{
+                              // width: "1.5%",
+                              alignItems: "center",
+                            }}
+                            onClick={() => deletCom(item.id, 0, 0)}
+                          >
+                            <CIcon
+                              name="cil-trash"
+                              style={{ marginLeft: "5px" }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          class="showReport"
+                          style={{
+                            width: "3%",
+                            alignItems: "center",
+                          }}
+                          onClick={() => reportComment()}
+                        >
+                          <CIcon
+                            name="cilFlagAlt"
+                            style={{ marginLeft: "5px" }}
                           />
                         </div>
-                        <div style={{ width: "90%" }}>
-                          <div style={{ width: "100%", color: "white" }}>
-                            <div style={{ width: "100%" }}>
-                              <input
-                                dir="auto"
-                                value={state.AnswersOne}
-                                placeholder="Adicionar um comentário público.."
-                                onChange={(e) => {
-                                  setState({
-                                    ...state,
-                                    AnswersOne: e.target.value,
-                                  });
-                                }}
-                                style={{
-                                  color: "white",
-                                  width: "100%",
-                                  border: "1px solid white",
-                                  borderTop: "none",
-                                  borderRight: "none",
-                                  borderLeft: "none",
-                                  background: "transparent",
-                                }}
-                              ></input>
+                      )}
+                    </div>
+                    <p>{item.comment}</p>
+                    <div>
+                      <CButton
+                        style={{ color: item.color, marginLeft: "-1.1%" }}
+                        onClick={() => Liked("like", 0, item.id, 0)}
+                      >
+                        <CIcon name="cilThumbUp" /> {item.likes}
+                      </CButton>
+                      <CButton
+                        style={{ color: "white" }}
+                        onClick={() => answers(1, item.id)}
+                      >
+                        Responder
+                      </CButton>
+                      {display.showAns && state.idAns === item.id && (
+                        <div
+                          style={{
+                            width: "95%",
+                            marginLeft: "1.7%",
+                            display: "flex",
+                          }}
+                        >
+                          <div style={{ width: "7%", height: "100%" }}>
+                            <img
+                              src={state.avatar}
+                              style={{
+                                borderRadius: "40%",
+                              }}
+                              width="44"
+                              height="44"
+                            />
+                          </div>
+                          <div style={{ width: "90%" }}>
+                            <div style={{ width: "100%", color: "white" }}>
+                              <div style={{ width: "100%" }}>
+                                <input
+                                  dir="auto"
+                                  value={state.AnswersOne}
+                                  placeholder="Adicionar um comentário público.."
+                                  onChange={(e) => {
+                                    setState({
+                                      ...state,
+                                      AnswersOne: e.target.value,
+                                    });
+                                  }}
+                                  style={{
+                                    color: "white",
+                                    width: "100%",
+                                    border: "1px solid white",
+                                    borderTop: "none",
+                                    borderRight: "none",
+                                    borderLeft: "none",
+                                    background: "transparent",
+                                  }}
+                                ></input>
+                              </div>
+                            </div>
+                            <div style={{ width: "100%", marginTop: "3px" }}>
+                              <a
+                                class="myCancel"
+                                onClick={() => exitAns(1)}
+                                style={{ marginLeft: "66%", color: "white" }}
+                              >
+                                Cancelar
+                              </a>
+                              <a
+                                class="myBut "
+                                onClick={() =>
+                                  sendCom(state.AnswersOne, 1, state.idAns, "")
+                                }
+                                style={{ marginLeft: "1%", color: "black" }}
+                              >
+                                Enviar
+                              </a>
                             </div>
                           </div>
-                          <div style={{ width: "100%", marginTop: "3px" }}>
-                            <a
-                              class="myCancel"
-                              onClick={() => exitAns(1)}
-                              style={{ marginLeft: "66%", color: "white" }}
-                            >
-                              Cancelar
-                            </a>
-                            <a
-                              class="myBut "
-                              onClick={() =>
-                                sendCom(state.AnswersOne, 1, state.idAns, "")
-                              }
-                              style={{ marginLeft: "1%", color: "black" }}
-                            >
-                              Enviar
-                            </a>
-                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                  {state.dispAns[index].info.length !== 0 && (
-                    <div>
-                      {state.dispAns[index].dis && (
-                        <div>
-                          {state.dispAns[index].info.map((itm, idx) => (
-                            <div
-                              style={{
-                                width: "95%",
-                                marginLeft: "3%",
-                                display: "flex",
-                                marginTop: "1%",
-                              }}
-                            >
-                              <div style={{ width: "7%", height: "100%" }}>
-                                <img
-                                  src={itm[0].src}
-                                  width="44"
-                                  height="44"
-                                  style={{
-                                    borderRadius: "40%",
-                                  }}
-                                />
-                              </div>
+                      )}
+                    </div>
+                    {state.dispAns[index].info.length !== 0 && (
+                      <div>
+                        {state.dispAns[index].dis && (
+                          <div>
+                            {state.dispAns[index].info.map((itm, idx) => (
                               <div
-                                class="showDivSec"
-                                style={{ width: "90%", color: "white" }}
+                                style={{
+                                  width: "95%",
+                                  marginLeft: "3%",
+                                  display: "flex",
+                                  marginTop: "1%",
+                                }}
                               >
-                                <div style={{ width: "100%", display: "flex" }}>
-                                  <span style={{ width: "98%" }}>
-                                    {itm[0].nickname} {itm[0].date}
-                                  </span>
-
-                                  {user.token === itm[0].user_id ? (
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        width: "3%",
-                                      }}
-                                    >
-                                      <div
-                                        class="showReportSec"
-                                        style={{
-                                          alignItems: "center",
-                                        }}
-                                        // onClick={() => reportComment()}
-                                      >
-                                        <CIcon
-                                          name="cil-pencil"
-                                          style={{ marginLeft: "5px" }}
-                                        />
-                                      </div>
-                                      <div
-                                        class="showReportSec"
-                                        style={{
-                                          alignItems: "center",
-                                        }}
-                                        onClick={() =>
-                                          deletCom(itm[0].id, 1, item.id)
-                                        }
-                                      >
-                                        <CIcon
-                                          name="cil-trash"
-                                          style={{ marginLeft: "5px" }}
-                                        />
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      class="showReportSec"
-                                      style={{
-                                        width: "3%",
-                                        alignItems: "center",
-                                      }}
-                                      onClick={() => reportComment()}
-                                    >
-                                      <CIcon
-                                        name="cilFlagAlt"
-                                        style={{ marginLeft: "5px" }}
-                                      />
-                                    </div>
-                                  )}
-                                </div>
-                                <p>{itm[0].comment}</p>
-                                <div>
-                                  <CButton
-                                    style={{
-                                      color: itm[0].color,
-                                      marginLeft: "-1.1%",
-                                    }}
+                                <div style={{ width: "7%", height: "100%" }}>
+                                  <img
+                                    src={itm[0].src}
+                                    width="44"
+                                    height="44"
                                     onClick={() =>
-                                      Liked(
-                                        "like",
-                                        1,
-                                        itm[0].id,
-                                        state.dispAns[index].id
-                                      )
+                                      handleClick("channel", itm[0].user_id)
                                     }
+                                    style={{
+                                      borderRadius: "40%",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </div>
+                                {itm[0].is_owner &&
+                                itm[0].id === display.idEdit &&
+                                display.editing ? (
+                                  <div
+                                    style={{
+                                      width: "95%",
+                                    }}
                                   >
-                                    <CIcon name="cilThumbUp" /> {itm[0].likes}
-                                  </CButton>
-                                  <CButton
-                                    style={{ color: state.color_dislike }}
-                                  >
-                                    <CIcon name="cilThumbDown" />
-                                  </CButton>
-                                  <CButton
-                                    style={{ color: "white" }}
-                                    onClick={() => answers(2, itm[0].id)}
-                                  >
-                                    Responder
-                                  </CButton>
-                                  {display.showAnsTwo &&
-                                    state.idAnsTwo === itm[0].id && (
-                                      <div
-                                        style={{
-                                          width: "95%",
-                                          marginLeft: "1.7%",
-                                          display: "flex",
-                                        }}
-                                      >
+                                    <CBreadcrumb
+                                      style={{
+                                        width: "95%",
+                                        marginLeft: "1.7%",
+                                        display: "flex",
+                                      }}
+                                    >
+                                      <div style={{ width: "90%" }}>
                                         <div
                                           style={{
-                                            width: "7%",
-                                            height: "100%",
+                                            width: "100%",
+                                            color: "white",
                                           }}
                                         >
-                                          <img
-                                            src={state.avatar}
-                                            width="44"
-                                            height="44"
-                                            style={{
-                                              borderRadius: "40%",
-                                            }}
-                                          />
+                                          <div style={{ width: "100%" }}>
+                                            <input
+                                              dir="auto"
+                                              value={display.oldComment}
+                                              placeholder="Adicionar um comentário público.."
+                                              onChange={(e) => {
+                                                setDisplay({
+                                                  ...display,
+                                                  oldComment: e.target.value,
+                                                });
+                                              }}
+                                              style={{
+                                                color: "white",
+                                                width: "100%",
+                                                border: "1px solid white",
+                                                borderTop: "none",
+                                                borderRight: "none",
+                                                borderLeft: "none",
+                                                background: "transparent",
+                                              }}
+                                            ></input>
+                                          </div>
                                         </div>
-                                        <div style={{ width: "90%" }}>
-                                          <div
+
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            marginTop: "3px",
+                                          }}
+                                        >
+                                          <a
+                                            class="myCancel"
+                                            onClick={() => exitEdit()}
                                             style={{
-                                              width: "100%",
+                                              marginLeft: "50%",
                                               color: "white",
                                             }}
                                           >
-                                            <div style={{ width: "100%" }}>
-                                              <input
-                                                dir="auto"
-                                                value={state.AnswersTwo}
-                                                placeholder="Adicionar um comentário público.."
-                                                onChange={(e) => {
-                                                  setState({
-                                                    ...state,
-                                                    AnswersTwo: e.target.value,
-                                                  });
-                                                }}
-                                                style={{
-                                                  color: "white",
-                                                  width: "100%",
-                                                  border: "1px solid white",
-                                                  borderTop: "none",
-                                                  borderRight: "none",
-                                                  borderLeft: "none",
-                                                  background: "transparent",
-                                                }}
-                                              ></input>
-                                            </div>
-                                          </div>
-
-                                          <div
-                                            style={{
-                                              width: "100%",
-                                              marginTop: "3px",
-                                            }}
+                                            Cancelar
+                                          </a>
+                                          <a
+                                            class="myBut "
+                                            onClick={() =>
+                                              sendEdit(
+                                                display.oldComment,
+                                                display.idEdit,
+                                                1
+                                              )
+                                            }
+                                            style={{ marginLeft: "1%" }}
                                           >
-                                            <a
-                                              class="myCancel"
-                                              onClick={() => exitAns(2)}
-                                              style={{
-                                                marginLeft: "66%",
-                                                color: "white",
-                                              }}
-                                            >
-                                              Cancelar
-                                            </a>
-                                            <a
-                                              class="myBut "
-                                              onClick={() =>
-                                                sendCom(
-                                                  state.AnswersTwo,
-                                                  2,
-                                                  item.id,
-                                                  itm[0].nickname
-                                                )
-                                              }
-                                              style={{
-                                                marginLeft: "1%",
-                                                color: "black",
-                                              }}
-                                            >
-                                              Enviar
-                                            </a>
-                                          </div>
+                                            Enviar
+                                          </a>
                                         </div>
                                       </div>
-                                    )}
-                                </div>
+                                    </CBreadcrumb>
+                                  </div>
+                                ) : (
+                                  <div
+                                    class="showDivSec"
+                                    style={{ width: "90%", color: "white" }}
+                                  >
+                                    <div
+                                      style={{ width: "100%", display: "flex" }}
+                                    >
+                                      <span style={{ width: "95%" }}>
+                                        {" "}
+                                        <span
+                                          style={{ cursor: "pointer" }}
+                                          onClick={() =>
+                                            handleClick(
+                                              "channel",
+                                              itm[0].user_id
+                                            )
+                                          }
+                                        >
+                                          {itm[0].nickname}
+                                        </span>
+                                        <span>{itm[0].date} </span>
+                                        <span>
+                                          {itm[0].edited && "(editado)"}
+                                        </span>
+                                      </span>
+
+                                      {itm[0].is_owner ? (
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            width: "3%",
+                                          }}
+                                        >
+                                          <div
+                                            class="showReportSec"
+                                            style={{
+                                              alignItems: "center",
+                                            }}
+                                            onClick={() =>
+                                              editingComment(
+                                                itm[0].comment,
+                                                itm[0].id
+                                              )
+                                            }
+                                          >
+                                            <CIcon
+                                              name="cil-pencil"
+                                              style={{ marginLeft: "5px" }}
+                                            />
+                                          </div>
+                                          <div
+                                            class="showReportSec"
+                                            style={{
+                                              alignItems: "center",
+                                            }}
+                                            onClick={() =>
+                                              deletCom(itm[0].id, 1, item.id)
+                                            }
+                                          >
+                                            <CIcon
+                                              name="cil-trash"
+                                              style={{ marginLeft: "5px" }}
+                                            />
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div
+                                          class="showReportSec"
+                                          style={{
+                                            width: "3%",
+                                            alignItems: "center",
+                                          }}
+                                          onClick={() => reportComment()}
+                                        >
+                                          <CIcon
+                                            name="cilFlagAlt"
+                                            style={{ marginLeft: "5px" }}
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                    <p>{itm[0].comment}</p>
+                                    <div>
+                                      <CButton
+                                        style={{
+                                          color: itm[0].color,
+                                          marginLeft: "-1.1%",
+                                        }}
+                                        onClick={() =>
+                                          Liked(
+                                            "like",
+                                            1,
+                                            itm[0].id,
+                                            state.dispAns[index].id
+                                          )
+                                        }
+                                      >
+                                        <CIcon name="cilThumbUp" />{" "}
+                                        {itm[0].likes}
+                                      </CButton>
+                                      <CButton
+                                        style={{ color: state.color_dislike }}
+                                      >
+                                        <CIcon name="cilThumbDown" />
+                                      </CButton>
+                                      <CButton
+                                        style={{ color: "white" }}
+                                        onClick={() => answers(2, itm[0].id)}
+                                      >
+                                        Responder
+                                      </CButton>
+                                      {display.showAnsTwo &&
+                                        state.idAnsTwo === itm[0].id && (
+                                          <div
+                                            style={{
+                                              width: "95%",
+                                              marginLeft: "1.7%",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            <div
+                                              style={{
+                                                width: "7%",
+                                                height: "100%",
+                                              }}
+                                            >
+                                              <img
+                                                src={state.avatar}
+                                                width="44"
+                                                height="44"
+                                                style={{
+                                                  borderRadius: "40%",
+                                                }}
+                                              />
+                                            </div>
+                                            <div style={{ width: "90%" }}>
+                                              <div
+                                                style={{
+                                                  width: "100%",
+                                                  color: "white",
+                                                }}
+                                              >
+                                                <div style={{ width: "100%" }}>
+                                                  <input
+                                                    dir="auto"
+                                                    value={state.AnswersTwo}
+                                                    placeholder="Adicionar um comentário público.."
+                                                    onChange={(e) => {
+                                                      setState({
+                                                        ...state,
+                                                        AnswersTwo:
+                                                          e.target.value,
+                                                      });
+                                                    }}
+                                                    style={{
+                                                      color: "white",
+                                                      width: "100%",
+                                                      border: "1px solid white",
+                                                      borderTop: "none",
+                                                      borderRight: "none",
+                                                      borderLeft: "none",
+                                                      background: "transparent",
+                                                    }}
+                                                  ></input>
+                                                </div>
+                                              </div>
+
+                                              <div
+                                                style={{
+                                                  width: "100%",
+                                                  marginTop: "3px",
+                                                }}
+                                              >
+                                                <a
+                                                  class="myCancel"
+                                                  onClick={() => exitAns(2)}
+                                                  style={{
+                                                    marginLeft: "66%",
+                                                    color: "white",
+                                                  }}
+                                                >
+                                                  Cancelar
+                                                </a>
+                                                <a
+                                                  class="myBut "
+                                                  onClick={() =>
+                                                    sendCom(
+                                                      state.AnswersTwo,
+                                                      2,
+                                                      item.id,
+                                                      itm[0].nickname
+                                                    )
+                                                  }
+                                                  style={{
+                                                    marginLeft: "1%",
+                                                    color: "black",
+                                                  }}
+                                                >
+                                                  Enviar
+                                                </a>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                        )}
+                        <div>
+                          <>
+                            {state.dispAns[index].dis ? (
+                              <CButton
+                                class="showAnswers"
+                                onClick={() => showAns(index, item.id)}
+                              >
+                                <CIcon
+                                  name="cilCaretTop"
+                                  style={{ marginRight: "10px" }}
+                                />
+                                Ocultar {state.dispAns[index].info.length}{" "}
+                                Respostas
+                              </CButton>
+                            ) : (
+                              <CButton
+                                class="showAnswers"
+                                onClick={() => showAns(index, item.id)}
+                              >
+                                <CIcon
+                                  name="cilCaretBottom"
+                                  style={{ marginRight: "10px" }}
+                                />
+                                Ver {state.dispAns[index].info.length} Respostas
+                              </CButton>
+                            )}
+                          </>
                         </div>
-                      )}
-                      <div>
-                        <>
-                          {state.dispAns[index].dis ? (
-                            <CButton
-                              class="showAnswers"
-                              onClick={() => showAns(index, item.id)}
-                            >
-                              <CIcon
-                                name="cilCaretTop"
-                                style={{ marginRight: "10px" }}
-                              />
-                              Ocultar {state.dispAns[index].info.length}{" "}
-                              Respostas
-                            </CButton>
-                          ) : (
-                            <CButton
-                              class="showAnswers"
-                              onClick={() => showAns(index, item.id)}
-                            >
-                              <CIcon
-                                name="cilCaretBottom"
-                                style={{ marginRight: "10px" }}
-                              />
-                              Ver {state.dispAns[index].info.length} Respostas
-                            </CButton>
-                          )}
-                        </>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
