@@ -563,7 +563,7 @@ const Comments = ({ user }) => {
       });
     }
   }, []);
-  console.log(state.dispAns);
+  console.log(state.fiComment);
   return (
     <div>
       <CRow>
@@ -723,9 +723,7 @@ const Comments = ({ user }) => {
                       <span style={{ width: "98%" }}>
                         <span
                           style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            handleClick("channel", item.channel_id)
-                          }
+                          onClick={() => handleClick("channel", item.user_id)}
                         >
                           {item.nickname}
                         </span>
@@ -977,17 +975,23 @@ const Comments = ({ user }) => {
                                     <div
                                       style={{ width: "100%", display: "flex" }}
                                     >
-                                      <span
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() =>
-                                          handleClick("channel", itm[0].user_id)
-                                        }
-                                      >
-                                        {itm[0].nickname}
-                                      </span>
-                                      <span>{itm[0].date} </span>
-                                      <span>
-                                        {itm[0].edited && "(editado)"}
+                                      <span style={{ width: "95%" }}>
+                                        {" "}
+                                        <span
+                                          style={{ cursor: "pointer" }}
+                                          onClick={() =>
+                                            handleClick(
+                                              "channel",
+                                              itm[0].user_id
+                                            )
+                                          }
+                                        >
+                                          {itm[0].nickname}
+                                        </span>
+                                        <span>{itm[0].date} </span>
+                                        <span>
+                                          {itm[0].edited && "(editado)"}
+                                        </span>
                                       </span>
 
                                       {itm[0].is_owner ? (
