@@ -27,7 +27,7 @@ const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/home", name: "Home", component: Home },
   { path: "/fire", name: "Fire", component: Fire },
-  // { path: "/inscription", name: "Incription", component: Inscription },
+  { path: "/inscription", name: "Incription", component: Inscription },
   { path: "/library", name: "Library", component: Library },
   { path: "/view/:id", name: "View", component: View },
   { path: "/profile", name: "Profile", component: Profile },

@@ -170,7 +170,7 @@ const ChannelVideos = ({ user }) => {
                       onClick={() => handleClick("view", item.id)}
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
-                      {item.title.substring(0, 100) + "..."}
+                      {item.title}
                     </h3>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
