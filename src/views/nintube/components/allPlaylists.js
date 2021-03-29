@@ -134,7 +134,11 @@ const AllPlaylists = ({ user }) => {
                       <br />
                       <span
                         onClick={() => handleClick("playlist", item.id)}
-                        style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                        style={{
+                          marginBottom: "-1%",
+                          marginTop: "1.5%",
+                          cursor: "pointer",
+                        }}
                       >
                         Ver Playlist Completa
                       </span>
