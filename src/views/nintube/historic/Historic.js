@@ -53,7 +53,7 @@ const Historic = ({ user, history }) => {
       {user != null ? (
         <>
           <h4 align="center">Histórico de Exibição</h4>
-          <div style={{ float: "right", width: "20%" }}>
+          {/* <div style={{ float: "right", width: "20%" }}>
             <CInputGroup>
               <CInputGroupAppend>
                 <CInputGroupText>
@@ -97,7 +97,7 @@ const Historic = ({ user, history }) => {
             <CButton className="m-2" color="danger">
               GERENCIAR TODAS AS ATIVIDADES
             </CButton>
-          </div>
+          </div> */}
           <HistVideo />
         </>
       ) : (

@@ -25,72 +25,6 @@ import CIcon from "@coreui/icons-react";
 import { getPlaylists } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
-const videos = [
-  {
-    id: 1,
-    title:
-      "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
-    total: "1",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 2,
-    title:
-      "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
-    total: "2",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 3,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    total: "62",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 4,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    total: "135",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 5,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    total: "1305",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 6,
-    title: "COMO MIGRAR PARA REACT HOOKS | Dicas e Truques #01",
-    total: "69",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 7,
-    title:
-      "PRÉ-REQUISITOS | Criando uma Rede Social com React.js e .NET Core #01",
-    total: "232",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 8,
-    title:
-      "GIT E GITHUB | Criando uma Rede Social com React.js e .NET Core #04",
-    total: "150",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-];
-
 const AllPlaylists = ({ user }) => {
   let { id } = useParams();
   const [state, setState] = useState({
@@ -104,10 +38,12 @@ const AllPlaylists = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
+      console.log(id);
       var data = {
-        id_target: id !== "0" ? id : "",
+        id_target: id !== "0" && id !== undefined ? id : "",
         token: user.token,
       };
+      console.log(data);
       getPlaylists(data)
         .then(function (data) {
           console.log(data);
@@ -198,7 +134,11 @@ const AllPlaylists = ({ user }) => {
                       <br />
                       <span
                         onClick={() => handleClick("playlist", item.id)}
-                        style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                        style={{
+                          marginBottom: "-1%",
+                          marginTop: "1.5%",
+                          cursor: "pointer",
+                        }}
                       >
                         Ver Playlist Completa
                       </span>
