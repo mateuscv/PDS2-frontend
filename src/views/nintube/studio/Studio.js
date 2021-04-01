@@ -17,11 +17,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-import { deletVideo } from "../../../util/Api";
 //Style
 //API
 import data from "./data";
-import { myVideos } from "../../../util/Api";
+import { myVideos, deletVideo } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 
 const fields = [
   { key: "thumb", _style: { width: "20%" }, sorter: false, filter: false },
@@ -53,8 +53,15 @@ const Studio = ({ user, history }) => {
     fetched: false,
     videos: [],
   });
-  const Delet = (video_id) => {
-    var data = { token: user.token, video_id: video_id };
+  const Delete = (video_id) => {
+    var data = { video_id: video_id };
+    let vet_playlist = [];
+    for (let index = 0; index < state.videos.length; index++) {
+      if (state.videos[index].id !== video_id) {
+        vet_playlist.push(state.videos[index]);
+      }
+    }
+    setState({ ...state, videos: vet_playlist });
     deletVideo(data)
       .then(function (data) {
         alert("Ação", "Video foi deletado com sucesso!");
@@ -177,10 +184,13 @@ const Studio = ({ user, history }) => {
                   ),
                   Deletar: (item) => (
                     <td className="align-middle">
+                      {console.log(item)}
                       <CButton
                         color="btn btn-ghost-danger"
                         title="Deletar"
-                        onClick={() => Delet(item.id)}
+                        onClick={() => {
+                          Delete(item.id);
+                        }}
                       >
                         <CIcon name="cil-trash" />
                       </CButton>
