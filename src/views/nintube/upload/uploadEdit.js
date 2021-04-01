@@ -23,6 +23,7 @@ import Player from "../components/Player";
 import "../styles/nintube.css";
 //API
 import { getUploadVideo, editVideo } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
 
@@ -105,7 +106,7 @@ const UploadEdit = ({ user, history }) => {
               {
                 label: "Ver Vídeo",
                 onClick: () => {
-                  history.push("/view/" + data.id);
+                  history.push("/view/" + id);
                 },
               },
             ]
@@ -162,7 +163,6 @@ const UploadEdit = ({ user, history }) => {
             description: data.description,
             title: data.title,
             privacy: data.privacy,
-            thumb: data.thumb,
             image: data.thumb,
           });
         })
@@ -172,139 +172,145 @@ const UploadEdit = ({ user, history }) => {
     }
   }, []);
   return (
-    <div>
-      {state.message && (
-        <CCard className="border-success" style={{ textAlign: "center" }}>
-          {state.message}
-        </CCard>
-      )}
-      {state.error && (
-        <CCard className="border-danger" style={{ textAlign: "center" }}>
-          {state.error}
-        </CCard>
-      )}
-
-      <CFormGroup
-        row
-        style={{
-          marginLeft: "2%",
-          marginTop: "1%",
-        }}
-      >
-        <CCol md="6">
-          <h3 style={{ color: "white" }}>Título</h3>
-          <CInput
-            value={state.title}
-            onChange={(e) => setState({ ...state, title: e.target.value })}
-          />
-        </CCol>
-        <CCol md="6">
-          <div
-            style={{
-              color: "white",
-            }}
-          >
-            <h3 style={{ color: "white" }}>Thumb e Privacidade</h3>
-
-            <div style={{ display: "flex" }}>
-              <div>
-                <label className="fileThumb" for="file_thumb">
-                  Selecione a imagem para a thumb &#187;
-                </label>
-                <input
-                  id="file_thumb"
-                  onChange={(e) => onImageChange(e)}
-                  type="file"
-                ></input>{" "}
-              </div>
-              <div style={{ marginTop: "0.5%", display: "flex" }}>
-                <CSwitch
-                  className={"mx-1"}
-                  color={"success"}
-                  checked={state.privacy}
-                  onChange={(e) =>
-                    setState({ ...state, privacy: e.target.checked })
-                  }
-                />
-                <span>Privado</span>
-              </div>
-            </div>
-          </div>
-        </CCol>
-      </CFormGroup>
-      <CFormGroup row style={{ marginLeft: "2%" }}>
-        <CCol md="6">
-          <h3 style={{ color: "white" }}>Descrição</h3>
-          <CTextarea
-            style={{ height: "30%" }}
-            value={state.description}
-            onChange={(e) =>
-              setState({ ...state, description: e.target.value })
-            }
-          />
-        </CCol>
-        <CCol md="6">
-          <div style={{}}>
-            <h3 style={{ color: "white", alignItems: "center" }}>
-              Arraste ou Selecione o video abaixo!
-            </h3>
-
+    <div style={{ border: "1px solid white", borderRadius: "10px" }}>
+      <div style={{ padding: "1%" }}>
+        {state.message && (
+          <CCard className="border-success" style={{ textAlign: "center" }}>
+            {state.message}
+          </CCard>
+        )}
+        {state.error && (
+          <CCard className="border-danger" style={{ textAlign: "center" }}>
+            {state.error}
+          </CCard>
+        )}
+        <CFormGroup
+          row
+          style={{
+            // marginLeft: "2%",
+            marginTop: "1%",
+          }}
+        >
+          <CCol md="6">
+            <h3 style={{ color: "white" }}>Título</h3>
+            <CInput
+              value={state.title}
+              onChange={(e) => setState({ ...state, title: e.target.value })}
+            />
+          </CCol>
+          <CCol md="6">
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
+                color: "white",
               }}
             >
-              <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
-                {({ getRootProps, getInputProps }) => (
-                  <div
-                    style={{
-                      width: "300px",
-                      height: "240px",
-                      border: "1px solid lightgray",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                    {...getRootProps()}
-                  >
-                    <input {...getInputProps()} />
-                    <CIcon name="cilDataTransferUp" />
-                  </div>
-                )}
-              </Dropzone>
-            </div>
-          </div>
-          <p style={{ color: "white" }}>{state.video_name}</p>
-        </CCol>
-      </CFormGroup>
+              <h3 style={{ color: "white" }}>Thumb e Privacidade</h3>
 
-      <CFormGroup row style={{ marginLeft: "2%" }}>
-        <CCol md="6">
-          <div align="center">
-            <h3 style={{ color: "white" }}>Imagem Escolhida</h3>
-            <img style={{ width: "60%" }} src={state.image} />
-          </div>
-        </CCol>
-        <CCol md="6">
-          <div align="center">
-            <h3 style={{ color: "white" }}>Vídeo Escolhida</h3>
-            <div style={{ width: "100%" }}>
-              <Player />
+              <div style={{ display: "flex" }}>
+                <div>
+                  <label className="fileThumb" for="file_thumb">
+                    Selecione a imagem para a thumb &#187;
+                  </label>
+                  <input
+                    id="file_thumb"
+                    onChange={(e) => onImageChange(e)}
+                    type="file"
+                  ></input>{" "}
+                </div>
+                <div style={{ marginTop: "0.5%", display: "flex" }}>
+                  <CSwitch
+                    className={"mx-1"}
+                    color={"success"}
+                    checked={state.privacy}
+                    onChange={(e) =>
+                      setState({ ...state, privacy: e.target.checked })
+                    }
+                  />
+                  <span>Privado</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </CCol>
-      </CFormGroup>
-      <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
-        <CButton
-          style={{ color: "white", border: "1px solid red" }}
-          onClick={() => Edit()}
+          </CCol>
+        </CFormGroup>
+        <CFormGroup
+          row
+          // style={{ marginLeft: "2%" }}
         >
-          Enviar
-        </CButton>
-      </div>
+          <CCol md="6">
+            <h3 style={{ color: "white" }}>Descrição</h3>
+            <CTextarea
+              style={{ height: "30%" }}
+              value={state.description}
+              onChange={(e) =>
+                setState({ ...state, description: e.target.value })
+              }
+            />
+          </CCol>
+          <CCol md="6">
+            <div style={{}}>
+              <h3 style={{ color: "white", alignItems: "center" }}>
+                Arraste ou Selecione o video!
+              </h3>
 
-      {/* <CRow>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      style={{
+                        width: "300px",
+                        height: "240px",
+                        border: "1px solid lightgray",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      {...getRootProps()}
+                    >
+                      <input {...getInputProps()} />
+                      <CIcon name="cilDataTransferUp" />
+                    </div>
+                  )}
+                </Dropzone>
+              </div>
+            </div>
+            <p style={{ color: "white" }}>{state.video_name}</p>
+          </CCol>
+        </CFormGroup>
+
+        <CFormGroup
+          row
+          // style={{ marginLeft: "2%" }}
+        >
+          <CCol md="6">
+            <div align="center">
+              <h3 style={{ color: "white" }}>Imagem Escolhida</h3>
+              <img style={{ width: "60%" }} src={state.image} />
+            </div>
+          </CCol>
+          <CCol md="6">
+            <div align="center">
+              <h3 style={{ color: "white" }}>Vídeo Escolhido</h3>
+              <div style={{ width: "100%" }}>
+                <Player />
+              </div>
+            </div>
+          </CCol>
+        </CFormGroup>
+        <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
+          <CButton
+            style={{ color: "white", border: "1px solid red" }}
+            onClick={() => Edit()}
+          >
+            Enviar
+          </CButton>
+        </div>
+
+        {/* <CRow>
         <CCol sm="4">
           <CFormGroup row style={{ width: "100%" }}>
             <CCol md="12">
@@ -395,6 +401,7 @@ const UploadEdit = ({ user, history }) => {
           <Player />
         </CCol>
       </CRow> */}
+      </div>
     </div>
   );
 };

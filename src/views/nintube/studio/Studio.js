@@ -150,10 +150,11 @@ const Studio = ({ user, history }) => {
                         style={{
                           width: "100%",
                           height: "160px",
-                          // cursor: "pointer",
+                          cursor: "pointer",
                           borderBottom: "1px solid black",
                           borderRadius: "10px",
                         }}
+                        onClick={() => history.push("/view/" + item.id)}
                         src={item.thumb}
                       />
                     </td>

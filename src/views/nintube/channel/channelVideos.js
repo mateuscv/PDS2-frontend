@@ -23,7 +23,8 @@ import {
 //Componets
 //Style
 //API
-import { getVideos } from "../../../util/Api";
+import { channelGetVideos } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
   {
@@ -115,10 +116,12 @@ const videos = [
   },
 ];
 
-const ShowVideos = ({ user }) => {
+const ChannelVideos = ({ user }) => {
+  let { id } = useParams();
   const [state, setState] = useState({
     videos: [],
     fetched: false,
+    today: new Date(),
   });
 
   let history = useHistory();
@@ -127,14 +130,19 @@ const ShowVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      // getVideos
-      //   .then(function (data) {
-      setState({ ...state, fetched: true, videos: videos });
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
+      var data = {
+        user_id: id !== "0" ? id : "",
+        token: user.token,
+      };
+      channelGetVideos(data)
+        .then(function (data) {
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   }, []);
   return (
@@ -162,21 +170,18 @@ const ShowVideos = ({ user }) => {
                       onClick={() => handleClick("view", item.id)}
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
-                      {item.title.substring(0, 100) + "..."}
+                      {item.title}
                     </h3>{" "}
                     <CCardText
                       style={{ marginBottom: "-1%", marginTop: "1.5%" }}
                     >
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel", item.id)}
-                      >
-                        {item.channel}
-                      </span>
                       <CCardText
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
-                      >{`${item.views} • ${item.date}`}</CCardText>{" "}
+                      >{`${item.views} Visualizações • ${diffDate(
+                        state.today,
+                        item.created_at
+                      )}`}</CCardText>{" "}
                     </CCardText>
                   </CCardBody>
                 </div>
@@ -191,4 +196,7 @@ const ShowVideos = ({ user }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(ShowVideos);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(ChannelVideos));

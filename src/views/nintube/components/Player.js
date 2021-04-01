@@ -28,7 +28,7 @@ import ReactPlayer from "react-player";
 import { useWindowSize } from "@react-hook/window-size/throttled";
 import screenfull from "screenfull";
 
-const Player = ({ url }) => {
+const Player = ({ url = "" }) => {
   let { id } = useParams();
   const ref = React.createRef();
   const [window_width, window_height] = useWindowSize({ fps: 60 });
@@ -90,7 +90,7 @@ const Player = ({ url }) => {
 
   useEffect(() => {
     // var size = useWindowSize();
-    if (!state.fetched) {
+    if (!state.fetched && url === "") {
       var data = {
         video_id: id,
       };
@@ -99,19 +99,12 @@ const Player = ({ url }) => {
       });
     }
   }, []);
-  // useEffect(() => {
-  //   if (url !== "") {
-  //     console.log("entro");
-  //     const toBase64 = (file) =>
-  //       new Promise((resolve, reject) => {
-  //         const reader = new FileReader();
-  //         reader.readAsDataURL(file);
-  //         reader.onload = () => resolve(reader.result);
-  //         reader.onerror = (error) => reject(error);
-  //       });
-  //     setState({ ...state, file: toBase64(url) });
-  //   }
-  // }, [url]);
+  useEffect(() => {
+    if (url !== "") {
+      console.log(url);
+      setState({ ...state, file: url });
+    }
+  }, [url]);
   // console.log(url);
   return (
     //

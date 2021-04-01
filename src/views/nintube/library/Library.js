@@ -9,6 +9,7 @@ import { CButton } from "@coreui/react";
 //Componets
 import ShowVideos from "../components/showVideos";
 import LogoutPage from "../components/logoutPage";
+import AllPlaylists from "../components/allPlaylists";
 //Style
 //API
 
@@ -28,14 +29,12 @@ const Library = ({ history, user }) => {
     <div>
       {user != null ? (
         <>
-          <h1>Biblioteca</h1>
-          <CButton onClick={() => handleClick()}>Playlist</CButton>
           <h4>Histórico</h4>
           <ShowVideos />
           <h4>Assistir mais tarde</h4>
           <ShowVideos />
           <h4>Playlists</h4>
-          <ShowVideos />
+          <AllPlaylists />
           <h4>Vídeos marcados com "gostei"</h4>
           <ShowVideos />
         </>

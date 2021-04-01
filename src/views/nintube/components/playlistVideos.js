@@ -1,6 +1,6 @@
 //REACT
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -23,7 +23,8 @@ import {
 import CIcon from "@coreui/icons-react";
 //API
 import { listPlaylist } from "../../../util/Api";
-import { cilAlignCenter } from "@coreui/icons";
+import { diffDate } from "../../../util/dateDiff";
+// import { cilAlignCenter } from "@coreui/icons";
 
 const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
 
@@ -108,6 +109,46 @@ const videos = [
     thumb:
       "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
+  {
+    id: 11,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 12,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 13,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 14,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
+  {
+    id: 15,
+    title:
+      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+    channel: "Lucas Nhimi",
+    thumb:
+      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  },
 ];
 
 /*const Delet = (video_id) => {
@@ -125,131 +166,192 @@ const videos = [
 };*/
 
 const PlaylistVideos = ({ user }) => {
-
+  let { id } = useParams();
   const [state, setState] = useState({
     fetched: false,
     playlist: "",
     videos: [],
+    today: new Date(),
   });
 
   const Delete = (id, idx) => {
     let vet_playlist = [];
     for (let index = 0; index < state.videos.length; index++) {
-      if (index !== idx){
+      if (index !== idx) {
         vet_playlist.push(state.videos[index]);
       }
     }
-    setState({ ...state, videos: vet_playlist});
-  }
+    setState({ ...state, videos: vet_playlist });
+  };
 
   const buildPlaylist = () => {
-    console.log("xablau")
-    return (state.videos.map((item, index) => { console.log(item); return (
-      <CCard
-        id = {"card-"+index}
-        key = {"card-"+index}
-        style={{
-          height: "8%",
-          marginBottom: "1%",
-          border: "2px solid #B3272C",
-        }}
-      >
-        <CCardBody style={{ margin: "0" }}>
-
-          <CImg
-            style={{
-              width: "125px",
-              height: "75px",
-              cursor: "pointer",
-              float: "left",
-              marginRight: "1%",
-              borderBottom: "1px solid black",
-              borderRadius: "10px",
-            }}
-            src={item.thumb}
-          />
-            <CCardText row>
-              <CCol style={{padding:"0"}} md="12">
-                <h5
-                  style={{ cursor: "pointer" }}
-                >
-                  {item.title.substring(0, 100) + "..."}
-                </h5>
-                <span>
-                  {item.channel}
-                </span>{" "}
-              </CCol>
-            </CCardText>
-        </CCardBody>
-        <CButton style={{float: "left",}}
-              color="btn btn-ghost-danger"
-              title="Deletar"
-              onClick={() => Delete(item.id, index)}
+    return state.videos.map((item, index) => {
+      return (
+        <CRow>
+          <CCol md="11">
+            <CCard
+              id={"id_card_" + index}
+              key={"key_card_" + index}
+              style={{
+                // height: "100%",
+                marginBottom: "1%",
+                border: "2px solid #B3272C",
+              }}
             >
-              <CIcon name="cil-trash" />
-          </CButton>
-      </CCard>
-    )}))
+              <CCardBody>
+                <CImg
+                  style={{
+                    width: "125px",
+                    // height: "75px",
+                    height: "100%",
+                    cursor: "pointer",
+                    float: "left",
+                    marginRight: "1%",
+                    borderBottom: "1px solid black",
+                    borderRadius: "10px",
+                  }}
+                  src={item.thumb}
+                />
+                <CCardText row>
+                  <CCol style={{ padding: "0" }} md="12">
+                    <h5 style={{ cursor: "pointer" }}>
+                      {item.title.substring(0, 100) + "..."}
+                    </h5>
+                    <span>{item.owner_nick}</span>{" "}
+                  </CCol>
+                </CCardText>{" "}
+              </CCardBody>
+            </CCard>
+          </CCol>
+          <CCol md="1" style={{ display: "flex", marginBottom: "1%" }}>
+            <CCard
+              style={{
+                marginBottom: "auto",
+                marginTop: "auto",
+                marginRight: "auto",
+                marginLeft: "auto",
+                padding: "3px",
+              }}
+            >
+              <CButton
+                color="btn btn-ghost-danger"
+                title="Deletar"
+                onClick={() => Delete(item.id, index)}
+              >
+                <CIcon name="cil-trash" />
+              </CButton>
+            </CCard>
+          </CCol>
+        </CRow>
+      );
+    });
   };
 
   useEffect(() => {
     if (!state.fetched) {
-      var data = {token: user.token};
-      /*listPlaylist(data).then(function (data){
-        setState({ ...state, fetched:true, playlist: data.playlist, videos: data.videos});
-      });*/
+      var data = { token: user.token, playlist_id: id };
+      // listPlaylist(data)
+      //   .then(function (data) {
+      //     console.log(data);
+      //     setState({
+      //       ...state,
+      //       fetched: true,
+      //       playlist: data.data,
+      //       videos: data.videos,
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setState({ ...state, error: "Dados inválidos", message: "" });
+      //   });
       setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
-  }, [state, user.token]);
-  console.log(state.videos);
-  return (<div>
-    <CContainer fluid>
-      <h1>{state.playlist.title}</h1>
-      <CRow>
-        <CCol sm="3">
-          <CCard class="bg-black" style={{ border:"none", position:"relative",textAlign:"center", width:"100%", height:"20%", border: "2px solid #B3272C" }}>
-            <div>
-              <CCardBody
-                style={{ height: "100px" }}
+  }, []);
+  return (
+    <div
+      className="c-app c-default-layout"
+      style={{ display: "flex", height: "100%" }}
+    >
+      <div
+        // sm="3"
+        style={{
+          position: "fixed",
+          marginRight: "auto",
+          height: "80%",
+          width: "620px",
+        }}
+      >
+        <CCard
+          class="bg-black"
+          style={{
+            // border: "none",
+            // position: "relative",
+            // textAlign: "center",
+
+            height: "100%",
+          }}
+        >
+          <CCardBody
+            style={{ border: "2px solid #B3272C", borderRadius: "20px" }}
+          >
+            {state.videos.length !== 0 && (
+              <div
+              // style={{ width: "100%", height: "100%" }}
               >
-                  {state.videos.length !== 0 && (
-                    <CImg
-                    style={{
-                      width: "100%",
-                      height: "200px",
-                      cursor: "pointer",
-                      float: "left",
-                      marginRight: "1%",
-                      borderBottom: "1px solid black",
-                      borderRadius: "10px",
-                    }}
-                    src={state.videos[0].thumb}
-                  />
-                  )}
-
-              </CCardBody>
-                <CCardText
-                  style={{position: "absolute", left:"20%", bottom:"0", marginBottom: "-1%", marginTop: "1.5%" }}
-                >
-                  {state.playlist.privacy ? (
-                    <p> Privada • {state.videos.length} vídeos • {state.playlist.views} visualizações</p>
-                  ) : (<p> Pública • {state.videos.length} vídeos • {state.playlist.views} visualizações </p>)}
-
-                  {" "}
-                  <span
-                    style={{ cursor: "pointer" }}
-                  >
-                  </span>{" "}
-                </CCardText>
+                <CImg
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    // cursor: "pointer",
+                    // float: "left",
+                    marginRight: "1%",
+                    borderBottom: "1px solid black",
+                    borderRadius: "10px",
+                  }}
+                  src={state.videos[0].thumb}
+                />
+              </div>
+            )}
+            <div style={{ width: "100%", height: "100%" }}>
+              {" "}
+              <CCardText
+                style={{ width: "100%", height: "100%" }}
+                // style={{
+                //   position: "absolute",
+                //   left: "20%",
+                //   bottom: "0",
+                //   marginBottom: "-1%",
+                //   marginTop: "3%",
+                // }}
+              >
+                {" "}
+                <h3>{state.playlist.title}</h3>
+                {state.playlist.public ? (
+                  <p>
+                    Público • {state.videos.length} vídeos •{" "}
+                    {`${diffDate(state.today, state.playlist.created_at)}`}
+                  </p>
+                ) : (
+                  <p>
+                    Privada • {state.videos.length} vídeos •{" "}
+                    {`${diffDate(state.today, state.playlist.created_at)}`}
+                  </p>
+                )}
+                <span style={{ cursor: "pointer" }}></span>{" "}
+              </CCardText>
             </div>
-          </CCard>
-        </CCol>
-        <CCol sm="9">
-          { buildPlaylist() }
-        </CCol>
-      </CRow>
-    </CContainer>
-  </div>)};
+          </CCardBody>
+        </CCard>
+      </div>
+      <div
+        style={{ marginLeft: "auto" }}
+        // sm="9"
+      >
+        {buildPlaylist()}
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
