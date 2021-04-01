@@ -1,8 +1,8 @@
 import axios from "axios";
-export const API_URL = "http://localhost:3334/";
-// export const API_URL = "http://8cfa887f8f37.ngrok.io/";
-// export const API_URL =
-//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+// export const API_URL = "http://localhost:3334/";
+// export const API_URL = "http://634925454129.ngrok.io/";
+export const API_URL =
+  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {
@@ -115,7 +115,7 @@ export const editVideo = (data, token) => {
 };
 
 export const deletVideo = (data) => {
-  return axios.put(API_URL + "video/delet", data).then(function (res) {
+  return axios.post(API_URL + "videos/delet", data).then(function (res) {
     let data = res.data;
     return data;
   });

@@ -58,17 +58,21 @@ const Login = ({ history, setUser }) => {
       // console.log(data);
       loginUser(data)
         .then(function (data) {
-          //console.log(user);
-          // console.log(data.token);
-          console.log(data);
-          var user = {
-            token: data.token,
-            avatar: data.avatar,
-          };
-          setUser(user);
-          history.push("/home");
+          if (data.status === 1) {
+            console.log(data);
+            var user = {
+              token: data.token,
+              avatar: data.avatar,
+            };
+            setUser(user);
+            history.push("/home");
+          }
+          if (data.status === 0) {
+            setState({ ...state, error: data.errorMessage, message: "" });
+          }
         })
         .catch((err) => {
+          console.log(err);
           setState({ ...state, error: "Dados inválidos", message: "" });
         });
     }

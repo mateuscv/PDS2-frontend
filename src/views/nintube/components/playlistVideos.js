@@ -26,7 +26,7 @@ import { listPlaylist, removeVideoFromPlaylist } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import { alert } from "../../../util/alertApi";
 
-const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
+const playlist = { name: "Minha Playlist", privacy: true, views: 182 };
 
 const videos = [
   {
@@ -48,7 +48,7 @@ const videos = [
   },
   // {
   //   id: 3,
-  //   title:
+  //   name:
   //     "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -56,7 +56,7 @@ const videos = [
   // },
   // {
   //   id: 4,
-  //   title:
+  //   name:
   //     "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -64,7 +64,7 @@ const videos = [
   // },
   // {
   //   id: 5,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -72,7 +72,7 @@ const videos = [
   // },
   // {
   //   id: 6,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -80,7 +80,7 @@ const videos = [
   // },
   // {
   //   id: 7,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -88,7 +88,7 @@ const videos = [
   // },
   // {
   //   id: 8,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -96,7 +96,7 @@ const videos = [
   // },
   // {
   //   id: 9,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -104,7 +104,7 @@ const videos = [
   // },
   // {
   //   id: 10,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -112,7 +112,7 @@ const videos = [
   // },
   // {
   //   id: 11,
-  //   title:
+  //   name:
   //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
   //   channel: "Lucas Nhimi",
   //   thumb:
@@ -171,16 +171,17 @@ const PlaylistVideos = ({ user }) => {
   const Delete = (video_id, idx) => {
     var data = { playlist_id: id, video_id: video_id };
     console.log(data);
+    let vet_playlist = [];
+    for (let index = 0; index < state.videos.length; index++) {
+      if (index !== idx) {
+        vet_playlist.push(state.videos[index]);
+      }
+    }
+    setState({ ...state, videos: vet_playlist });
     removeVideoFromPlaylist(data)
       .then(function (data) {
         console.log(data);
-        let vet_playlist = [];
-        for (let index = 0; index < state.videos.length; index++) {
-          if (index !== idx) {
-            vet_playlist.push(state.videos[index]);
-          }
-        }
-        setState({ ...state, videos: vet_playlist });
+
         alert("Ação", "Video foi deletado com sucesso!");
       })
       .catch((err) => {
@@ -233,7 +234,7 @@ const PlaylistVideos = ({ user }) => {
                 <span name={"view_" + id} row>
                   {/* <CCol style={{ padding: "0" }} md="12"> */}
                   <h5 name={"view_" + id} style={{}}>
-                    {item.title.substring(0, 100) + "..."}
+                    {item.title}
                   </h5>
                   <span
                     name={"channel_" + item.owner_id}
@@ -263,7 +264,7 @@ const PlaylistVideos = ({ user }) => {
                 <CButton
                   color="btn btn-ghost-danger"
                   title="Deletar"
-                  onClick={() => Delete(item.id, index)}
+                  onClick={() => Delete(item.video_id, index)}
                 >
                   <CIcon name="cil-trash" />
                 </CButton>
@@ -289,12 +290,17 @@ const PlaylistVideos = ({ user }) => {
         })
         .catch((err) => {
           console.log(err);
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          setState({
+            ...state,
+            error:
+              "Alguma coisa aconteceu, porfavor tente novamente mais tarde!",
+            message: "",
+          });
         });
       // setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
   }, []);
-  console.log(state.videos);
+  // console.log(state.videos);
 
   return (
     <div
@@ -308,9 +314,9 @@ const PlaylistVideos = ({ user }) => {
           marginRight: "auto",
           height: "80%",
           width: "620px",
-          display: "flex",
+          // display: "flex",
           // alignItems: "center",
-          justifyContent: "center",
+          // justifyContent: "center",
         }}
       >
         <CCard
@@ -361,16 +367,22 @@ const PlaylistVideos = ({ user }) => {
                 // }}
               >
                 {" "}
-                <h3>{state.playlist.title}</h3>
+                <h3>{state.playlist.name}</h3>
                 {state.playlist.public ? (
                   <p>
                     Público • {state.videos.length} vídeos •{" "}
-                    {`${diffDate(state.today, state.playlist.created_at)}`}
+                    {`Atualizado ${diffDate(
+                      state.today,
+                      state.playlist.created_at
+                    )}`}
                   </p>
                 ) : (
                   <p>
                     Privada • {state.videos.length} vídeos •{" "}
-                    {`${diffDate(state.today, state.playlist.created_at)}`}
+                    {`Atualizado ${diffDate(
+                      state.today,
+                      state.playlist.created_at
+                    )}`}
                   </p>
                 )}
                 <span style={{ cursor: "pointer" }}></span>{" "}
