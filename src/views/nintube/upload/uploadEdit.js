@@ -37,6 +37,7 @@ const UploadEdit = ({ user, history }) => {
     fetched: false,
     thumb: null,
     image: "",
+    display: true,
   });
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
@@ -58,6 +59,7 @@ const UploadEdit = ({ user, history }) => {
     setState({
       ...state,
       error: "",
+      display: false,
       message: "Salvando as alterações...",
     });
     console.log(state.video);
@@ -301,14 +303,16 @@ const UploadEdit = ({ user, history }) => {
             </div>
           </CCol>
         </CFormGroup>
-        <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
-          <CButton
-            style={{ color: "white", border: "1px solid red" }}
-            onClick={() => Edit()}
-          >
-            Enviar
-          </CButton>
-        </div>
+        {state.display && (
+          <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
+            <CButton
+              style={{ color: "white", border: "1px solid red" }}
+              onClick={() => Edit()}
+            >
+              Enviar
+            </CButton>
+          </div>
+        )}
 
         {/* <CRow>
         <CCol sm="4">

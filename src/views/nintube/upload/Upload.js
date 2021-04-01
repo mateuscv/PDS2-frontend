@@ -37,6 +37,7 @@ const Upload = ({ user, history }) => {
     fetched: false,
     image: "",
     video_url: "",
+    display: true,
   });
 
   const toBase64 = (file) =>
@@ -71,6 +72,7 @@ const Upload = ({ user, history }) => {
   const sendVideo = async () => {
     setState({
       ...state,
+      display: false,
       error: "",
       message: "Fazendo upload do video...",
     });
@@ -125,6 +127,7 @@ thumb: state.thumb,
 
         uploadVideo(data, user.token)
           .then(function (data) {
+            console.log(data);
             alert(
               "Sucesso!",
               "Seu vídeo foi criado com sucesso, escolha agora entre ver o seu vídeo ou adicionar novo vídeo",
@@ -138,7 +141,7 @@ thumb: state.thumb,
                 {
                   label: "Ver Vídeo",
                   onClick: () => {
-                    history.push("/view/" + data);
+                    history.push("/view/" + data.sent);
                   },
                 },
               ]
@@ -362,14 +365,16 @@ thumb: state.thumb,
             )}
           </CCol>
         </CFormGroup>
-        <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
-          <CButton
-            style={{ color: "white", border: "1px solid red" }}
-            onClick={() => sendVideo()}
-          >
-            Enviar
-          </CButton>
-        </div>
+        {state.display && (
+          <div align="center" style={{ marginBottom: "1%", marginTop: "1%" }}>
+            <CButton
+              style={{ color: "white", border: "1px solid red" }}
+              onClick={() => sendVideo()}
+            >
+              Enviar
+            </CButton>
+          </div>
+        )}
       </div>
     </div>
   );

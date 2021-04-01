@@ -22,9 +22,9 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
-import { listPlaylist } from "../../../util/Api";
+import { listPlaylist, removeVideoFromPlaylist } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
-// import { cilAlignCenter } from "@coreui/icons";
+import { alert } from "../../../util/alertApi";
 
 const playlist = { title: "Minha Playlist", privacy: true, views: 182 };
 
@@ -32,6 +32,7 @@ const videos = [
   {
     id: 1,
     title:
+      // "a",
       "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
     channel: "Lucas Nhimi",
     thumb:
@@ -39,131 +40,117 @@ const videos = [
   },
   {
     id: 2,
-    title:
-      "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
+    title: "MAMACITA",
+    //   "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
     channel: "Lucas Nhimi",
     thumb:
       "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
   },
-  {
-    id: 3,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 4,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 5,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 6,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 7,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 8,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 9,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 10,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 11,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 12,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 13,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 14,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
-  {
-    id: 15,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    thumb:
-      "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-  },
+  // {
+  //   id: 3,
+  //   title:
+  //     "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 4,
+  //   title:
+  //     "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 5,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 6,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 7,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 8,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 9,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 10,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 11,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 12,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 13,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 14,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
+  // {
+  //   id: 15,
+  //   title:
+  //     "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
+  //   channel: "Lucas Nhimi",
+  //   thumb:
+  //     "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+  // },
 ];
-
-/*const Delet = (video_id) => {
-  var data = { token: user.token, video_id: video_id };
-  deletVideo(data)
-    .then(function (data) {
-      alert("Ação", "Video foi deletado com sucesso!");
-    })
-    .catch((err) => {
-      alert(
-        "Ação",
-        "Ouve algume erro ao deletar o video, por favor tentar novamente mais tarde!"
-      );
-    });
-};*/
 
 const PlaylistVideos = ({ user }) => {
   let { id } = useParams();
@@ -173,100 +160,142 @@ const PlaylistVideos = ({ user }) => {
     videos: [],
     today: new Date(),
   });
-
-  const Delete = (id, idx) => {
-    let vet_playlist = [];
-    for (let index = 0; index < state.videos.length; index++) {
-      if (index !== idx) {
-        vet_playlist.push(state.videos[index]);
-      }
-    }
-    setState({ ...state, videos: vet_playlist });
+  let history = useHistory();
+  const handleClick = (target) => {
+    var route = target.split("_");
+    // console.log(target);
+    // console.log(route);
+    // console.log("/" + route[0] + "/" + route[1]);
+    history.push("/" + route[0] + "/" + route[1]);
+  };
+  const Delete = (video_id, idx) => {
+    var data = { playlist_id: id, video_id: video_id };
+    console.log(data);
+    removeVideoFromPlaylist(data)
+      .then(function (data) {
+        console.log(data);
+        let vet_playlist = [];
+        for (let index = 0; index < state.videos.length; index++) {
+          if (index !== idx) {
+            vet_playlist.push(state.videos[index]);
+          }
+        }
+        setState({ ...state, videos: vet_playlist });
+        alert("Ação", "Video foi deletado com sucesso!");
+      })
+      .catch((err) => {
+        alert(
+          "Ação",
+          "Ouve algume erro ao deletar o video, por favor tentar novamente mais tarde!"
+        );
+      });
   };
 
   const buildPlaylist = () => {
     return state.videos.map((item, index) => {
       return (
-        <CRow>
-          <CCol md="11">
+        <CRow name={"view_" + id}>
+          <CCol
+            name={"view_" + id}
+            onClick={(e) => handleClick(e.target.getAttribute("name"))}
+            md="11"
+            style={{ cursor: "pointer", width: "100%" }}
+          >
             <CCard
+              name={"view_" + id}
               id={"id_card_" + index}
               key={"key_card_" + index}
               style={{
+                width: "100%",
                 // height: "100%",
                 marginBottom: "1%",
                 border: "2px solid #B3272C",
               }}
             >
-              <CCardBody>
+              <CCardBody name={"view_" + id} style={{ width: "100%" }} row>
+                {/* <CCol> */}
                 <CImg
+                  name={"view_" + id}
                   style={{
                     width: "125px",
                     // height: "75px",
-                    height: "100%",
-                    cursor: "pointer",
+                    height: "80px",
                     float: "left",
                     marginRight: "1%",
                     borderBottom: "1px solid black",
                     borderRadius: "10px",
                   }}
+                  //
                   src={item.thumb}
                 />
-                <CCardText row>
-                  <CCol style={{ padding: "0" }} md="12">
-                    <h5 style={{ cursor: "pointer" }}>
-                      {item.title.substring(0, 100) + "..."}
-                    </h5>
-                    <span>{item.owner_nick}</span>{" "}
-                  </CCol>
-                </CCardText>{" "}
+                {/* </CCol>
+                <CCol> */}
+                <span name={"view_" + id} row>
+                  {/* <CCol style={{ padding: "0" }} md="12"> */}
+                  <h5 name={"view_" + id} style={{}}>
+                    {item.title.substring(0, 100) + "..."}
+                  </h5>
+                  <span
+                    name={"channel_" + item.owner_id}
+                    className="ChannelPlaylist"
+                    style={{ cursor: "pointer" }}
+                    // onClick={() => handleClick("channel", item.owner_id)}
+                  >
+                    {item.owner_nick}
+                  </span>{" "}
+                  {/* </CCol> */}
+                </span>{" "}
+                {/* </CCol> */}
               </CCardBody>
             </CCard>
           </CCol>
-          <CCol md="1" style={{ display: "flex", marginBottom: "1%" }}>
-            <CCard
-              style={{
-                marginBottom: "auto",
-                marginTop: "auto",
-                marginRight: "auto",
-                marginLeft: "auto",
-                padding: "3px",
-              }}
-            >
-              <CButton
-                color="btn btn-ghost-danger"
-                title="Deletar"
-                onClick={() => Delete(item.id, index)}
+          {state.playlist.is_owner && (
+            <CCol md="1" style={{ display: "flex", marginBottom: "1%" }}>
+              <CCard
+                style={{
+                  marginBottom: "auto",
+                  marginTop: "auto",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  padding: "3px",
+                }}
               >
-                <CIcon name="cil-trash" />
-              </CButton>
-            </CCard>
-          </CCol>
+                <CButton
+                  color="btn btn-ghost-danger"
+                  title="Deletar"
+                  onClick={() => Delete(item.id, index)}
+                >
+                  <CIcon name="cil-trash" />
+                </CButton>
+              </CCard>
+            </CCol>
+          )}
         </CRow>
       );
     });
   };
-
   useEffect(() => {
     if (!state.fetched) {
       var data = { token: user.token, playlist_id: id };
-      // listPlaylist(data)
-      //   .then(function (data) {
-      //     console.log(data);
-      //     setState({
-      //       ...state,
-      //       fetched: true,
-      //       playlist: data.data,
-      //       videos: data.videos,
-      //     });
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     setState({ ...state, error: "Dados inválidos", message: "" });
-      //   });
-      setState({ ...state, fetched: true, playlist: playlist, videos: videos });
+      listPlaylist(data)
+        .then(function (data) {
+          console.log(data);
+          setState({
+            ...state,
+            fetched: true,
+            playlist: data.data,
+            videos: data.videos,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
+      // setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
   }, []);
+  console.log(state.videos);
+
   return (
     <div
       className="c-app c-default-layout"
@@ -279,6 +308,9 @@ const PlaylistVideos = ({ user }) => {
           marginRight: "auto",
           height: "80%",
           width: "620px",
+          display: "flex",
+          // alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <CCard
@@ -287,7 +319,6 @@ const PlaylistVideos = ({ user }) => {
             // border: "none",
             // position: "relative",
             // textAlign: "center",
-
             height: "100%",
           }}
         >
@@ -301,7 +332,7 @@ const PlaylistVideos = ({ user }) => {
                 <CImg
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "350px",
                     // cursor: "pointer",
                     // float: "left",
                     marginRight: "1%",
@@ -312,7 +343,12 @@ const PlaylistVideos = ({ user }) => {
                 />
               </div>
             )}
-            <div style={{ width: "100%", height: "100%" }}>
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+            >
               {" "}
               <CCardText
                 style={{ width: "100%", height: "100%" }}
@@ -338,13 +374,14 @@ const PlaylistVideos = ({ user }) => {
                   </p>
                 )}
                 <span style={{ cursor: "pointer" }}></span>{" "}
-              </CCardText>
+              </CCardText>{" "}
+              {/* <CButton color="info">Editar</CButton> */}
             </div>
           </CCardBody>
         </CCard>
       </div>
       <div
-        style={{ marginLeft: "auto" }}
+        style={{ marginLeft: "680px", height: "90%", width: "100%" }}
         // sm="9"
       >
         {buildPlaylist()}
