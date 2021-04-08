@@ -563,7 +563,7 @@ const Comments = ({ user }) => {
       });
     }
   }, []);
-  console.log(state.fiComment);
+  // console.log(state.fiComment);
   return (
     <div>
       <CRow>
