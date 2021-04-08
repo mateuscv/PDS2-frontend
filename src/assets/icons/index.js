@@ -27,7 +27,6 @@ import {
   cibPaypal,
   cibGooglePay,
   cibCcAmex,
-  
 } from "@coreui/icons";
 import { cifUs, cifBr, cifIn, cifFr, cifEs, cifPl } from "@coreui/icons";
 import {
@@ -143,6 +142,7 @@ import {
   cilCaretBottom,
   cilCaretTop,
   cilMenu,
+  cilMediaRecord,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -153,6 +153,7 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
+    cilMediaRecord,
     cilMenu,
     cilPlus,
     cilPlaylistAdd,
