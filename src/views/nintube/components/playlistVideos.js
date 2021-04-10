@@ -19,12 +19,15 @@ import {
   CCardText,
   CCardHeader,
   CImg,
+  CSelect,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //API
 import { listPlaylist, removeVideoFromPlaylist } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 import { alert } from "../../../util/alertApi";
+//Style
+import "./componentStyle.css";
 
 const playlist = { name: "Minha Playlist", privacy: true, views: 182 };
 
@@ -159,6 +162,7 @@ const PlaylistVideos = ({ user }) => {
     playlist: "",
     videos: [],
     today: new Date(),
+    change: false,
   });
   let history = useHistory();
   const handleClick = (target) => {
@@ -278,26 +282,26 @@ const PlaylistVideos = ({ user }) => {
   useEffect(() => {
     if (!state.fetched) {
       var data = { token: user.token, playlist_id: id };
-      listPlaylist(data)
-        .then(function (data) {
-          console.log(data);
-          setState({
-            ...state,
-            fetched: true,
-            playlist: data.data,
-            videos: data.videos,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setState({
-            ...state,
-            error:
-              "Alguma coisa aconteceu, porfavor tente novamente mais tarde!",
-            message: "",
-          });
-        });
-      // setState({ ...state, fetched: true, playlist: playlist, videos: videos });
+      // listPlaylist(data)
+      //   .then(function (data) {
+      //     console.log(data);
+      //     setState({
+      //       ...state,
+      //       fetched: true,
+      //       playlist: data.data,
+      //       videos: data.videos,
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setState({
+      //       ...state,
+      //       error:
+      //         "Alguma coisa aconteceu, porfavor tente novamente mais tarde!",
+      //       message: "",
+      //     });
+      //   });
+      setState({ ...state, fetched: true, playlist: playlist, videos: videos });
     }
   }, []);
   // console.log(state.videos);
@@ -307,40 +311,34 @@ const PlaylistVideos = ({ user }) => {
       className="c-app c-default-layout"
       style={{ display: "flex", height: "100%" }}
     >
+      {state.videos.length === 0 && (
+        <div className="div-reload">
+          <CIcon className="icone" name="cilReload" size="3xl" />
+        </div>
+      )}
       <div
-        // sm="3"
         style={{
           position: "fixed",
           marginRight: "auto",
           height: "80%",
           width: "620px",
-          // display: "flex",
-          // alignItems: "center",
-          // justifyContent: "center",
         }}
       >
         <CCard
           class="bg-black"
           style={{
-            // border: "none",
-            // position: "relative",
-            // textAlign: "center",
             height: "100%",
           }}
         >
-          <CCardBody
-            style={{ border: "2px solid #B3272C", borderRadius: "20px" }}
-          >
-            {state.videos.length !== 0 && (
-              <div
-              // style={{ width: "100%", height: "100%" }}
-              >
+          {state.videos.length !== 0 && (
+            <CCardBody
+              style={{ border: "2px solid #B3272C", borderRadius: "20px" }}
+            >
+              <div>
                 <CImg
                   style={{
                     width: "100%",
                     height: "350px",
-                    // cursor: "pointer",
-                    // float: "left",
                     marginRight: "1%",
                     borderBottom: "1px solid black",
                     borderRadius: "10px",
@@ -348,54 +346,78 @@ const PlaylistVideos = ({ user }) => {
                   src={state.videos[0].thumb}
                 />
               </div>
-            )}
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              {" "}
-              <CCardText
-                style={{ width: "100%", height: "100%" }}
-                // style={{
-                //   position: "absolute",
-                //   left: "20%",
-                //   bottom: "0",
-                //   marginBottom: "-1%",
-                //   marginTop: "3%",
-                // }}
+
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
               >
                 {" "}
-                <h3>{state.playlist.name}</h3>
-                {state.playlist.public ? (
-                  <p>
-                    Público • {state.videos.length} vídeos •{" "}
+                <CCardText style={{ width: "100%", height: "100%" }}>
+                  {" "}
+                  <h3
+                    style={{
+                      display: "flex",
+                      marginTop: "1%",
+                      marginBottom: "2%",
+                    }}
+                  >
+                    {state.playlist.name}{" "}
+                    <CButton
+                      style={{
+                        marginBottom: "auto",
+                        // maringTop: "auto",
+                        color: "white",
+                        marginLeft: "5%",
+                        height: "12px",
+                      }}
+                      // onClick={() =>
+                      //   alert("Editar", "Edite o seu titulo logo abaixo: ", [
+                      //     { label: "Editar", func: (input, textarea) => {} },
+                      //   ])
+                      // }
+                    >
+                      {" "}
+                      <CIcon name="cilPen" size="lg" />{" "}
+                    </CButton>{" "}
+                  </h3>
+                  <p style={{ display: "flex" }}>
+                    {state.playlist.fixed && "Privado"}
+                    {!state.playlist.fixed && (
+                      <CSelect
+                        style={{ width: "20%", marginRight: "1%" }}
+                        onChange={(e) =>
+                          setState({
+                            ...state,
+                            playlist: e.target.value,
+                            change: true,
+                          })
+                        }
+                      >
+                        <option value={true} selected={!state.playlist.public}>
+                          Privado
+                        </option>
+                        <option value={false} selected={state.playlist.public}>
+                          Público
+                        </option>
+                      </CSelect>
+                    )}
+                    {state.playlist.public} • {state.videos.length} vídeos •{" "}
                     {`Atualizado ${diffDate(
                       state.today,
                       state.playlist.created_at
                     )}`}
                   </p>
-                ) : (
-                  <p>
-                    Privada • {state.videos.length} vídeos •{" "}
-                    {`Atualizado ${diffDate(
-                      state.today,
-                      state.playlist.created_at
-                    )}`}
-                  </p>
-                )}
-                <span style={{ cursor: "pointer" }}></span>{" "}
-              </CCardText>{" "}
-              {/* <CButton color="info">Editar</CButton> */}
-            </div>
-          </CCardBody>
+                  <span style={{ cursor: "pointer" }}></span>{" "}
+                </CCardText>{" "}
+                {state.change && <CButton color="info">Editar</CButton>}
+              </div>
+            </CCardBody>
+          )}
         </CCard>
       </div>
-      <div
-        style={{ marginLeft: "680px", height: "90%", width: "100%" }}
-        // sm="9"
-      >
+      <div style={{ marginLeft: "680px", height: "90%", width: "100%" }}>
         {buildPlaylist()}
       </div>
     </div>
