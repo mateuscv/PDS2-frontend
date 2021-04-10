@@ -52,7 +52,7 @@ const HomeVideos = ({ user }) => {
         <CRow>
           {state.videos.map((item, index) => (
             <CCol sm="4">
-              {console.log(item)}
+              {/* {console.log(item)} */}
               <CCard style={{ border: "2px solid #B3272C" }}>
                 <CImg
                   onClick={() => handleClick("view", item.id)}

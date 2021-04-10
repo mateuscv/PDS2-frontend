@@ -142,6 +142,7 @@ import {
   cilCaretBottom,
   cilCaretTop,
   cilMenu,
+  cilMediaRecord,
   cilPen,
   cilReload,
 } from "@coreui/icons";
@@ -154,8 +155,6 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
-    cilReload,
-    cilPen,
     cilMenu,
     cilPlus,
     cilPlaylistAdd,

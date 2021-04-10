@@ -254,3 +254,17 @@ export const listPlaylist = (data) => {
     return data;
   });
 };
+
+export const getNotf = (data) => {
+  return axios.post(API_URL + "notification/get", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const readNot = (data) => {
+  return axios.post(API_URL + "notification/edit", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};

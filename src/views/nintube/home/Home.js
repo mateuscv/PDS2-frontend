@@ -35,7 +35,7 @@ const Home = ({ history, user }) => {
   const handleClick = () => {
     history.push("/view");
   };
-  console.log(user);
+  // console.log(user);
 
   return (
     <div>
