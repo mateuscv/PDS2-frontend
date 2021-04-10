@@ -145,6 +145,7 @@ import {
   cilMediaRecord,
   cilPen,
   cilReload,
+  cilLockUnlocked,
 } from "@coreui/icons";
 
 export const icons = Object.assign(
@@ -155,6 +156,10 @@ export const icons = Object.assign(
     logoNegative,
   },
   {
+    cilLockUnlocked,
+    cilMediaRecord,
+    cilPen,
+    cilReload,
     cilMenu,
     cilPlus,
     cilPlaylistAdd,
