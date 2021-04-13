@@ -727,7 +727,7 @@ const Comments = ({ user }) => {
                         >
                           {item.nickname}
                         </span>
-                        <span>{item.date} </span>
+                        <span style={{ padding: "5px" }}> {item.date} </span>
                         <span>{item.edited && "(editado)"}</span>
                       </span>
                       {item.is_owner ? (
@@ -988,7 +988,9 @@ const Comments = ({ user }) => {
                                         >
                                           {itm[0].nickname}
                                         </span>
-                                        <span>{itm[0].date} </span>
+                                        <span style={{ padding: "5px" }}>
+                                          {itm[0].date}{" "}
+                                        </span>
                                         <span>
                                           {itm[0].edited && "(editado)"}
                                         </span>

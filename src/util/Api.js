@@ -268,3 +268,30 @@ export const readNot = (data) => {
     return data;
   });
 };
+
+export const deletPlaylist = (data) => {
+  return axios.post(API_URL + "playlist/delet", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const editPlaylist = (data) => {
+  return axios.post(API_URL + "playlist/edit", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const getRec = (data) => {
+  return axios.post(API_URL + "recommended/get").then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+export const getRecs = (data) => {
+  return axios.post(API_URL + "recommended/videos", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};

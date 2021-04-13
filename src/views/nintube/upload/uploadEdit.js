@@ -22,11 +22,11 @@ import Player from "../components/Player";
 //Style
 import "../styles/nintube.css";
 //API
-import { getUploadVideo, editVideo } from "../../../util/Api";
+import { getUploadVideo, editVideo, getRec } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
 import dataVideo from "./data";
-
+import Select, { components } from "react-select";
 const UploadEdit = ({ user, history }) => {
   let { id } = useParams();
   const [state, setState] = useState({
@@ -38,6 +38,8 @@ const UploadEdit = ({ user, history }) => {
     thumb: null,
     image: "",
     display: true,
+    recommend: [],
+    selecteds: [],
   });
   const onDrop = (files) => {
     setState({ ...state, video: files[0], video_name: files[0].path });
@@ -91,6 +93,9 @@ const UploadEdit = ({ user, history }) => {
         description: state.description,
         file: !state.video ? null : await toBase64(state.video),
         thumb: !state.thumb ? null : await toBase64(state.thumb),
+        tags: state.selecteds.map((tag) => {
+          return tag.id;
+        }),
       };
       console.log(values);
       editVideo(values, user.token)
@@ -130,6 +135,14 @@ const UploadEdit = ({ user, history }) => {
     }
   };
 
+  const SingleValue = ({ children, ...props }) => (
+    <components.SingleValue {...props}>{children}</components.SingleValue>
+  );
+
+  const handleSelectChange = (selecteds) => {
+    setState({ ...state, selecteds });
+  };
+
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setState({
@@ -157,15 +170,24 @@ const UploadEdit = ({ user, history }) => {
       var data = { video_id: id, token: user.token };
       getUploadVideo(data)
         .then(function (data) {
-          //console.log(user);
-          // console.log(data.token);
+          console.log(data.videoData.tags);
+          var selecteds = data.videoData.tags.map((tag, index) => {
+            return { id: tag.id, value: tag.id, label: tag.name };
+          });
+          var recommend = data.rec.map((tag, index) => {
+            return { id: tag.id, value: tag.id, label: tag.name };
+          });
+          console.log(recommend);
+          console.log(selecteds);
           setState({
             ...state,
             fetched: true,
-            description: data.description,
-            title: data.title,
-            privacy: data.privacy,
-            image: data.thumb,
+            description: data.videoData.data.description,
+            title: data.videoData.data.title,
+            privacy: data.videoData.data.privacy,
+            image: data.videoData.data.thumb,
+            recommend,
+            selecteds,
           });
         })
         .catch((err) => {
@@ -173,6 +195,7 @@ const UploadEdit = ({ user, history }) => {
         });
     }
   }, []);
+
   return (
     <div style={{ border: "1px solid white", borderRadius: "10px" }}>
       <div style={{ padding: "1%" }}>
@@ -247,6 +270,18 @@ const UploadEdit = ({ user, history }) => {
                 setState({ ...state, description: e.target.value })
               }
             />
+            <h3 style={{ color: "white", marginTop: "2%" }}>Tags</h3>
+            {state.fetched && (
+              <Select
+                closeMenuOnSelect={false}
+                options={state.recommend}
+                defaultValue={state.selecteds}
+                placeholder="Tags"
+                components={{ SingleValue }}
+                onChange={handleSelectChange}
+                isMulti
+              />
+            )}
           </CCol>
           <CCol md="6">
             <div style={{}}>
