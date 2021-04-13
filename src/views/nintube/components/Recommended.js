@@ -1,10 +1,12 @@
 //REACT
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
+
 //CoreUI
 import {
   CLink,
@@ -25,7 +27,8 @@ import {
 //Componets
 //Style
 //API
-import { recommend } from "../../../util/Api";
+import { getRecs } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
   {
@@ -126,8 +129,9 @@ const videos = [
 ];
 
 const StackVideo = ({ user }) => {
+  let { id } = useParams();
   const [state, setState] = useState({
-    videos:[],
+    videos: [],
     fetched: false,
     videos: [],
   });
@@ -137,10 +141,12 @@ const StackVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      // recommend.then(function(data){
-      setState({ ...state, fetched: true, videos: videos });
-
-      // })
+      var data = {
+        video_id: id,
+      };
+      getRecs(data).then(function (data) {
+        setState({ ...state, fetched: true, videos: data });
+      });
       // .catch((err) => {
       //   console.log(err);
       //   setState({ ...state, error: "Dados inválidos", message: "" });
@@ -186,7 +192,8 @@ const StackVideo = ({ user }) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => handleClick("view", item.id)}
                     >
-                      {` • ${item.views} • ${item.date}`}
+                      {` • ${item.views} Visualizações •
+                       ${diffDate(new Date(), item.date)}`}
                     </span>{" "}
                   </CCardText>
                 </CCardText>

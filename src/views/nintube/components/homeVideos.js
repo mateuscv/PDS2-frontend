@@ -40,8 +40,10 @@ const HomeVideos = ({ user }) => {
     if (!state.fetched) {
       var data = {
         numberSkip: 0,
+        token: user.token,
       };
       feedVideos(data).then(function (data) {
+        console.log(data);
         setState({ ...state, fetched: true, videos: data });
       });
     }

@@ -80,7 +80,6 @@ const Studio = ({ user, history }) => {
       var data = { token: user.token };
       myVideos(data)
         .then(function (data) {
-          console.log(data);
           var videos = [];
           for (let i = 0; i < data.length; i++) {
             var date = new Date(data[i][0].created_at);
