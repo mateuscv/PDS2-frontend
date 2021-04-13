@@ -97,7 +97,7 @@ const HistVideo = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.v_id)}
                       >
-                        {` • ${item.views} • ${diffDate(
+                        {` • ${item.views}  Visualizações • ${diffDate(
                           state.today,
                           item.date
                         )}`}

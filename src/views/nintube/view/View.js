@@ -47,10 +47,15 @@ const View = ({ user, history }) => {
     op_report: "",
     report: "",
     playlistComp: "",
+    tags: [],
   });
 
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
+  };
+
+  const shared = (item) => {
+    // history.push("/" + route + "/" + id);
   };
 
   const Change = (cond) => {
@@ -312,10 +317,11 @@ const View = ({ user, history }) => {
       }
 
       watchVideo(data).then(function (data) {
-        // console.log(data);
+        console.log(data);
         setState({
           ...state,
-          video: data,
+          video: data.pageData,
+          tags: data.tags,
           color_like: data.liked === 1 ? "green" : "white",
           color_dislike: data.liked === -1 ? "red" : "white",
         });
@@ -334,7 +340,14 @@ const View = ({ user, history }) => {
         <Player />
         <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
           <div style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-            <a style={{ color: "lightblue" }}></a>
+            {state.tags.map((item, index) => (
+              <a
+                style={{ color: "lightblue" }}
+                onClick={() => shared(item.name)}
+              >
+                #{item.name}{" "}
+              </a>
+            ))}
           </div>
           <h5 style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
             {state.video.title}

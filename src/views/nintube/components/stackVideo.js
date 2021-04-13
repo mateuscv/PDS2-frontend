@@ -42,9 +42,10 @@ const StackVideo = ({ user }) => {
       var data = {
         numberSkip: 0,
       };
-      console.log(data);
+
       riseVideos(data).then(function (data) {
         // var array = new Array;
+        // console.log(data);
         // for (let i = 0; i < aray.length; i++) {
         //   const element = array[i];
 
@@ -94,7 +95,7 @@ const StackVideo = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.v_id)}
                       >
-                        {` • ${item.views} • ${diffDate(
+                        {` • ${item.views}  Visualizações • ${diffDate(
                           state.today,
                           item.date
                         )}`}

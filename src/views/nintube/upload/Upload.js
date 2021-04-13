@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
-import CIcon from "@coreui/icons-react";
 //CoreUI
 import {
   CInput,
@@ -16,14 +15,16 @@ import {
   CLabel,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 //Style
 import "../styles/nintube.css";
 //API
 import Player from "../components/Player";
-import { uploadVideo } from "../../../util/Api";
+import { uploadVideo, getRec } from "../../../util/Api";
 import { alert } from "../../../util/alertApi";
 import Dropzone from "react-dropzone";
+import Select, { components } from "react-select";
 
 const Upload = ({ user, history }) => {
   const [state, setState] = useState({
@@ -38,6 +39,8 @@ const Upload = ({ user, history }) => {
     image: "",
     video_url: "",
     display: true,
+    recommend: [],
+    selecteds: [],
   });
 
   const toBase64 = (file) =>
@@ -47,6 +50,10 @@ const Upload = ({ user, history }) => {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+
+  const handleSelectChange = (selecteds) => {
+    setState({ ...state, selecteds });
+  };
 
   const onDrop = async (files) => {
     // var video_url = await toBase64(files[0]);
@@ -69,6 +76,9 @@ const Upload = ({ user, history }) => {
     //   },
     // };
   };
+  const SingleValue = ({ children, ...props }) => (
+    <components.SingleValue {...props}>{children}</components.SingleValue>
+  );
   const sendVideo = async () => {
     setState({
       ...state,
@@ -81,7 +91,13 @@ const Upload = ({ user, history }) => {
     // console.log(state.description);
     // console.log(state.title);
     // const data = new FormData();
-    if (!state.video || !state.description || !state.title || !state.thumb) {
+    if (
+      !state.video ||
+      !state.description ||
+      !state.title ||
+      !state.thumb ||
+      state.selecteds.length === 0
+    ) {
       setState({
         ...state,
         error: "Campos não podem ficar em branco!",
@@ -119,6 +135,9 @@ thumb: state.thumb,
           thumb: await toBase64(state.thumb),
           description: state.description,
           privacy: state.privacy,
+          tags: state.selecteds.map((tag) => {
+            return tag.id;
+          }),
         };
 
         console.log(data);
@@ -203,8 +222,14 @@ thumb: state.thumb,
             },
           ]
         );
+      } else {
+        getRec().then(function (data) {
+          var recommend = data.map((tag) => {
+            return { id: tag.id, value: tag.id, label: tag.name };
+          });
+          setState({ ...state, fetched: true, recommend });
+        });
       }
-      setState({ ...state, fetched: true });
     }
   }, []);
 
@@ -302,7 +327,15 @@ thumb: state.thumb,
                 })
               }
             />
-
+            <h3 style={{ color: "white", marginTop: "2%" }}>Tags</h3>
+            <Select
+              closeMenuOnSelect={false}
+              options={state.recommend}
+              placeholder="Tags"
+              components={{ SingleValue }}
+              onChange={handleSelectChange}
+              isMulti
+            />
             {/* </div> */}
           </CCol>
           <CCol md="6">

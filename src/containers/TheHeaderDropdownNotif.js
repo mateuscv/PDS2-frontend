@@ -111,7 +111,6 @@ const TheHeaderDropdownNotif = ({ user }) => {
                     <p style={{ wordBreak: "break-word", width: "90%" }}>
                       {item.name}
                       {' marcou seu comentário com "Gostei": '}"{item.text}"
-                      tesssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
                     </p>
 
                     <div className="small text-muted text-truncate">
