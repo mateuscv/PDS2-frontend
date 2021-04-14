@@ -35,7 +35,7 @@ const TheHeaderDropdownNotif = ({ user }) => {
     var nots = [];
     // data.push({ nots: new Array() });
     for (let i = 0; i < state.nots.length; i++) {
-      nots.push({ id: state.nots[i].id });
+      nots.push(state.nots[i].id);
     }
     var data = {
       nots: nots,
