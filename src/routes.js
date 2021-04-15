@@ -22,6 +22,7 @@ const UploadEdit = React.lazy(() =>
 const Statistics = React.lazy(() =>
   import("./views/nintube/statistics/Statistics")
 );
+const bar = React.lazy(() => import("./views/charts/Charts"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -39,6 +40,7 @@ const routes = [
   { path: "/edit/upload/:id", name: "UploadEdit", component: UploadEdit },
   { path: "/studio", name: "Studio", component: Studio },
   { path: "/statistics", name: "Statistics", component: Statistics },
+  // { path: "/bar", name: "bar", component: bar },
 ];
 
 export default routes;
