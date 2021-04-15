@@ -35,6 +35,7 @@ import {
   newLiked,
 } from "../../../util/Api";
 //Style
+import "../components/componentStyle.css";
 
 const View = ({ user, history }) => {
   let { id } = useParams();
@@ -333,171 +334,184 @@ const View = ({ user, history }) => {
     });
   }, []);
   return (
-    <div style={{ display: "flex", width: "100%" }}>
-      {state.status === 1 ? (
-        <>
-          <div style={{ marginRight: "auto", width: "70%" }}>
-            <Player />
-            <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
-              <div style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-                {state.tags.map((item, index) => (
-                  <a
-                    style={{ color: "lightblue" }}
-                    onClick={() => shared(item.name)}
-                  >
-                    #{item.name}{" "}
-                  </a>
-                ))}
-              </div>
-              <h5 style={{ width: "90%", marginLeft: "1.5%", color: "white" }}>
-                {state.video.title}
-              </h5>
-              <div
-                style={{
-                  width: "100%",
-                  marginLeft: "1.5%",
-                  display: "flex",
-                  height: "25px",
-                }}
-              >
-                <div style={{ width: "50%", verticalAlign: "center" }}>
-                  <span style={{ color: "white", verticalAlign: "center" }}>
-                    {state.video.views} Visualizações
-                  </span>
-                </div>
+    <>
+      {state.status !== 1 && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
+      <div style={{ display: "flex", width: "100%" }}>
+        {state.status === 1 && (
+          <>
+            <div style={{ marginRight: "auto", width: "70%" }}>
+              <Player />
+              <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
                 <div
-                  style={{
-                    marginLeft: "10%",
-                    height: "100%",
-                    // verticalAlign: "top",
-                  }}
+                  style={{ width: "90%", marginLeft: "1.5%", color: "white" }}
                 >
-                  <CButton
-                    style={{ color: state.color_like }}
-                    onClick={() => Liked("like")}
-                  >
-                    <CIcon name="cilThumbUp" /> {state.video.likes}
-                  </CButton>
-                  <CButton
-                    style={{ color: state.color_dislike }}
-                    onClick={() => Liked("dislike")}
-                  >
-                    <CIcon name="cilThumbDown" /> {state.video.dislikes}
-                  </CButton>
-                  <CButton
-                    style={{ color: "white" }}
-                    onClick={() =>
-                      alert(
-                        "Compartilhar",
-                        "http://localhost:3000/#/view/" + id,
-                        [{ label: "Fechar", onClick: "" }]
-                      )
-                    }
-                  >
-                    <CIcon name="cil-share" /> Compartilhar
-                  </CButton>
-
-                  <CButton
-                    style={{
-                      color: "white",
-                    }}
-                    onClick={() => reportVideo()}
-                  >
-                    <CIcon name="cilFlagAlt" /> Reportar
-                  </CButton>
-                  <CButton
-                    style={{ color: "white" }}
-                    onClick={() =>
-                      setState({
-                        ...state,
-                        playlistComp: (
-                          <SavePlaylist
-                            video_id={id}
-                            kill={closeSavePlaylist}
-                          />
-                        ),
-                      })
-                    }
-                  >
-                    <CIcon name="cil-playlist-add" /> Salvar
-                  </CButton>
+                  {state.tags.map((item, index) => (
+                    <a
+                      style={{ color: "lightblue" }}
+                      onClick={() => shared(item.name)}
+                    >
+                      #{item.name}{" "}
+                    </a>
+                  ))}
                 </div>
-              </div>
-            </CBreadcrumb>
-            <CBreadcrumb
-              style={{ width: "95%", marginLeft: "1.7%", display: "flex" }}
-            >
-              <div style={{ width: "7%", height: "100%" }}>
-                <img
-                  onClick={() => handleClick("channel", state.video.owner_id)}
-                  src={state.video.owner_avatar}
-                  style={{ borderRadius: "40%", cursor: "pointer" }}
-                  width="44"
-                  height="44"
-                />
-              </div>
-              <div style={{ width: "90%" }}>
+                <h5
+                  style={{ width: "90%", marginLeft: "1.5%", color: "white" }}
+                >
+                  {state.video.title}
+                </h5>
                 <div
                   style={{
-                    display: "flex",
                     width: "100%",
-                    color: "white",
+                    marginLeft: "1.5%",
+                    display: "flex",
+                    height: "25px",
                   }}
                 >
-                  <div style={{ width: "90%" }}>
-                    <span
-                      style={{ cursor: "pointer" }}
+                  <div style={{ width: "50%", verticalAlign: "center" }}>
+                    <span style={{ color: "white", verticalAlign: "center" }}>
+                      {state.video.views} Visualizações
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      marginLeft: "10%",
+                      height: "100%",
+                      // verticalAlign: "top",
+                    }}
+                  >
+                    <CButton
+                      style={{ color: state.color_like }}
+                      onClick={() => Liked("like")}
+                    >
+                      <CIcon name="cilThumbUp" /> {state.video.likes}
+                    </CButton>
+                    <CButton
+                      style={{ color: state.color_dislike }}
+                      onClick={() => Liked("dislike")}
+                    >
+                      <CIcon name="cilThumbDown" /> {state.video.dislikes}
+                    </CButton>
+                    <CButton
+                      style={{ color: "white" }}
                       onClick={() =>
-                        handleClick("channel", state.video.owner_id)
+                        alert(
+                          "Compartilhar",
+                          "http://localhost:3000/#/view/" + id,
+                          [{ label: "Fechar", onClick: "" }]
+                        )
                       }
                     >
-                      {state.video.owner_nick}
-                    </span>
-                    <p>{state.video.all_subs} subscribers</p>
-                  </div>
-                  <div style={{ width: "1%" }}>
-                    <>
-                      {state.video.owner === false && (
-                        <>
-                          {state.video.is_subscribed === false && (
-                            <CButton
-                              id="inscribe"
-                              class="inscribe"
-                              onClick={() => Change(true)}
-                            >
-                              Inscrever-se
-                            </CButton>
-                          )}{" "}
-                          {state.video.is_subscribed === true && (
-                            <CButton
-                              id="inscribe"
-                              class="registered"
-                              onClick={() => Change(false)}
-                            >
-                              Inscrito
-                            </CButton>
-                          )}
-                        </>
-                      )}
-                    </>
+                      <CIcon name="cil-share" /> Compartilhar
+                    </CButton>
+
+                    <CButton
+                      style={{
+                        color: "white",
+                      }}
+                      onClick={() => reportVideo()}
+                    >
+                      <CIcon name="cilFlagAlt" /> Reportar
+                    </CButton>
+                    <CButton
+                      style={{ color: "white" }}
+                      onClick={() =>
+                        setState({
+                          ...state,
+                          playlistComp: (
+                            <SavePlaylist
+                              video_id={id}
+                              kill={closeSavePlaylist}
+                            />
+                          ),
+                        })
+                      }
+                    >
+                      <CIcon name="cil-playlist-add" /> Salvar
+                    </CButton>
                   </div>
                 </div>
-                <div style={{ color: "white" }}>{state.video.description}</div>
-              </div>
-            </CBreadcrumb>
-            <Comments />
-          </div>
-          {/* </CCol>
+              </CBreadcrumb>
+              <CBreadcrumb
+                style={{ width: "95%", marginLeft: "1.7%", display: "flex" }}
+              >
+                <div style={{ width: "7%", height: "100%" }}>
+                  <img
+                    onClick={() => handleClick("channel", state.video.owner_id)}
+                    src={state.video.owner_avatar}
+                    style={{ borderRadius: "40%", cursor: "pointer" }}
+                    width="44"
+                    height="44"
+                  />
+                </div>
+                <div style={{ width: "90%" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      color: "white",
+                    }}
+                  >
+                    <div style={{ width: "90%" }}>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          handleClick("channel", state.video.owner_id)
+                        }
+                      >
+                        {state.video.owner_nick}
+                      </span>
+                      <p>{state.video.all_subs} subscribers</p>
+                    </div>
+                    <div style={{ width: "1%" }}>
+                      <>
+                        {state.video.owner === false && (
+                          <>
+                            {state.video.is_subscribed === false && (
+                              <CButton
+                                id="inscribe"
+                                class="inscribe"
+                                onClick={() => Change(true)}
+                              >
+                                Inscrever-se
+                              </CButton>
+                            )}{" "}
+                            {state.video.is_subscribed === true && (
+                              <CButton
+                                id="inscribe"
+                                class="registered"
+                                onClick={() => Change(false)}
+                              >
+                                Inscrito
+                              </CButton>
+                            )}
+                          </>
+                        )}
+                      </>
+                    </div>
+                  </div>
+                  <div style={{ color: "white" }}>
+                    {state.video.description}
+                  </div>
+                </div>
+              </CBreadcrumb>
+              <Comments />
+            </div>
+            {/* </CCol>
         <CCol sm="4"> */}
-          <div style={{ marginLeft: "auto", width: "25%" }}>
-            <Recommended />
-          </div>
-          {state.playlistComp}
-        </>
-      ) : (
-        <div>erro</div>
-      )}
-    </div>
+            <div style={{ marginLeft: "auto", width: "25%" }}>
+              <Recommended />
+            </div>
+            {state.playlistComp}
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

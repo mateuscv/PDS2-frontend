@@ -34,14 +34,16 @@ import {
   CBreadcrumbItem,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 import Crop from "../crop/Crop";
-//Style
 //API
 import { alert } from "../../../util/alertApi";
 import { getProfile, editProfile } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
+//Style
+import "../components/componentStyle.css";
 
 const Profile = ({ user }) => {
   const [state, setState] = useState({
@@ -189,12 +191,19 @@ const Profile = ({ user }) => {
         // console.log(data.birthdate.substring(0, 10));
         setState({ ...state, user: data, fetched: true });
       });
-      setState({ ...state, fetched: true });
+      // setState({ ...state, fetched: true });
     }
   }, []);
 
   return (
     <div>
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       <div align="center">
         <h1>Informações pessoais</h1>
         <p style={{ color: "white" }}>

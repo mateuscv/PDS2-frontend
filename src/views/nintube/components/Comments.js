@@ -39,6 +39,7 @@ import {
 } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
+import "./componentStyle.css";
 
 const Comments = ({ user }) => {
   const [state, setState] = useState({
@@ -628,6 +629,13 @@ const Comments = ({ user }) => {
                 )}
               </div>
             </CBreadcrumb>
+            {!state.fetched && (
+              <div>
+                <div className="div-reload">
+                  <CIcon className="icone" name="cilReload" size="3xl" />
+                </div>
+              </div>
+            )}
             {state.fiComment.map((item, index) => (
               <div
                 style={{

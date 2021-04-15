@@ -20,11 +20,13 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
-//Style
 //API
 import { feedVideos } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
+//Style
+import "./componentStyle.css";
 
 const HomeVideos = ({ user }) => {
   const [state, setState] = useState({
@@ -50,6 +52,14 @@ const HomeVideos = ({ user }) => {
   }, []);
   return (
     <div>
+      {state.videos.length === 0 && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
+
       <CContainer fluid>
         <CRow>
           {state.videos.map((item, index) => (

@@ -16,7 +16,6 @@ import {
   CCol,
   CCard,
   CCardBody,
-  CIcon,
   CCardTitle,
   CWidgetIcon,
   CCardSubtitle,
@@ -24,8 +23,10 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "./componentStyle.css";
 //API
 import { getRecs } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
@@ -154,55 +155,64 @@ const StackVideo = ({ user }) => {
     }
   }, []);
   return (
-    <div>
-      <CRow>
-        <CCol sm="12">
-          {state.videos.map((item, index) => (
-            <CCard
-              style={{
-                marginBottom: "1%",
-                border: "2px solid #B3272C",
-              }}
-            >
-              <CCardBody style={{ margin: "0" }}>
-                <CImg
-                  onClick={() => handleClick("view", item.id)}
-                  style={{
-                    width: "25%",
-                    cursor: "pointer",
-                    float: "left",
-                    marginRight: "1%",
-                    borderBottom: "1px solid black",
-                    borderRadius: "10px",
-                  }}
-                  src={item.thumb}
-                />
-                <CCardText>
+    <>
+      {!state.fetched && (
+        <div style={{ display: "flex", height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
+      <div>
+        <CRow>
+          <CCol sm="12">
+            {state.videos.map((item, index) => (
+              <CCard
+                style={{
+                  marginBottom: "1%",
+                  border: "2px solid #B3272C",
+                }}
+              >
+                <CCardBody style={{ margin: "0" }}>
+                  <CImg
+                    onClick={() => handleClick("view", item.id)}
+                    style={{
+                      width: "25%",
+                      cursor: "pointer",
+                      float: "left",
+                      marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
+                    }}
+                    src={item.thumb}
+                  />
                   <CCardText>
-                    <h5
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {item.title.substring(0, 50) + "..."}
-                    </h5>
-                    <span onClick={() => handleClick("channel", item.id)}>
-                      {item.channel}
-                    </span>
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {` • ${item.views} Visualizações •
+                    <CCardText>
+                      <h5
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {item.title.substring(0, 50) + "..."}
+                      </h5>
+                      <span onClick={() => handleClick("channel", item.id)}>
+                        {item.channel}
+                      </span>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {` • ${item.views} Visualizações •
                        ${diffDate(new Date(), item.date)}`}
-                    </span>{" "}
+                      </span>{" "}
+                    </CCardText>
                   </CCardText>
-                </CCardText>
-              </CCardBody>
-            </CCard>
-          ))}
-        </CCol>
-      </CRow>
-    </div>
+                </CCardBody>
+              </CCard>
+            ))}
+          </CCol>
+        </CRow>
+      </div>
+    </>
   );
 };
 

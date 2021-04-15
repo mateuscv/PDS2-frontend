@@ -20,12 +20,14 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
 import ChannelVideos from "./channelVideos";
 //Style
 import "../styles/nintube.css";
+import "../components/componentStyle.css";
 //API
 import { Inscribe, channelData } from "../../../util/Api";
 
@@ -97,6 +99,13 @@ const Channel = ({ user }) => {
   };
   return (
     <div id="test">
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       <header>
         {/* <CImg
           style={{ width: "100%" }}
@@ -159,7 +168,7 @@ const Channel = ({ user }) => {
                             {state.channel.nick}
                           </span>{" "}
                           <br />
-                          {state.channel.subs}
+                          {state.channel.subs} inscrito(s)
                         </span>
                       </div>
                     </div>
