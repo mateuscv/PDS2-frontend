@@ -34,6 +34,8 @@ const LibraryPlaylists = ({ user }) => {
     playlist: [],
     watch_late: [],
     liked: [],
+    id_watch_late: "",
+    id_videos_lik: "",
     today: new Date(),
   });
   let history = useHistory();
@@ -67,9 +69,11 @@ const LibraryPlaylists = ({ user }) => {
   }, []);
   return (
     <div>
-      {state.playlist.length === 0 ? (
-        <div className="div-reload">
-          <CIcon className="icone" name="cilReload" size="3xl" />
+      {!state.fetched ? (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
         </div>
       ) : (
         <div>

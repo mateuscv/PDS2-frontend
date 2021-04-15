@@ -80,9 +80,16 @@ const Statistics = ({ user }) => {
 
   return (
     <div>
-      {state.gender.length === 0 && (
+      {/* {state.gender.length === 0 && (
         <div className="div-reload">
           <CIcon className="icone" name="cilReload" size="3xl" />
+        </div>
+      )} */}
+      {state.gender.length === 0 && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
         </div>
       )}
       {state.gender.length !== 0 && (

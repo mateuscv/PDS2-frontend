@@ -146,9 +146,11 @@ const ShowVideos = ({ user }) => {
   }, []);
   return (
     <div>
-      {state.videos.length === 0 && (
-        <div className="div-reload">
-          <CIcon className="icone" name="cilReload" size="3xl" />
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
         </div>
       )}
       <CContainer fluid>

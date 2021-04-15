@@ -24,6 +24,8 @@ import CIcon from "@coreui/icons-react";
 //API
 import { getPlaylists } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
+//Style
+import "../components/componentStyle.css";
 
 const AllPlaylists = ({ user }) => {
   let { id } = useParams();
@@ -57,6 +59,13 @@ const AllPlaylists = ({ user }) => {
   }, []);
   return (
     <div>
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       <CContainer fluid>
         <CRow>
           {state.videos.map((item, index) => (

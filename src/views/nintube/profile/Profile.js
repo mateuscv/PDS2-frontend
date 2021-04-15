@@ -34,13 +34,15 @@ import {
   CCardBody,
   CBreadcrumbItem,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
-//Style
 //API
 import { alert } from "../../../util/alertApi";
 import { getProfile, editProfile, sendEmail, API_URL } from "../../../util/Api";
 import md5 from "md5";
 import MaskedInput from "react-text-mask";
+//Style
+import "../components/componentStyle.css";
 
 const Profile = ({ user }) => {
   const [state, setState] = useState({
@@ -142,19 +144,27 @@ const Profile = ({ user }) => {
             },
           ]
         );
+      } else {
+        // console.log(user);
+        var data = { token: user.token };
+        getProfile(data, user.token).then(function (data) {
+          console.log(data);
+          setState({ ...state, user: solvedData(data), fetched: true });
+        });
+        // setState({ ...state, fetched: true });
       }
-      // console.log(user);
-      var data = { token: user.token };
-      getProfile(data, user.token).then(function (data) {
-        console.log(data);
-        setState({ ...state, user: solvedData(data), fetched: true });
-      });
-      setState({ ...state, fetched: true });
     }
   }, []);
 
   return (
     <div>
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       <div align="center">
         <h1>Informações pessoais</h1>
         <p style={{ color: "white" }}>

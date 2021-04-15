@@ -18,6 +18,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "../components/componentStyle.css";
 //API
 import data from "./data";
 import { myVideos, deletVideo } from "../../../util/Api";
@@ -111,6 +112,13 @@ const Studio = ({ user, history }) => {
         height: "100%",
       }}
     >
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       {state.videos.length !== 0 ? (
         <div>
           <CCard>
