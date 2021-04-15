@@ -10,7 +10,6 @@ import ShowVideos from "../components/showVideos";
 import LogoutPage from "../components/logoutPage";
 //Style
 //API
-
 const Inscriptions = ({ user }) => {
   const [state, setState] = useState({
     fetched: false,

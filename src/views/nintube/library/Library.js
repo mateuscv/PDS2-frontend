@@ -7,9 +7,8 @@ import * as actions from "../../../store/actions";
 //CoreUI
 import { CButton } from "@coreui/react";
 //Componets
-import ShowVideos from "../components/showVideos";
+import LibraryPlaylists from "../components/libraryPlaylists";
 import LogoutPage from "../components/logoutPage";
-import AllPlaylists from "../components/allPlaylists";
 //Style
 //API
 
@@ -29,14 +28,15 @@ const Library = ({ history, user }) => {
     <div>
       {user != null ? (
         <>
-          <h4>Histórico</h4>
+          <LibraryPlaylists />
+          {/* <h4>Histórico</h4>
           <ShowVideos />
           <h4>Assistir mais tarde</h4>
           <ShowVideos />
           <h4>Playlists</h4>
           <AllPlaylists />
           <h4>Vídeos marcados com "gostei"</h4>
-          <ShowVideos />
+          <ShowVideos /> */}
         </>
       ) : (
         <LogoutPage />

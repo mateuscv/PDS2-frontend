@@ -20,10 +20,13 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
-//Style
 //API
-import { getVideos } from "../../../util/Api";
+import { Registrations } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
+//Style
+import "./componentStyle.css";
 
 const videos = [
   {
@@ -119,6 +122,7 @@ const ShowVideos = ({ user }) => {
   const [state, setState] = useState({
     videos: [],
     fetched: false,
+    today: new Date(),
   });
 
   let history = useHistory();
@@ -127,18 +131,26 @@ const ShowVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      // getVideos
-      //   .then(function (data) {
-      setState({ ...state, fetched: true, videos: videos });
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
+      var data = {
+        token: user.token,
+      };
+      Registrations(data)
+        .then(function (data) {
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   }, []);
   return (
     <div>
+      {state.videos.length === 0 && (
+        <div className="div-reload">
+          <CIcon className="icone" name="cilReload" size="3xl" />
+        </div>
+      )}
       <CContainer fluid>
         <CRow>
           {state.videos.map((item, index) => (
@@ -176,7 +188,10 @@ const ShowVideos = ({ user }) => {
                       <CCardText
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
-                      >{`${item.views} • ${item.date}`}</CCardText>{" "}
+                      >{`${item.views} • ${diffDate(
+                        state.today,
+                        item.date
+                      )}`}</CCardText>{" "}
                     </CCardText>
                   </CCardBody>
                 </div>
