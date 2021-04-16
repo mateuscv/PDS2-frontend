@@ -61,9 +61,18 @@ const LibraryPlaylists = ({ user }) => {
             id_videos_lik: data.id_videos_lik,
           });
         })
+
         .catch((err) => {
-          console.log(err);
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
     }
   }, []);

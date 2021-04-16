@@ -321,17 +321,30 @@ const View = ({ user, history }) => {
       };
     }
 
-    watchVideo(data).then(function (data) {
-      console.log(data);
-      setState({
-        ...state,
-        video: data.pageData,
-        tags: data.tags,
-        status: data.status,
-        color_like: data.liked === 1 ? "green" : "white",
-        color_dislike: data.liked === -1 ? "red" : "white",
+    watchVideo(data)
+      .then(function (data) {
+        console.log(data);
+        setState({
+          ...state,
+          video: data.pageData,
+          tags: data.tags,
+          status: data.status,
+          color_like: data.liked === 1 ? "green" : "white",
+          color_dislike: data.liked === -1 ? "red" : "white",
+        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setState({ ...state, fetched: true });
+        alert("Houve um problema", "Por favor recarregue a pagina", [
+          {
+            label: "Recarregar",
+            onClick: () => {
+              window.location.reload();
+            },
+          },
+        ]);
       });
-    });
   }, []);
   return (
     <>
