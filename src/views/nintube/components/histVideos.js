@@ -45,15 +45,28 @@ const HistVideo = ({ user }) => {
         token: user.token,
       };
       console.log(data);
-      historic(data).then(function (data) {
-        // var array = new Array;
-        // for (let i = 0; i < aray.length; i++) {
-        //   const element = array[i];
+      historic(data)
+        .then(function (data) {
+          // var array = new Array;
+          // for (let i = 0; i < aray.length; i++) {
+          //   const element = array[i];
 
-        // }
-        console.log(data);
-        setState({ ...state, fetched: true, videos: data });
-      });
+          // }
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
+        });
     }
   }, []);
   return (

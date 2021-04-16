@@ -379,13 +379,16 @@ const PlaylistVideos = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err);
-          setState({
-            ...state,
-            error:
-              "Alguma coisa aconteceu, porfavor tente novamente mais tarde!",
-            message: "",
-          });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
       // setState({
       //   ...state,

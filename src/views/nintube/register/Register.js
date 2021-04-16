@@ -58,7 +58,7 @@ const Register = ({ history }) => {
   const register = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Registrando..." });
-    console.log(state.avatar);
+    // console.log(state.avatar);
     const data = new FormData();
     data.append("avatar", state.avatar);
 
@@ -118,7 +118,7 @@ const Register = ({ history }) => {
           } else {
             setState({
               ...state,
-              error: "Algo deu errado tentar novamente!",
+              error: data.errorMessage,
               message: "",
             });
           }

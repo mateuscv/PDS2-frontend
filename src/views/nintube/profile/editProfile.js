@@ -187,10 +187,23 @@ const Profile = ({ user }) => {
         );
       }
       var data = { token: user.token };
-      getProfile(data, user.token).then(function (data) {
-        // console.log(data.birthdate.substring(0, 10));
-        setState({ ...state, user: data, fetched: true });
-      });
+      getProfile(data, user.token)
+        .then(function (data) {
+          // console.log(data.birthdate.substring(0, 10));
+          setState({ ...state, user: data, fetched: true });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
+        });
       // setState({ ...state, fetched: true });
     }
   }, []);

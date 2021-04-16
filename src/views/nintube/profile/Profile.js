@@ -147,10 +147,23 @@ const Profile = ({ user }) => {
       } else {
         // console.log(user);
         var data = { token: user.token };
-        getProfile(data, user.token).then(function (data) {
-          console.log(data);
-          setState({ ...state, user: solvedData(data), fetched: true });
-        });
+        getProfile(data, user.token)
+          .then(function (data) {
+            console.log(data);
+            setState({ ...state, user: solvedData(data), fetched: true });
+          })
+          .catch((err) => {
+            console.log(err.message);
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+            ]);
+          });
         // setState({ ...state, fetched: true });
       }
     }
