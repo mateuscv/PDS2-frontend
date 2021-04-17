@@ -25,6 +25,7 @@ import CIcon from "@coreui/icons-react";
 //API
 import { feedVideos } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
+import { alert } from "../../../util/alertApi";
 //Style
 import "./componentStyle.css";
 
@@ -40,14 +41,41 @@ const HomeVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        numberSkip: 0,
-        token: user.token,
-      };
-      feedVideos(data).then(function (data) {
-        console.log(data);
-        setState({ ...state, fetched: true, videos: data });
-      });
+      if (user.token) {
+        var data = {
+          numberSkip: 0,
+          token: user.token,
+        };
+      } else {
+        var data = {
+          numberSkip: 0,
+          token: "",
+        };
+      }
+
+      feedVideos(data)
+        .then(function (data) {
+          console.log(data);
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+            // {
+            //   label: "Login",
+            //   onClick: () => {
+            //     history.push("/login");
+            //   },
+            // },
+          ]);
+        });
     }
   }, []);
   return (

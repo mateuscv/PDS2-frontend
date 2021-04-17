@@ -145,13 +145,29 @@ const StackVideo = ({ user }) => {
       var data = {
         video_id: id,
       };
-      getRecs(data).then(function (data) {
-        setState({ ...state, fetched: true, videos: data });
-      });
-      // .catch((err) => {
-      //   console.log(err);
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
+      getRecs(data)
+        .then(function (data) {
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, fetched: true });
+          alert(
+            "Houve um problema nos recomendados",
+            "Deseja Recarregar a pagina",
+            [
+              {
+                label: "Sim",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+              {
+                label: "Não",
+              },
+            ]
+          );
+        });
     }
   }, []);
   return (

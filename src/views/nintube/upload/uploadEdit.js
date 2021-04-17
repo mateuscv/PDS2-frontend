@@ -191,8 +191,18 @@ const UploadEdit = ({ user, history }) => {
             selecteds,
           });
         })
+
         .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
     }
   }, []);

@@ -44,15 +44,28 @@ const StackVideo = ({ user }) => {
         numberSkip: 0,
       };
 
-      riseVideos(data).then(function (data) {
-        // var array = new Array;
-        // console.log(data);
-        // for (let i = 0; i < aray.length; i++) {
-        //   const element = array[i];
+      riseVideos(data)
+        .then(function (data) {
+          // var array = new Array;
+          // console.log(data);
+          // for (let i = 0; i < aray.length; i++) {
+          //   const element = array[i];
 
-        // }
-        setState({ ...state, fetched: true, videos: data });
-      });
+          // }
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
+        });
     }
   }, []);
   return (
