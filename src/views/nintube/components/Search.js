@@ -29,6 +29,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "../styles/nintube.css";
 import "./componentStyle.css";
 //API
 import { SearchAll, Inscribe} from "../../../util/Api";
@@ -123,25 +124,33 @@ const Search = ({ user }) => {
         target_id: state.channels[index].id,
       };
 
-      // console.log(data);
-      Inscribe(data)
-        .then(function (data) {
-          let channels = state.channels;
-          channels[index].is_subscribed = ! channels[index].is_subscribed;
-          if (channels[index].is_subscribed) {
-            channels[index].subscribers += 1;
-          } else {
-            channels[index].subscribers -= 1;
-          }
-          setState({ ...state, channels });
-        })
-        .catch((err) => {
-          setState({
-            ...state,
-            error: "Algum problema aconteceu, tente novamente mais tarde!",
-            message: "",
-          });
-        });
+      let channels = state.channels;
+        channels[index].is_subscribed = ! channels[index].is_subscribed;
+        if (channels[index].is_subscribed) {
+        channels[index].subscribers += 1;
+        } else {
+        channels[index].subscribers -= 1;
+        }
+        setState({ ...state, channels });
+
+    //   Inscribe(data)
+    //     .then(function (data) {
+    //       let channels = state.channels;
+    //       channels[index].is_subscribed = ! channels[index].is_subscribed;
+    //       if (channels[index].is_subscribed) {
+    //         channels[index].subscribers += 1;
+    //       } else {
+    //         channels[index].subscribers -= 1;
+    //       }
+    //       setState({ ...state, channels });
+    //     })
+    //     .catch((err) => {
+    //       setState({
+    //         ...state,
+    //         error: "Algum problema aconteceu, tente novamente mais tarde!",
+    //         message: "",
+    //       });
+    //     });
     } else {
       alert("Login", "Você não está logado!");
     }
@@ -214,8 +223,10 @@ const Search = ({ user }) => {
                       {` ${item.subscribers} • ${item.video_count}  Vídeos • `}
                     </span>{" "}
                     <br/>
+                        
                         {item.is_subscribed === false && (
                             <CButton
+                            id="inscribe-search"
                             name={"inscribe-"+index}
                             class="inscribe"
                             onClick={(e) => Change(e.target.name.split("-")[1])}
@@ -226,6 +237,7 @@ const Search = ({ user }) => {
                         
                         {item.is_subscribed === true && (
                             <CButton
+                            id="inscribe-search"
                             name={"inscribe-"+index}
                             class="registered"
                             onClick={(e) => Change(e.target.name.split("-")[1])}
