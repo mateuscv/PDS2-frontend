@@ -307,3 +307,10 @@ export const Library = (data) => {
     return data;
   });
 };
+
+export const SearchAll = (data) => {
+  return axios.post(API_URL + "search", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
