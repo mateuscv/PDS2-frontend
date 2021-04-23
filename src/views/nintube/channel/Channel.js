@@ -19,12 +19,17 @@ import {
   CCardText,
   CCardHeader,
   CImg,
+  CInput,
+  CInputGroup,
+  CInputGroupAppend,
+  CInputGroupText
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
 import ChannelVideos from "./channelVideos";
+import ChannelSearch from "./channelSearch"
 //Style
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
@@ -37,6 +42,7 @@ const Channel = ({ user }) => {
     fetched: false,
     content: 1,
     subscribe: false,
+    search:"",
     channel: { nick: "", subs: 0, avatar: "", is_sub: false, is_owner: false },
   });
   useEffect(() => {
@@ -94,22 +100,38 @@ const Channel = ({ user }) => {
   };
   const changeContent = (component) => {
     console.log(component);
-    // eslint-disable-next-line default-case
-    switch (component) {
-      case "init":
-        setState({ ...state, content: 1 });
-        break;
-      case "video":
-        setState({ ...state, content: 2 });
-        break;
-      case "playlist":
-        setState({ ...state, content: 3 });
-        break;
-      case "about":
-        setState({ ...state, content: 4 });
-        break;
+    let contents = {
+      "init":1,
+      "video":2,
+      "playlist":3,
+      "about":4,
+      "search":5
     }
+    setState({ ...state, content: contents[component] });
+    // eslint-disable-next-line default-case
+    // switch (component) {
+    //   case "init":
+    //     setState({ ...state, content: 1 });
+    //     break;
+    //   case "video":
+    //     setState({ ...state, content: 2 });
+    //     break;
+    //   case "playlist":
+    //     setState({ ...state, content: 3 });
+    //     break;
+    //   case "about":
+    //     setState({ ...state, content: 4 });
+    //     break;
+    // }
   };
+
+  const handleKeys = e => {      
+    if (e.keyCode === 13) {      
+        changeContent("search")
+    }  
+  };
+
+
   return (
     <div id="test">
       {!state.fetched && (
@@ -261,10 +283,26 @@ const Channel = ({ user }) => {
           </CCardBody>
         </CCard>
       </header>
+      {state.content != 5 &&
+      <div>
+      <center>
+        <CInputGroup style={{ border: "1px solid red", borderRadius: "5px", width:"50%",}}>
+          <CInput placeholder="Pesquisar" onKeyUp={handleKeys} onChange={(e)=>{setState({...state, search:e.target.value})}}/>
+          <CInputGroupAppend>
+            <CInputGroupText>
+              <CIcon name="cil-magnifying-glass" onClick={()=>{changeContent("search")}}/>
+            </CInputGroupText>
+          </CInputGroupAppend>
+        </CInputGroup>
+        </center>
+        <br/>
+      </div>
+      }
       {/* {state.content === 1 ? <h1>Inicio</h1> : null} */}
       {state.content === 2 ? <ChannelVideos /> : null}
       {state.content === 3 ? <AllPlaylists /> : null}
       {/* {state.content === 4 ? <h1>Sobre</h1> : null} */}
+      {state.content === 5 ? <ChannelSearch search={state.search} channel_id={id}/> : null}
     </div>
   );
 };
