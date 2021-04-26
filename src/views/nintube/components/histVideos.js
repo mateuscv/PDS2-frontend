@@ -40,10 +40,17 @@ const HistVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        numberSkip: 0,
-        token: user.token,
-      };
+      if (user.token) {
+        var data = {
+          numberSkip: 0,
+          token: user.token,
+        };
+      } else {
+        var data = {
+          numberSkip: 0,
+          token: "",
+        };
+      }
       console.log(data);
       historic(data)
         .then(function (data) {
