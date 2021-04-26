@@ -18,6 +18,7 @@ import {
 import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "../components/componentStyle.css";
 //API
 import data from "./data";
 import { myVideos, deletVideo } from "../../../util/Api";
@@ -100,7 +101,16 @@ const Studio = ({ user, history }) => {
           setState({ ...state, fetched: true, videos });
         })
         .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
       // setState({ ...state, fetched: true });
     }
@@ -111,6 +121,13 @@ const Studio = ({ user, history }) => {
         height: "100%",
       }}
     >
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       {state.videos.length !== 0 ? (
         <div>
           <CCard>

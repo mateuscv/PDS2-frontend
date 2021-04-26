@@ -34,6 +34,8 @@ const LibraryPlaylists = ({ user }) => {
     playlist: [],
     watch_late: [],
     liked: [],
+    id_watch_late: "",
+    id_videos_lik: "",
     today: new Date(),
   });
   let history = useHistory();
@@ -59,17 +61,28 @@ const LibraryPlaylists = ({ user }) => {
             id_videos_lik: data.id_videos_lik,
           });
         })
+
         .catch((err) => {
-          console.log(err);
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
     }
   }, []);
   return (
     <div>
-      {state.playlist.length === 0 ? (
-        <div className="div-reload">
-          <CIcon className="icone" name="cilReload" size="3xl" />
+      {!state.fetched ? (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
         </div>
       ) : (
         <div>

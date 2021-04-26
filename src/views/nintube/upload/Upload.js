@@ -223,12 +223,25 @@ thumb: state.thumb,
           ]
         );
       } else {
-        getRec().then(function (data) {
-          var recommend = data.map((tag) => {
-            return { id: tag.id, value: tag.id, label: tag.name };
+        getRec()
+          .then(function (data) {
+            var recommend = data.map((tag) => {
+              return { id: tag.id, value: tag.id, label: tag.name };
+            });
+            setState({ ...state, fetched: true, recommend });
+          })
+          .catch((err) => {
+            console.log(err.message);
+            setState({ ...state, fetched: true });
+            alert("Houve um problema", "Por favor recarregue a pagina", [
+              {
+                label: "Recarregar",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+            ]);
           });
-          setState({ ...state, fetched: true, recommend });
-        });
       }
     }
   }, []);

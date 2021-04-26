@@ -139,16 +139,26 @@ const ShowVideos = ({ user }) => {
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err);
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
     }
   }, []);
   return (
     <div>
-      {state.videos.length === 0 && (
-        <div className="div-reload">
-          <CIcon className="icone" name="cilReload" size="3xl" />
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
         </div>
       )}
       <CContainer fluid>

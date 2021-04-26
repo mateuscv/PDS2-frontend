@@ -14,7 +14,6 @@ import {
   CCol,
   CCard,
   CCardBody,
-  CIcon,
   CCardTitle,
   CWidgetIcon,
   CCardSubtitle,
@@ -22,8 +21,10 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "./componentStyle.css";
 //API
 import { riseVideos } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
@@ -43,19 +44,39 @@ const StackVideo = ({ user }) => {
         numberSkip: 0,
       };
 
-      riseVideos(data).then(function (data) {
-        // var array = new Array;
-        // console.log(data);
-        // for (let i = 0; i < aray.length; i++) {
-        //   const element = array[i];
+      riseVideos(data)
+        .then(function (data) {
+          // var array = new Array;
+          // console.log(data);
+          // for (let i = 0; i < aray.length; i++) {
+          //   const element = array[i];
 
-        // }
-        setState({ ...state, fetched: true, videos: data });
-      });
+          // }
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
+        });
     }
   }, []);
   return (
     <div>
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       <CContainer fluid>
         <CRow>
           <CCol sm="12">

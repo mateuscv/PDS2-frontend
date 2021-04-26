@@ -22,6 +22,9 @@ const UploadEdit = React.lazy(() =>
 const Statistics = React.lazy(() =>
   import("./views/nintube/statistics/Statistics")
 );
+
+const Search = React.lazy(() => import("./views/nintube/components/Search"));
+
 const bar = React.lazy(() => import("./views/charts/Charts"));
 
 const routes = [
@@ -40,6 +43,7 @@ const routes = [
   { path: "/edit/upload/:id", name: "UploadEdit", component: UploadEdit },
   { path: "/studio", name: "Studio", component: Studio },
   { path: "/statistics", name: "Statistics", component: Statistics },
+  { path: "/search/:search", name: "Search", component: Search },
   // { path: "/bar", name: "bar", component: bar },
 ];
 

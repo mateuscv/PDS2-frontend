@@ -1,8 +1,8 @@
 import axios from "axios";
 // export const API_URL = "http://localhost:3334/";
-export const API_URL = "http://54a14b60631c.ngrok.io/";
-// export const API_URL =
-//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+// export const API_URL = "http://54a14b60631c.ngrok.io/";
+export const API_URL =
+  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {
@@ -303,6 +303,13 @@ export const Registrations = (data) => {
 };
 export const Library = (data) => {
   return axios.post(API_URL + "home/lib_videos", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const SearchAll = (data) => {
+  return axios.post(API_URL + "search", data).then(function (res) {
     let data = res.data;
     return data;
   });
