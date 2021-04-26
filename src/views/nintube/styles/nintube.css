@@ -48,6 +48,19 @@ button:focus {
   border: none;
 }
 
+#inscribe-search {
+  
+  border-radius: 8px;
+  padding: 5px 5px;
+  margin: auto 4px;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 200;
+  letter-spacing: 0.007px;
+  text-transform: uppercase;
+  border: none;
+}
+
 /* #f1343b */
 /* #B3272C */
 /* #FFFFFF */

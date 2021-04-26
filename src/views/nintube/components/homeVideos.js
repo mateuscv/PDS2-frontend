@@ -41,17 +41,12 @@ const HomeVideos = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      if (user.token) {
-        var data = {
-          numberSkip: 0,
-          token: user.token,
-        };
-      } else {
-        var data = {
-          numberSkip: 0,
-          token: "",
-        };
-      }
+      
+      var data = {
+        numberSkip: 0,
+        token: (user) ? user.token : ''
+      };
+      
 
       feedVideos(data)
         .then(function (data) {
@@ -76,6 +71,7 @@ const HomeVideos = ({ user }) => {
             // },
           ]);
         });
+
     }
   }, []);
   return (
