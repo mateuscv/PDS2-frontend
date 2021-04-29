@@ -104,7 +104,7 @@ const LibraryPlaylists = ({ user }) => {
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
                     <CImg
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("view", item.video_id)}
                       style={{
                         width: "100%",
                         height: "150px",
@@ -118,7 +118,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.title.substring(0, 100) + "..."}
@@ -134,7 +134,7 @@ const LibraryPlaylists = ({ user }) => {
                           </span>
                           <CCardText
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view", item.id)}
+                            onClick={() => handleClick("view", item.video_id)}
                           >{`${item.views} • ${diffDate(
                             state.today,
                             item.date
@@ -165,7 +165,7 @@ const LibraryPlaylists = ({ user }) => {
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
                     <CImg
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("view", item.video_id)}
                       style={{
                         width: "100%",
                         height: "150px",
@@ -179,7 +179,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.title.substring(0, 100) + "..."}
@@ -195,7 +195,7 @@ const LibraryPlaylists = ({ user }) => {
                           </span>
                           <CCardText
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view", item.id)}
+                            onClick={() => handleClick("view", item.video_id)}
                           >{`${item.views} • ${diffDate(
                             state.today,
                             item.date
@@ -227,7 +227,7 @@ const LibraryPlaylists = ({ user }) => {
                       // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
                       >
                         <CImg
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{
                             width: "100%",
                             height: "150px",
@@ -277,7 +277,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.name}
@@ -307,7 +307,7 @@ const LibraryPlaylists = ({ user }) => {
                       </span>
                       <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
+                        onClick={() => handleClick("view", item.video_id)}
                       >{`${item.views} • ${item.date}`}</CCardText>{" "}
                     </CCardText> */}
                       </CCardBody>

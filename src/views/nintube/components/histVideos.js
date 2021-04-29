@@ -97,7 +97,7 @@ const HistVideo = ({ user }) => {
               >
                 <CCardBody style={{ margin: "0" }}>
                   <CImg
-                    onClick={() => handleClick("view", item.v_id)}
+                    onClick={() => handleClick("view", item.id)}
                     style={{
                       width: "15%",
                       height: "150px",
@@ -113,17 +113,17 @@ const HistVideo = ({ user }) => {
                     <CCardText>
                       <h5
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.v_id)}
+                        onClick={() => handleClick("view", item.id)}
                       >
                         {item.title}
                         {/* {item.title.substring(0, 100) + "..."} */}
                       </h5>
-                      <span onClick={() => handleClick("channel", item.v_id)}>
+                      <span onClick={() => handleClick("channel", item.c_id)}>
                         {item.channel}
                       </span>
                       <span
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.v_id)}
+                        onClick={() => handleClick("view", item.id)}
                       >
                         {` • ${item.views}  Visualizações • ${diffDate(
                           state.today,
@@ -133,7 +133,7 @@ const HistVideo = ({ user }) => {
                     </CCardText>
                     <CCardText
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.v_id)}
+                      onClick={() => handleClick("view", item.id)}
                     >
                       {item.description}
                     </CCardText>{" "}
