@@ -21,6 +21,8 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+//Compoment
+import NoVideo from "./noVideo";
 //API
 import { Library } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
@@ -84,13 +86,14 @@ const LibraryPlaylists = ({ user }) => {
             <CIcon className="icone" name="cilReload" size="3xl" />
           </div>
         </div>
-      ) : (
+      ) : state.playlist.lenght !== 0 ? (
         <div>
           <CContainer fluid>
             <div style={{ display: "flex" }}>
               <h3 style={{ color: "white" }}>{state.id_watch_late.name}</h3>{" "}
               <div style={{ marginLeft: "auto" }}>
                 <CButton
+                  style={{ color: "white" }}
                   onClick={() =>
                     history.push("playlist/" + state.id_watch_late.id)
                   }
@@ -152,6 +155,7 @@ const LibraryPlaylists = ({ user }) => {
               <h3 style={{ color: "white" }}>{state.id_videos_lik.name}</h3>{" "}
               <div style={{ marginLeft: "auto" }}>
                 <CButton
+                  style={{ color: "white" }}
                   onClick={() =>
                     history.push("playlist/" + state.id_videos_lik.id)
                   }
@@ -318,6 +322,8 @@ const LibraryPlaylists = ({ user }) => {
             </CRow>
           </CContainer>
         </div>
+      ) : (
+        <NoVideo />
       )}
     </div>
   );
