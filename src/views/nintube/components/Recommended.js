@@ -1,10 +1,12 @@
 //REACT
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
+
 //CoreUI
 import {
   CLink,
@@ -14,7 +16,6 @@ import {
   CCol,
   CCard,
   CCardBody,
-  CIcon,
   CCardTitle,
   CWidgetIcon,
   CCardSubtitle,
@@ -22,10 +23,13 @@ import {
   CCardHeader,
   CImg,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 //Componets
 //Style
+import "./componentStyle.css";
 //API
-import { recommend } from "../../../util/Api";
+import { getRecs } from "../../../util/Api";
+import { diffDate } from "../../../util/dateDiff";
 
 const videos = [
   {
@@ -126,8 +130,9 @@ const videos = [
 ];
 
 const StackVideo = ({ user }) => {
+  let { id } = useParams();
   const [state, setState] = useState({
-    videos:[],
+    videos: [],
     fetched: false,
     videos: [],
   });
@@ -137,65 +142,96 @@ const StackVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      // recommend.then(function(data){
-      setState({ ...state, fetched: true, videos: videos });
-
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      //   setState({ ...state, error: "Dados inválidos", message: "" });
-      // });
+      var data = {
+        video_id: id,
+      };
+      getRecs(data)
+        .then(function (data) {
+          setState({ ...state, fetched: true, videos: data });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, fetched: true });
+          alert(
+            "Houve um problema nos recomendados",
+            "Deseja Recarregar a pagina",
+            [
+              {
+                label: "Sim",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+              {
+                label: "Não",
+              },
+            ]
+          );
+        });
     }
   }, []);
   return (
-    <div>
-      <CRow>
-        <CCol sm="12">
-          {state.videos.map((item, index) => (
-            <CCard
-              style={{
-                marginBottom: "1%",
-                border: "2px solid #B3272C",
-              }}
-            >
-              <CCardBody style={{ margin: "0" }}>
-                <CImg
-                  onClick={() => handleClick("view", item.id)}
-                  style={{
-                    width: "25%",
-                    cursor: "pointer",
-                    float: "left",
-                    marginRight: "1%",
-                    borderBottom: "1px solid black",
-                    borderRadius: "10px",
-                  }}
-                  src={item.thumb}
-                />
-                <CCardText>
+    <>
+      {!state.fetched && (
+        <div style={{ display: "flex", height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
+      <div>
+        <CRow>
+          <CCol sm="12">
+            {state.videos.map((item, index) => (
+              <CCard
+                style={{
+                  marginBottom: "1%",
+                  border: "2px solid #B3272C",
+                }}
+              >
+                <CCardBody style={{ margin: "0" }}>
+                  <CImg
+                    onClick={() => handleClick("view", item.id)}
+                    style={{
+                      width: "25%",
+                      cursor: "pointer",
+                      float: "left",
+                      marginRight: "1%",
+                      borderBottom: "1px solid black",
+                      borderRadius: "10px",
+                    }}
+                    src={item.thumb}
+                  />
                   <CCardText>
-                    <h5
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {item.title.substring(0, 50) + "..."}
-                    </h5>
-                    <span onClick={() => handleClick("channel", item.id)}>
-                      {item.channel}
-                    </span>
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {` • ${item.views} • ${item.date}`}
-                    </span>{" "}
+                    <CCardText>
+                      <h5
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {item.title.substring(0, 50) + "..."}
+                      </h5>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("channel", item.channel_id)}
+                      >
+                        {item.channel}
+                      </span>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {` • ${item.views} Visualizações •
+                       ${diffDate(new Date(), item.date)}`}
+                      </span>{" "}
+                    </CCardText>
                   </CCardText>
-                </CCardText>
-              </CCardBody>
-            </CCard>
-          ))}
-        </CCol>
-      </CRow>
-    </div>
+                </CCardBody>
+              </CCard>
+            ))}
+          </CCol>
+        </CRow>
+      </div>
+    </>
   );
 };
 

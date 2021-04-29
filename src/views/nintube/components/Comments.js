@@ -39,6 +39,7 @@ import {
 } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
+import "./componentStyle.css";
 
 const Comments = ({ user }) => {
   const [state, setState] = useState({
@@ -472,98 +473,123 @@ const Comments = ({ user }) => {
         var req = {
           name: "default",
         };
+        var data = {
+          numberSkip: 0,
+          video_id: id,
+          token: "",
+        };
         var img;
         getImg(req).then(function (data) {
           state.avatar = data;
         });
       } else {
         state.avatar = user.avatar;
+        var data = {
+          numberSkip: 0,
+          video_id: id,
+          token: user.token,
+        };
       }
 
-      var data = {
-        numberSkip: 0,
-        video_id: id,
-        token: user.token,
-      };
-      getComment(data, user.token).then(function (data) {
-        var listAux = Array();
-        var today = new Date();
-        var mtxAux = Array();
-        var showAux = Array();
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].reply_id === "") {
-            listAux.push({
-              id: data[i].id,
-              user_id: data[i].user_id,
-              nickname: data[i].nickname,
-              comment: data[i].comment,
-              date: diffDate(today, data[i].date),
-              src: data[i].src,
-              reply_id: data[i].reply_id,
-              likes: data[i].likes,
-              liked: data[i].liked,
-              color: data[i].liked === 1 ? "green" : "white",
-              edited: data[i].edited,
-              is_owner: data[i].is_owner,
-            });
-            showAux.push({
-              id: data[i].id,
-              dis: false,
-              info: Array,
-            });
-          } else {
-            mtxAux.push({
-              id: data[i].id,
-              user_id: data[i].user_id,
-              nickname: data[i].nickname,
-              comment: data[i].comment,
-              date: diffDate(today, data[i].date),
-              src: data[i].src,
-              reply_id: data[i].reply_id,
-              likes: data[i].likes,
-              liked: data[i].liked,
-              color: data[i].liked === 1 ? "green" : "white",
-              edited: data[i].edited,
-              is_owner: data[i].is_owner,
-            });
-          }
-        }
-
-        for (let i = 0; i < showAux.length; i++) {
-          var vexAux = new Array();
-          for (let idx = 0; idx < mtxAux.length; idx++) {
-            if (showAux[i].id === mtxAux[idx].reply_id) {
-              var aux = new Array();
-              aux.push({
-                id: mtxAux[idx].id,
-                user_id: mtxAux[idx].user_id,
-                nickname: mtxAux[idx].nickname,
-                comment: mtxAux[idx].comment,
-                date: mtxAux[idx].date,
-                src: mtxAux[idx].src,
-                reply_id: mtxAux[idx].reply_id,
-                likes: mtxAux[idx].likes,
-                liked: mtxAux[idx].liked,
-                color: mtxAux[idx].liked === 1 ? "green" : "white",
-                edited: mtxAux[idx].edited,
-                is_owner: mtxAux[idx].is_owner,
+      getComment(data, user.token)
+        .then(function (data) {
+          var listAux = Array();
+          var today = new Date();
+          var mtxAux = Array();
+          var showAux = Array();
+          for (let i = 0; i < data.length; i++) {
+            if (data[i].reply_id === "") {
+              listAux.push({
+                id: data[i].id,
+                user_id: data[i].user_id,
+                nickname: data[i].nickname,
+                comment: data[i].comment,
+                date: diffDate(today, data[i].date),
+                src: data[i].src,
+                reply_id: data[i].reply_id,
+                likes: data[i].likes,
+                liked: data[i].liked,
+                color: data[i].liked === 1 ? "green" : "white",
+                edited: data[i].edited,
+                is_owner: data[i].is_owner,
               });
-              vexAux.push(aux);
+              showAux.push({
+                id: data[i].id,
+                dis: false,
+                info: Array,
+              });
+            } else {
+              mtxAux.push({
+                id: data[i].id,
+                user_id: data[i].user_id,
+                nickname: data[i].nickname,
+                comment: data[i].comment,
+                date: diffDate(today, data[i].date),
+                src: data[i].src,
+                reply_id: data[i].reply_id,
+                likes: data[i].likes,
+                liked: data[i].liked,
+                color: data[i].liked === 1 ? "green" : "white",
+                edited: data[i].edited,
+                is_owner: data[i].is_owner,
+              });
             }
           }
-          showAux[i].info = vexAux;
-        }
-        setState({
-          ...state,
-          fetched: true,
-          fiComment: listAux,
-          // secComment: mtxAux,
-          dispAns: showAux,
+
+          for (let i = 0; i < showAux.length; i++) {
+            var vexAux = new Array();
+            for (let idx = 0; idx < mtxAux.length; idx++) {
+              if (showAux[i].id === mtxAux[idx].reply_id) {
+                var aux = new Array();
+                aux.push({
+                  id: mtxAux[idx].id,
+                  user_id: mtxAux[idx].user_id,
+                  nickname: mtxAux[idx].nickname,
+                  comment: mtxAux[idx].comment,
+                  date: mtxAux[idx].date,
+                  src: mtxAux[idx].src,
+                  reply_id: mtxAux[idx].reply_id,
+                  likes: mtxAux[idx].likes,
+                  liked: mtxAux[idx].liked,
+                  color: mtxAux[idx].liked === 1 ? "green" : "white",
+                  edited: mtxAux[idx].edited,
+                  is_owner: mtxAux[idx].is_owner,
+                });
+                vexAux.push(aux);
+              }
+            }
+            showAux[i].info = vexAux;
+          }
+          setState({
+            ...state,
+            fetched: true,
+            fiComment: listAux,
+            // secComment: mtxAux,
+            dispAns: showAux,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, fetched: true });
+          alert(
+            "Houve um problema nos comentarios",
+            "Deseja Recarregar a pagina",
+            [
+              {
+                label: "Sim",
+                onClick: () => {
+                  window.location.reload();
+                },
+              },
+              {
+                label: "Não",
+              },
+            ]
+          );
         });
-      });
     }
   }, []);
-  console.log(state.fiComment);
+  // console.log(state.fiComment);
   return (
     <div>
       <CRow>
@@ -628,6 +654,13 @@ const Comments = ({ user }) => {
                 )}
               </div>
             </CBreadcrumb>
+            {!state.fetched && (
+              <div>
+                <div className="div-reload">
+                  <CIcon className="icone" name="cilReload" size="3xl" />
+                </div>
+              </div>
+            )}
             {state.fiComment.map((item, index) => (
               <div
                 style={{
@@ -727,7 +760,7 @@ const Comments = ({ user }) => {
                         >
                           {item.nickname}
                         </span>
-                        <span>{item.date} </span>
+                        <span style={{ padding: "5px" }}> {item.date} </span>
                         <span>{item.edited && "(editado)"}</span>
                       </span>
                       {item.is_owner ? (
@@ -988,7 +1021,9 @@ const Comments = ({ user }) => {
                                         >
                                           {itm[0].nickname}
                                         </span>
-                                        <span>{itm[0].date} </span>
+                                        <span style={{ padding: "5px" }}>
+                                          {itm[0].date}{" "}
+                                        </span>
                                         <span>
                                           {itm[0].edited && "(editado)"}
                                         </span>

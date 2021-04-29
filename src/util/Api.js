@@ -1,8 +1,8 @@
 import axios from "axios";
 // export const API_URL = "http://localhost:3334/";
-export const API_URL = "http://8cfa887f8f37.ngrok.io/";
-// export const API_URL =
-//   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
+// export const API_URL = "http://c8fa75e9c450.ngrok.io/";
+export const API_URL =
+  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {
@@ -115,7 +115,7 @@ export const editVideo = (data, token) => {
 };
 
 export const deletVideo = (data) => {
-  return axios.put(API_URL + "video/delet", data).then(function (res) {
+  return axios.post(API_URL + "videos/delet", data).then(function (res) {
     let data = res.data;
     return data;
   });
@@ -250,6 +250,73 @@ export const getPlaylists = async (data) => {
 
 export const listPlaylist = (data) => {
   return axios.post(API_URL + "playlist/list", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const getNotf = (data) => {
+  return axios.post(API_URL + "notification/get", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const readNot = (data) => {
+  return axios.post(API_URL + "notification/edit", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const deletPlaylist = (data) => {
+  return axios.post(API_URL + "playlist/delet", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const editPlaylist = (data) => {
+  return axios.post(API_URL + "playlist/edit", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const getRec = (data) => {
+  return axios.post(API_URL + "recommended/get").then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+export const getRecs = (data) => {
+  return axios.post(API_URL + "recommended/videos", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+export const Registrations = (data) => {
+  return axios.post(API_URL + "home/subs_videos", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+export const Library = (data) => {
+  return axios.post(API_URL + "home/lib_videos", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const SearchAll = (data) => {
+  return axios.post(API_URL + "search", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const getChartValues = (data) => {
+  return axios.post(API_URL + "statistic/get", data).then(function (res) {
     let data = res.data;
     return data;
   });

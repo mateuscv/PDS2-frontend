@@ -94,9 +94,28 @@ const Player = ({ url = "" }) => {
       var data = {
         video_id: id,
       };
-      getVideo(data).then(function (data) {
-        setState({ ...state, fetched: true, file: data.file });
-      });
+      getVideo(data)
+        .then(function (data) {
+          setState({ ...state, fetched: true, file: data.file });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+            // {
+            //   label: "Login",
+            //   onClick: () => {
+            //     history.push("/login");
+            //   },
+            // },
+          ]);
+        });
     }
   }, []);
   useEffect(() => {

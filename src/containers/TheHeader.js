@@ -51,6 +51,7 @@ const TheHeader = ({ user, setuser }) => {
     message: "",
     email: "",
     password: "",
+    search:""
   });
   let history = useHistory();
   const login = (e) => {
@@ -64,7 +65,6 @@ const TheHeader = ({ user, setuser }) => {
     //   email: "davi@furg.br",
     //   password: "senha",
     // };
-    console.log(data);
     if (!data.email || !data.password) {
       setState({
         ...state,
@@ -113,6 +113,14 @@ const TheHeader = ({ user, setuser }) => {
 
   const dark = "dark";
 
+  const handleKeys = e => {      
+    if (e.keyCode === 13) {      
+        doSearch();
+    }  
+  };
+  const doSearch = () => {
+    history.push("/search/"+state.search)
+  }
   return (
     <CHeader class={dark + "-mode"} withSubheader>
       {/* <CToggler
@@ -143,14 +151,17 @@ const TheHeader = ({ user, setuser }) => {
         style={{ width: "50%", marginLeft: "auto" }}
         className="d-md-down-none mr-auto"
       >
+        {console.log(history.location)}
+        {history.location.pathname.split("/")[1] !== "search" &&
         <CInputGroup style={{ border: "1px solid red", borderRadius: "5px" }}>
-          <CInput placeholder="Pesquisar" />
+          <CInput placeholder="Pesquisar" onKeyUp={handleKeys} onChange={(e)=>{setState({...state, search:e.target.value})}}/>
           <CInputGroupAppend>
             <CInputGroupText>
-              <CIcon name="cil-magnifying-glass" />
+              <CIcon name="cil-magnifying-glass" onClick={doSearch}/>
             </CInputGroupText>
           </CInputGroupAppend>
         </CInputGroup>
+        }
       </CHeaderNav>
       {/* {!logged && (
         <div style={{ marginRight: "5%" }}>
@@ -214,7 +225,7 @@ const TheHeader = ({ user, setuser }) => {
       {logged ? (
         <>
           <CHeaderNav className="px-3">
-            {/* <TheHeaderDropdownNotif /> */}
+            <TheHeaderDropdownNotif />
             {/* <TheHeaderDropdownTasks /> */}
             {/* <TheHeaderDropdownMssg /> */}
             <TheHeaderDropdown />

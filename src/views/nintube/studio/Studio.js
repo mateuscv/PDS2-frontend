@@ -17,11 +17,12 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
-import { deletVideo } from "../../../util/Api";
 //Style
+import "../components/componentStyle.css";
 //API
 import data from "./data";
-import { myVideos } from "../../../util/Api";
+import { myVideos, deletVideo } from "../../../util/Api";
+import { alert } from "../../../util/alertApi";
 
 const fields = [
   { key: "thumb", _style: { width: "20%" }, sorter: false, filter: false },
@@ -53,8 +54,15 @@ const Studio = ({ user, history }) => {
     fetched: false,
     videos: [],
   });
-  const Delet = (video_id) => {
-    var data = { token: user.token, video_id: video_id };
+  const Delete = (video_id) => {
+    var data = { video_id: video_id };
+    let vet_playlist = [];
+    for (let index = 0; index < state.videos.length; index++) {
+      if (state.videos[index].id !== video_id) {
+        vet_playlist.push(state.videos[index]);
+      }
+    }
+    setState({ ...state, videos: vet_playlist });
     deletVideo(data)
       .then(function (data) {
         alert("Ação", "Video foi deletado com sucesso!");
@@ -73,7 +81,6 @@ const Studio = ({ user, history }) => {
       var data = { token: user.token };
       myVideos(data)
         .then(function (data) {
-          console.log(data);
           var videos = [];
           for (let i = 0; i < data.length; i++) {
             var date = new Date(data[i][0].created_at);
@@ -94,7 +101,16 @@ const Studio = ({ user, history }) => {
           setState({ ...state, fetched: true, videos });
         })
         .catch((err) => {
-          setState({ ...state, error: "Dados inválidos", message: "" });
+          console.log(err.message);
+          setState({ ...state, fetched: true });
+          alert("Houve um problema", "Por favor recarregue a pagina", [
+            {
+              label: "Recarregar",
+              onClick: () => {
+                window.location.reload();
+              },
+            },
+          ]);
         });
       // setState({ ...state, fetched: true });
     }
@@ -105,6 +121,13 @@ const Studio = ({ user, history }) => {
         height: "100%",
       }}
     >
+      {!state.fetched && (
+        <div className="c-app c-default-layout" style={{ height: "100%" }}>
+          <div className="div-reload">
+            <CIcon className="icone" name="cilReload" size="3xl" />
+          </div>
+        </div>
+      )}
       {state.videos.length !== 0 ? (
         <div>
           <CCard>
@@ -177,10 +200,13 @@ const Studio = ({ user, history }) => {
                   ),
                   Deletar: (item) => (
                     <td className="align-middle">
+                      {console.log(item)}
                       <CButton
                         color="btn btn-ghost-danger"
                         title="Deletar"
-                        onClick={() => Delet(item.id)}
+                        onClick={() => {
+                          Delete(item.id);
+                        }}
                       >
                         <CIcon name="cil-trash" />
                       </CButton>
