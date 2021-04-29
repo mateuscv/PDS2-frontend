@@ -30,19 +30,19 @@ import {
   CChartPolarArea,
 } from "@coreui/react-chartjs";
 //API
-// import { Registrations } from "../../../util/Api";
+import { getChartValues } from "../../../util/Api";
 //Style
 import "../components/componentStyle.css";
 
 var back_data = {
-  gender: { data: [40, 20, 40], labels: ["Masculino", "Feminino", "Outros"] },
+  gender: { data: [], labels: ["Feminino", "Masculino", "Outros"] },
   age: {
-    data: [20, 10, 40, 20, 40, 30],
-    labels: ["<10", "10-13", "14-16", "17-19", "19-24", "24<"],
+    data: [],
+    labels: ["-10", "10-13", "14-16", "17-19", "19-24", "24+"],
   },
   channels: {
-    data: [40, 20, 60, 10],
-    labels: ["Davi Teixeira", "Neves Michel", "yAbzin", "yMustafa"],
+    data: [],
+    labels: [],
   },
 };
 
@@ -54,27 +54,42 @@ const Statistics = ({ user }) => {
     channels: [],
     fetched: false,
   });
-
   useEffect(() => {
     if (!state.fetched) {
       var data = {
         token: user.token,
       };
-      // getChartValues(data)
-      //   .then(function (data) {
-      // setState({})
-      //     console.log(data);
-      setState({
-        ...state,
-        gender: back_data.gender,
-        age: back_data.age,
-        channels: back_data.channels,
-      });
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //     setState({ ...state, error: "Dados inválidos", message: "" });
-      //   });
+      getChartValues(data)
+        .then(function (data) {
+          // setState({})
+          console.log(data.channels);
+          var channel_names = [];
+          data.channels.name.map((channel) =>
+            channel_names.push(channel.username)
+          );
+          var age = {
+            data: data.age,
+            labels: ["-10", "10-13", "14-16", "17-19", "19-24", "24+"],
+          };
+          var gender = {
+            data: data.gender,
+            labels: ["Feminino", "Masculino", "Outros"],
+          };
+          var channels = {
+            data: data.channels.data,
+            labels: channel_names,
+          };
+          setState({
+            ...state,
+            gender: gender,
+            age: age,
+            channels: channels,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setState({ ...state, error: "Dados inválidos", message: "" });
+        });
     }
   }, []);
 

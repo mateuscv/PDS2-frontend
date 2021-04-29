@@ -22,105 +22,17 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
+import NoVideo from "./noVideo";
 //API
 import { Registrations } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 //Style
 import "./componentStyle.css";
 
-const videos = [
-  {
-    id: 1,
-    title:
-      "FEED DO USUÁRIO | Criando uma Rede Social com React.js e .NET Core #29",
-    channel: "Lucas Nhimi",
-    views: "11 mi de visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 2,
-    title:
-      "COMO MELHORAR SEU CODIGO JAVASCRIPT (ESLINT + PRETTIER + EDITORCONFIG) | Dicas e Truques #02",
-    channel: "Lucas Nhimi",
-    views: "957 mil visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 3,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    views: "106 mil visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 4,
-    title:
-      "CONTEXT API NO EDITOR DE POST | Criando uma Rede Social com React.js e .NET Core #27",
-    channel: "Lucas Nhimi",
-    views: "5,6 mi de visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 5,
-    title:
-      "EDITOR DE POST COM MARKDOWN 2 | Criando uma Rede Social com React.js e .NET Core #26",
-    channel: "Lucas Nhimi",
-    views: "2,2 mi de visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 6,
-    title: "COMO MIGRAR PARA REACT HOOKS | Dicas e Truques #01",
-    channel: "Lucas Nhimi",
-    views: "233 mil visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 7,
-    title:
-      "PRÉ-REQUISITOS | Criando uma Rede Social com React.js e .NET Core #01",
-    channel: "Lucas Nhimi",
-    views: "118 mil visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-  {
-    id: 8,
-    title:
-      "GIT E GITHUB | Criando uma Rede Social com React.js e .NET Core #04",
-    channel: "Lucas Nhimi",
-    views: "1,9 mi de visualizações",
-    date: "há 1 semana",
-    avatar: "avatars/7.jpg",
-    thumb:
-      "https://i.ytimg.com/vi/eXASPM9CyH0/hqdefault.jpg?sqp=-oaymwEjCNACELwBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDdSPNAYKm5nowMhTcZFcQu7c7l3g",
-  },
-];
-
 const ShowVideos = ({ user }) => {
   const [state, setState] = useState({
     videos: [],
+    channels: [],
     fetched: false,
     today: new Date(),
   });
@@ -136,7 +48,17 @@ const ShowVideos = ({ user }) => {
       };
       Registrations(data)
         .then(function (data) {
-          setState({ ...state, fetched: true, videos: data });
+          console.log(data);
+          var channels = [];
+          for (let index = 0; index <= 14; index++) {
+            channels.push(data.channels[0]);
+          }
+          setState({
+            ...state,
+            fetched: true,
+            videos: data.videos,
+            channels: data.channels,
+          });
         })
         .catch((err) => {
           console.log(err.message);
@@ -161,55 +83,156 @@ const ShowVideos = ({ user }) => {
           </div>
         </div>
       )}
-      <CContainer fluid>
-        <CRow>
-          {state.videos.map((item, index) => (
-            <CCol style={{ width: "5%" }} sm="2">
-              <CCard style={{ border: "2px solid #B3272C" }}>
-                <CImg
-                  onClick={() => handleClick("view", item.id)}
+      {state.videos.length !== 0 ? (
+        <div>
+          {state.channels.length >= 15 ? (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "nowrap",
+                overflowX: "scroll",
+                width: "100%",
+                height: "100%",
+                marginBottom: "2%",
+              }}
+            >
+              {state.channels.map((channel) => (
+                <div
                   style={{
+                    display: "flex",
+
+                    flexDirection: "column",
+                    marginRight: "2%",
+                    textAlign: "center",
+                    // width: "200px",
+                    // height: "100px",
                     width: "100%",
-                    height: "150px",
-                    cursor: "pointer",
-                    borderBottom: "1px solid black",
-                    borderBottomLeftRadius: "10px",
-                    borderBottomRightRadius: "10px",
+                    height: "100%",
                   }}
-                  src={item.thumb}
-                />
-                <div>
-                  <CCardBody style={{ fontSize: "80%" }}>
-                    <h3
-                      onClick={() => handleClick("view", item.id)}
-                      style={{ fontSize: "120%", cursor: "pointer" }}
-                    >
-                      {item.title.substring(0, 100) + "..."}
-                    </h3>{" "}
-                    <CCardText
-                      style={{ marginBottom: "-1%", marginTop: "1.5%" }}
-                    >
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel", item.id)}
-                      >
-                        {item.channel}
-                      </span>
-                      <CCardText
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
-                      >{`${item.views} • ${diffDate(
-                        state.today,
-                        item.date
-                      )}`}</CCardText>{" "}
-                    </CCardText>
-                  </CCardBody>
+                >
+                  <CImg
+                    src={channel.avatar}
+                    style={{
+                      // width: "100%", height: "100%",
+                      width: "80px",
+                      height: "80px",
+                      cursor: "pointer",
+                    }}
+                    className="c-avatar-img"
+                    onClick={() => history.push("/channel/" + channel.id)}
+                  />
+
+                  <span
+                    onClick={() => history.push("/channel/" + channel.id)}
+                    style={{
+                      color: "white",
+                      fontSize: "24px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {channel.username}
+                  </span>
                 </div>
-              </CCard>
-            </CCol>
-          ))}
-        </CRow>
-      </CContainer>
+              ))}
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "nowrap",
+                // width: "100%",
+                // height: "100%",
+                marginBottom: "2%",
+              }}
+            >
+              {state.channels.map((channel) => (
+                <div
+                  style={{
+                    display: "flex",
+
+                    flexDirection: "column",
+                    marginRight: "2%",
+                    textAlign: "center",
+                    // width: "200px",
+                    // height: "80px",
+                    // width: "100%",
+                    // height: "100%",
+                  }}
+                >
+                  <CImg
+                    src={channel.avatar}
+                    style={{ width: "80px", height: "80px", cursor: "pointer" }}
+                    className="c-avatar-img"
+                    onClick={() => history.push("/channel/" + channel.id)}
+                  />
+
+                  <span
+                    onClick={() => history.push("/channel/" + channel.id)}
+                    style={{
+                      color: "white",
+                      fontSize: "24px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {channel.username}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+          <CContainer fluid>
+            <CRow>
+              {state.videos.map((item, index) => (
+                <CCol style={{ width: "5%" }} sm="2">
+                  <CCard style={{ border: "2px solid #B3272C" }}>
+                    <CImg
+                      onClick={() => handleClick("view", item.id)}
+                      style={{
+                        width: "100%",
+                        height: "150px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid black",
+                        borderBottomLeftRadius: "10px",
+                        borderBottomRightRadius: "10px",
+                      }}
+                      src={item.thumb}
+                    />
+                    <div>
+                      <CCardBody style={{ fontSize: "80%" }}>
+                        <h3
+                          onClick={() => handleClick("view", item.id)}
+                          style={{ fontSize: "120%", cursor: "pointer" }}
+                        >
+                          {item.title.substring(0, 100) + "..."}
+                        </h3>{" "}
+                        <CCardText
+                          style={{ marginBottom: "-1%", marginTop: "1.5%" }}
+                        >
+                          <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleClick("channel", item.id)}
+                          >
+                            {item.channel}
+                          </span>
+                          <CCardText
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleClick("view", item.id)}
+                          >{`${item.views} • ${diffDate(
+                            state.today,
+                            item.date
+                          )}`}</CCardText>{" "}
+                        </CCardText>
+                      </CCardBody>
+                    </div>
+                  </CCard>
+                </CCol>
+              ))}
+            </CRow>
+          </CContainer>
+        </div>
+      ) : (
+        <NoVideo />
+      )}
     </div>
   );
 };
