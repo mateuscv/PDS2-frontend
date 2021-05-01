@@ -136,7 +136,7 @@ const Comments = ({ user }) => {
   };
 
   const comment = () => {
-    if (user.token) {
+    if (user) {
       if (!display.showComment) {
         setState({
           ...state,
@@ -326,7 +326,7 @@ const Comments = ({ user }) => {
   };
 
   const answers = (nvl, id) => {
-    if (user.token) {
+    if (user) {
       if (nvl === 1) {
         setState({
           ...state,
@@ -354,7 +354,7 @@ const Comments = ({ user }) => {
   };
 
   const Liked = (liked, nvl, id, id2) => {
-    if (user.token) {
+    if (user) {
       if (nvl === 0) {
         let comment = state.fiComment;
         for (let i = 0; i < comment.length; i++) {

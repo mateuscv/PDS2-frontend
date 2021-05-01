@@ -44,7 +44,7 @@ const SavePlaylist = ({ user, video_id, kill }) => {
   });
 
   const playlistsPopup = () => {
-    if (user.token) {
+    if (user) {
       confirmAlert({
         title: "Playlists",
         afterClose: kill,

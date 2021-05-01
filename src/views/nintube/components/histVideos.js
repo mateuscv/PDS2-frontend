@@ -22,7 +22,8 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-//Componets
+//Compoment
+import NoVideo from "./noVideo";
 //Style
 import "./componentStyle.css";
 //API
@@ -40,10 +41,17 @@ const HistVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      var data = {
-        numberSkip: 0,
-        token: user.token,
-      };
+      if (user) {
+        var data = {
+          numberSkip: 0,
+          token: user.token,
+        };
+      } else {
+        var data = {
+          numberSkip: 0,
+          token: "",
+        };
+      }
       console.log(data);
       historic(data)
         .then(function (data) {
@@ -78,65 +86,69 @@ const HistVideo = ({ user }) => {
           </div>
         </div>
       )}
-      <CContainer fluid>
-        <CRow>
-          <CCol sm="12">
-            {state.videos.map((item, index) => (
-              <CCard
-                style={{
-                  marginBottom: "1%",
-                  border: "2px solid #B3272C",
-                }}
-              >
-                <CCardBody style={{ margin: "0" }}>
-                  <CImg
-                    onClick={() => handleClick("view", item.v_id)}
-                    style={{
-                      width: "15%",
-                      height: "150px",
-                      cursor: "pointer",
-                      float: "left",
-                      marginRight: "1%",
-                      borderBottom: "1px solid black",
-                      borderRadius: "10px",
-                    }}
-                    src={item.thumb}
-                  />
-                  <CCardText>
+      {state.videos.length !== 0 ? (
+        <CContainer fluid>
+          <CRow>
+            <CCol sm="12">
+              {state.videos.map((item, index) => (
+                <CCard
+                  style={{
+                    marginBottom: "1%",
+                    border: "2px solid #B3272C",
+                  }}
+                >
+                  <CCardBody style={{ margin: "0" }}>
+                    <CImg
+                      onClick={() => handleClick("view", item.id)}
+                      style={{
+                        width: "15%",
+                        height: "150px",
+                        cursor: "pointer",
+                        float: "left",
+                        marginRight: "1%",
+                        borderBottom: "1px solid black",
+                        borderRadius: "10px",
+                      }}
+                      src={item.thumb}
+                    />
                     <CCardText>
-                      <h5
+                      <CCardText>
+                        <h5
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleClick("view", item.id)}
+                        >
+                          {item.title}
+                          {/* {item.title.substring(0, 100) + "..."} */}
+                        </h5>
+                        <span onClick={() => handleClick("channel", item.c_id)}>
+                          {item.channel}
+                        </span>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleClick("view", item.id)}
+                        >
+                          {` • ${item.views}  Visualizações • ${diffDate(
+                            state.today,
+                            item.date
+                          )}`}
+                        </span>{" "}
+                      </CCardText>
+                      <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.v_id)}
+                        onClick={() => handleClick("view", item.id)}
                       >
-                        {item.title}
-                        {/* {item.title.substring(0, 100) + "..."} */}
-                      </h5>
-                      <span onClick={() => handleClick("channel", item.v_id)}>
-                        {item.channel}
-                      </span>
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.v_id)}
-                      >
-                        {` • ${item.views}  Visualizações • ${diffDate(
-                          state.today,
-                          item.date
-                        )}`}
-                      </span>{" "}
+                        {item.description}
+                      </CCardText>{" "}
                     </CCardText>
-                    <CCardText
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.v_id)}
-                    >
-                      {item.description}
-                    </CCardText>{" "}
-                  </CCardText>
-                </CCardBody>
-              </CCard>
-            ))}
-          </CCol>
-        </CRow>
-      </CContainer>
+                  </CCardBody>
+                </CCard>
+              ))}
+            </CCol>
+          </CRow>
+        </CContainer>
+      ) : (
+        <NoVideo />
+      )}
     </div>
   );
 };

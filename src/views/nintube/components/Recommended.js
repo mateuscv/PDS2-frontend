@@ -210,7 +210,10 @@ const StackVideo = ({ user }) => {
                       >
                         {item.title.substring(0, 50) + "..."}
                       </h5>
-                      <span onClick={() => handleClick("channel", item.id)}>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("channel", item.channel_id)}
+                      >
                         {item.channel}
                       </span>
                       <span

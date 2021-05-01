@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
+import socketIOClient from "socket.io-client";
 //CoreUI
 import {
   CButton,
@@ -31,11 +32,20 @@ const Home = ({ history, user }) => {
     if (!state.fetched) {
       setState({ ...state, fetched: true });
     }
-  }, []);
+  }, [state]);
   const handleClick = () => {
     history.push("/view");
   };
   console.log(user);
+
+  const [response, setResponse] = useState("");
+
+  /*useEffect(() => {
+    const socket = socketIOClient("http://localhost:3334");
+    socket.on("FromAPI", (data) => {
+      console.log(data);
+    });
+  }, []);*/
 
   return (
     <div>

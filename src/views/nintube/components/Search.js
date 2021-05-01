@@ -24,7 +24,7 @@ import {
   CInput,
   CInputGroup,
   CInputGroupAppend,
-  CInputGroupText
+  CInputGroupText,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
@@ -32,10 +32,11 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "./componentStyle.css";
 //API
-import { SearchAll, Inscribe} from "../../../util/Api";
+import { SearchAll, Inscribe } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const Search = ({ user }) => {
+<<<<<<< HEAD
     let searchText = useParams().search;
     let type = 1;
     console.log(searchText.slice(4));
@@ -46,21 +47,26 @@ const Search = ({ user }) => {
     const [state, setState] = useState({
     searchText: searchText,
     type:type,
+=======
+  const [state, setState] = useState({
+    searchText: useParams().search,
+>>>>>>> main
     videos: [],
     channels: [],
   });
-  
+
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
   };
 
-  const handleKeys = e => {      
-    if (e.keyCode === 13) {      
-        doSearch();
-    }  
+  const handleKeys = (e) => {
+    if (e.keyCode === 13) {
+      doSearch();
+    }
   };
 
+<<<<<<< HEAD
   // const searchSimulator = () => {
   //     let data = {
   //       videos: [
@@ -111,10 +117,71 @@ const Search = ({ user }) => {
 
   //   return data
   // }
+=======
+  const searchSimulator = () => {
+    let data = {
+      videos: [
+        {
+          id: "wadwfagjtfd",
+          title: "VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 ",
+          views: 10,
+          created_at: "2021-03-23 20:26:13",
+          channel_name: "Testando 1",
+          channel_id: "541fas165awf651waf",
+          description:
+            "TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 ",
+          thumb:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+          avatar:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+        },
+        {
+          id: "grhftgxgrdzrgd",
+          title: "VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 ",
+          views: 20,
+          created_at: "2021-03-23 20:26:13",
+          channel_name: "Testando 2",
+          channel_id: "541fas165awf651waf",
+          description:
+            "TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 ",
+          thumb:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+          avatar:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+        },
+      ],
+      channels: [
+        {
+          id: "adwawd65156",
+          avatar:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+          name: "CHANNEL 1",
+          subscribers: 10000000,
+          video_count: 20,
+          description: "bjhadwjhdawbh",
+          is_subscribed: true,
+        },
+        {
+          id: "hhdrhdr",
+          avatar:
+            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
+          name: "CHANNEL 2",
+          subscribers: 684500000,
+          video_count: 50,
+          description: "52325fw",
+          is_subscribed: true,
+        },
+      ],
+    };
+
+    return data;
+  };
+>>>>>>> main
 
   const doSearch = () => {
-      console.log(state.searchText)
+    console.log(state.searchText);
     var data = {
+<<<<<<< HEAD
         input: state.searchText,
         type:state.type
     };
@@ -125,48 +192,63 @@ const Search = ({ user }) => {
         setState({ ...state, videos:data.videos, channels: data.channels});
     });
   }
+=======
+      input: state.searchText,
+    };
+    data = searchSimulator();
+    setState({
+      ...state,
+      fetched: true,
+      videos: data.videos,
+      channels: data.channels,
+    });
+    // SearchAll(data).then(function (data) {
+    //     setState({ ...state, fetched: true, videos:data.videos, channels: data.channels});
+    // });
+  };
+>>>>>>> main
 
   const Change = (index) => {
-    if (user.token) {
+    if (user) {
       var data = {
         token: user.token,
         target_id: state.channels[index].id,
       };
 
       let channels = state.channels;
-        channels[index].is_subscribed = ! channels[index].is_subscribed;
-        if (channels[index].is_subscribed) {
+      channels[index].is_subscribed = !channels[index].is_subscribed;
+      if (channels[index].is_subscribed) {
         channels[index].subscribers += 1;
-        } else {
+      } else {
         channels[index].subscribers -= 1;
-        }
-        setState({ ...state, channels });
+      }
+      setState({ ...state, channels });
 
-    //   Inscribe(data)
-    //     .then(function (data) {
-    //       let channels = state.channels;
-    //       channels[index].is_subscribed = ! channels[index].is_subscribed;
-    //       if (channels[index].is_subscribed) {
-    //         channels[index].subscribers += 1;
-    //       } else {
-    //         channels[index].subscribers -= 1;
-    //       }
-    //       setState({ ...state, channels });
-    //     })
-    //     .catch((err) => {
-    //       setState({
-    //         ...state,
-    //         error: "Algum problema aconteceu, tente novamente mais tarde!",
-    //         message: "",
-    //       });
-    //     });
+      //   Inscribe(data)
+      //     .then(function (data) {
+      //       let channels = state.channels;
+      //       channels[index].is_subscribed = ! channels[index].is_subscribed;
+      //       if (channels[index].is_subscribed) {
+      //         channels[index].subscribers += 1;
+      //       } else {
+      //         channels[index].subscribers -= 1;
+      //       }
+      //       setState({ ...state, channels });
+      //     })
+      //     .catch((err) => {
+      //       setState({
+      //         ...state,
+      //         error: "Algum problema aconteceu, tente novamente mais tarde!",
+      //         message: "",
+      //       });
+      //     });
     } else {
       alert("Login", "Você não está logado!");
     }
   };
 
   useEffect(() => {
-    doSearch()
+    doSearch();
   }, []);
   return (
     <div>
@@ -175,12 +257,12 @@ const Search = ({ user }) => {
           <CInput placeholder="Pesquisar" onKeyUp={handleKeys} value={state.searchText} onChange={(e)=>{setState({...state, searchText:e.target.value, type:1})}}/>
           <CInputGroupAppend>
             <CInputGroupText>
-              <CIcon name="cil-magnifying-glass" onClick={doSearch}/>
+              <CIcon name="cil-magnifying-glass" onClick={doSearch} />
             </CInputGroupText>
           </CInputGroupAppend>
         </CInputGroup>
-        </center>
-        <br/>
+      </center>
+      <br />
       {!state.fetched && (
         <div className="c-app c-default-layout" style={{ height: "100%" }}>
           <div className="div-reload">
@@ -189,81 +271,81 @@ const Search = ({ user }) => {
         </div>
       )}
       <CContainer fluid>
-      <CRow>
-        
-        <CCol sm="12">
-          {state.channels.map((item, index) => (
-            <CCard
-              style={{
-                marginBottom: "1%",
-                border: "2px solid #B3272C",
-                borderRadius: "30px",
-              }}
-            >
-              <CCardBody style={{ margin: "0" }}>
-              <CCardBody
-                  className=" float-left"
-                  style={{ height: "100px"}}
-                >
-                  <div className="c-avatar">
-                    <CImg
-                      style={{ cursor: "pointer", height:"75px", width: "75px"}}
-                      onClick={() => handleClick("channel", item.id)}
-                      src={item.avatar}
-                      className="c-avatar-img"
-                      alt="admin@bootstrapmaster.com"
-                    />
-                  </div>
-                </CCardBody>
-                
-                <CCardText>
-                  <CCardText>
-                    <h5
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {item.name.length <= 103 ? item.name: item.name.substring(0, 100) + "..."}
-                    </h5>
-                    
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleClick("view", item.id)}
-                    >
-                      {` ${item.subscribers} • ${item.video_count}  Vídeos • `}
-                    </span>{" "}
-                    <br/>
-                        
-                        {item.is_subscribed === false && (
-                            <CButton
-                            id="inscribe-search"
-                            name={"inscribe-"+index}
-                            class="inscribe"
-                            onClick={(e) => Change(e.target.name.split("-")[1])}
-                            >
-                            Inscrever-se
-                            </CButton>
-                        )}{" "}
-                        
-                        {item.is_subscribed === true && (
-                            <CButton
-                            id="inscribe-search"
-                            name={"inscribe-"+index}
-                            class="registered"
-                            onClick={(e) => Change(e.target.name.split("-")[1])}
-                            >
-                            Inscrito
-                            </CButton>
-                        )}
-                  </CCardText>
-                  
-                </CCardText>
-              </CCardBody>
-            </CCard>
-          ))}
-        </CCol>
-      </CRow>
         <CRow>
-        
+          <CCol sm="12">
+            {state.channels.map((item, index) => (
+              <CCard
+                style={{
+                  marginBottom: "1%",
+                  border: "2px solid #B3272C",
+                  borderRadius: "30px",
+                }}
+              >
+                <CCardBody style={{ margin: "0" }}>
+                  <CCardBody
+                    className=" float-left"
+                    style={{ height: "100px" }}
+                  >
+                    <div className="c-avatar">
+                      <CImg
+                        style={{
+                          cursor: "pointer",
+                          height: "75px",
+                          width: "75px",
+                        }}
+                        onClick={() => handleClick("channel", item.id)}
+                        src={item.avatar}
+                        className="c-avatar-img"
+                        alt="admin@bootstrapmaster.com"
+                      />
+                    </div>
+                  </CCardBody>
+
+                  <CCardText>
+                    <CCardText>
+                      <h5
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {item.name.length <= 103
+                          ? item.name
+                          : item.name.substring(0, 100) + "..."}
+                      </h5>
+                      <span
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleClick("view", item.id)}
+                      >
+                        {` ${item.subscribers} • ${item.video_count}  Vídeos • `}
+                      </span>{" "}
+                      <br />
+                      {item.is_subscribed === false && (
+                        <CButton
+                          id="inscribe-search"
+                          name={"inscribe-" + index}
+                          class="inscribe"
+                          onClick={(e) => Change(e.target.name.split("-")[1])}
+                        >
+                          Inscrever-se
+                        </CButton>
+                      )}{" "}
+                      {item.is_subscribed === true && (
+                        <CButton
+                          id="inscribe-search"
+                          name={"inscribe-" + index}
+                          class="registered"
+                          onClick={(e) => Change(e.target.name.split("-")[1])}
+                        >
+                          Inscrito
+                        </CButton>
+                      )}
+                    </CCardText>
+                  </CCardText>
+                </CCardBody>
+              </CCard>
+            ))}
+          </CCol>
+        </CRow>
+        <CRow>
           <CCol sm="12">
             {state.videos.map((item, index) => (
               <CCard
@@ -276,7 +358,6 @@ const Search = ({ user }) => {
                   <CImg
                     onClick={() => handleClick("view", item.id)}
                     style={{
-                      
                       height: "150px",
                       cursor: "pointer",
                       float: "left",
@@ -292,9 +373,10 @@ const Search = ({ user }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
                       >
-                        {item.title.length <= 103 ? item.name: item.title.substring(0, 100) + "..."}
+                        {item.title.length <= 103
+                          ? item.name
+                          : item.title.substring(0, 100) + "..."}
                       </h5>
-                      
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
@@ -309,29 +391,31 @@ const Search = ({ user }) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => handleClick("view", item.id)}
                     >
-                <CCardBody
-                    className=" float-left"
-                    style={{ height: "50px"}}
-                  >
-                    <div className="c-avatar">
-                      <CImg
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel", item.id)}
-                        src={item.avatar}
-                        className="c-avatar-img"
-                        alt="admin@bootstrapmaster.com"
-                      />
-                    </div>
-                    <span
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("channel", item.channel_id)}
+                      <CCardBody
+                        className=" float-left"
+                        style={{ height: "50px" }}
                       >
-                        {item.channel_name}
-                      </span>
-                  </CCardBody>
-                    <div className="float-left">
-                      {item.description.substring(0, 60) + "..."}
-                    </div>
+                        <div className="c-avatar">
+                          <CImg
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleClick("channel", item.id)}
+                            src={item.avatar}
+                            className="c-avatar-img"
+                            alt="admin@bootstrapmaster.com"
+                          />
+                        </div>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            handleClick("channel", item.channel_id)
+                          }
+                        >
+                          {item.channel_name}
+                        </span>
+                      </CCardBody>
+                      <div className="float-left">
+                        {item.description.substring(0, 60) + "..."}
+                      </div>
                     </CCardText>{" "}
                   </CCardText>
                 </CCardBody>

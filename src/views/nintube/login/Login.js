@@ -36,6 +36,11 @@ const Login = ({ history, setUser }) => {
     password: "",
   });
 
+  const handleKeys = (e, func) => {
+    if (e.keyCode === 13) {
+      func(e);
+    }
+  };
   const login = (e) => {
     e.preventDefault();
     setState({ ...state, error: "", message: "Logando..." });
@@ -130,6 +135,7 @@ const Login = ({ history, setUser }) => {
                         </CInputGroupText>
                       </CInputGroupPrepend>
                       <CInput
+                        onKeyUp={(e) => handleKeys(e, login)}
                         type="password"
                         placeholder="Senha"
                         onChange={(e) => {

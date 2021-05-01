@@ -21,6 +21,8 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+//Compoment
+import NoVideo from "./noVideo";
 //API
 import { Library } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
@@ -84,13 +86,14 @@ const LibraryPlaylists = ({ user }) => {
             <CIcon className="icone" name="cilReload" size="3xl" />
           </div>
         </div>
-      ) : (
+      ) : state.playlist.lenght !== 0 ? (
         <div>
           <CContainer fluid>
             <div style={{ display: "flex" }}>
               <h3 style={{ color: "white" }}>{state.id_watch_late.name}</h3>{" "}
               <div style={{ marginLeft: "auto" }}>
                 <CButton
+                  style={{ color: "white" }}
                   onClick={() =>
                     history.push("playlist/" + state.id_watch_late.id)
                   }
@@ -104,7 +107,7 @@ const LibraryPlaylists = ({ user }) => {
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
                     <CImg
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("view", item.video_id)}
                       style={{
                         width: "100%",
                         height: "150px",
@@ -118,7 +121,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.title.substring(0, 100) + "..."}
@@ -134,7 +137,7 @@ const LibraryPlaylists = ({ user }) => {
                           </span>
                           <CCardText
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view", item.id)}
+                            onClick={() => handleClick("view", item.video_id)}
                           >{`${item.views} • ${diffDate(
                             state.today,
                             item.date
@@ -152,6 +155,7 @@ const LibraryPlaylists = ({ user }) => {
               <h3 style={{ color: "white" }}>{state.id_videos_lik.name}</h3>{" "}
               <div style={{ marginLeft: "auto" }}>
                 <CButton
+                  style={{ color: "white" }}
                   onClick={() =>
                     history.push("playlist/" + state.id_videos_lik.id)
                   }
@@ -165,7 +169,7 @@ const LibraryPlaylists = ({ user }) => {
                 <CCol style={{ width: "5%" }} sm="2">
                   <CCard style={{ border: "2px solid #B3272C" }}>
                     <CImg
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() => handleClick("view", item.video_id)}
                       style={{
                         width: "100%",
                         height: "150px",
@@ -179,7 +183,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.title.substring(0, 100) + "..."}
@@ -195,7 +199,7 @@ const LibraryPlaylists = ({ user }) => {
                           </span>
                           <CCardText
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleClick("view", item.id)}
+                            onClick={() => handleClick("view", item.video_id)}
                           >{`${item.views} • ${diffDate(
                             state.today,
                             item.date
@@ -227,7 +231,7 @@ const LibraryPlaylists = ({ user }) => {
                       // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
                       >
                         <CImg
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{
                             width: "100%",
                             height: "150px",
@@ -277,7 +281,7 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.id)}
+                          onClick={() => handleClick("view", item.video_id)}
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.name}
@@ -307,7 +311,7 @@ const LibraryPlaylists = ({ user }) => {
                       </span>
                       <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.id)}
+                        onClick={() => handleClick("view", item.video_id)}
                       >{`${item.views} • ${item.date}`}</CCardText>{" "}
                     </CCardText> */}
                       </CCardBody>
@@ -318,6 +322,8 @@ const LibraryPlaylists = ({ user }) => {
             </CRow>
           </CContainer>
         </div>
+      ) : (
+        <NoVideo />
       )}
     </div>
   );
