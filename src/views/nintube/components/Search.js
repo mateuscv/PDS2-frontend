@@ -36,21 +36,16 @@ import { SearchAll, Inscribe } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
 const Search = ({ user }) => {
-<<<<<<< HEAD
-    let searchText = useParams().search;
-    let type = 1;
-    console.log(searchText.slice(4));
-    if(searchText.startsWith("TAG:")){
-      searchText = searchText.slice(4);
-      type=0;
-    }
-    const [state, setState] = useState({
-    searchText: searchText,
-    type:type,
-=======
+  let searchText = useParams().search;
+  let type = 1;
+  console.log(searchText.slice(4));
+  if (searchText.startsWith("TAG:")) {
+    searchText = searchText.slice(4);
+    type = 0;
+  }
   const [state, setState] = useState({
-    searchText: useParams().search,
->>>>>>> main
+    searchText: searchText,
+    type: type,
     videos: [],
     channels: [],
   });
@@ -66,7 +61,6 @@ const Search = ({ user }) => {
     }
   };
 
-<<<<<<< HEAD
   // const searchSimulator = () => {
   //     let data = {
   //       videos: [
@@ -112,101 +106,32 @@ const Search = ({ user }) => {
   //           description: "52325fw",
   //           is_subscribed: true,
   //          },
-  //          ]  
+  //          ]
   //     }
 
   //   return data
   // }
-=======
-  const searchSimulator = () => {
-    let data = {
-      videos: [
-        {
-          id: "wadwfagjtfd",
-          title: "VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 VIDEO 1 ",
-          views: 10,
-          created_at: "2021-03-23 20:26:13",
-          channel_name: "Testando 1",
-          channel_id: "541fas165awf651waf",
-          description:
-            "TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 TESTE 1 ",
-          thumb:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-          avatar:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-        },
-        {
-          id: "grhftgxgrdzrgd",
-          title: "VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 VIDEO 2 ",
-          views: 20,
-          created_at: "2021-03-23 20:26:13",
-          channel_name: "Testando 2",
-          channel_id: "541fas165awf651waf",
-          description:
-            "TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 TESTE 2 ",
-          thumb:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-          avatar:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-        },
-      ],
-      channels: [
-        {
-          id: "adwawd65156",
-          avatar:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-          name: "CHANNEL 1",
-          subscribers: 10000000,
-          video_count: 20,
-          description: "bjhadwjhdawbh",
-          is_subscribed: true,
-        },
-        {
-          id: "hhdrhdr",
-          avatar:
-            "https://criarestilosnet.com/wp-content/uploads/2020/04/youtube-video-thumbnail-1200x675.jpg",
-          name: "CHANNEL 2",
-          subscribers: 684500000,
-          video_count: 50,
-          description: "52325fw",
-          is_subscribed: true,
-        },
-      ],
-    };
-
-    return data;
-  };
->>>>>>> main
 
   const doSearch = () => {
     console.log(state.searchText);
     var data = {
-<<<<<<< HEAD
-        input: state.searchText,
-        type:state.type
+      input: state.searchText,
+      type: state.type,
+      token: user ? user.token : "",
     };
-    
+
     // data = searchSimulator()
     // setState({ ...state, videos:data.videos, channels: data.channels});
-    SearchAll(data).then(function (data) { 
-        setState({ ...state, videos:data.videos, channels: data.channels});
+    SearchAll(data).then(function (data) {
+      console.log(data);
+      setState({
+        ...state,
+        fetched: true,
+        videos: data.videos,
+        channels: data.channels,
+      });
     });
-  }
-=======
-      input: state.searchText,
-    };
-    data = searchSimulator();
-    setState({
-      ...state,
-      fetched: true,
-      videos: data.videos,
-      channels: data.channels,
-    });
-    // SearchAll(data).then(function (data) {
-    //     setState({ ...state, fetched: true, videos:data.videos, channels: data.channels});
-    // });
   };
->>>>>>> main
 
   const Change = (index) => {
     if (user) {
@@ -250,11 +175,21 @@ const Search = ({ user }) => {
   useEffect(() => {
     doSearch();
   }, []);
+  console.log(state);
   return (
     <div>
-        <center>
-        <CInputGroup style={{ border: "1px solid red", borderRadius: "5px", width:"50%",}}>
-          <CInput placeholder="Pesquisar" onKeyUp={handleKeys} value={state.searchText} onChange={(e)=>{setState({...state, searchText:e.target.value, type:1})}}/>
+      <center>
+        <CInputGroup
+          style={{ border: "1px solid red", borderRadius: "5px", width: "50%" }}
+        >
+          <CInput
+            placeholder="Pesquisar"
+            onKeyUp={handleKeys}
+            value={state.searchText}
+            onChange={(e) => {
+              setState({ ...state, searchText: e.target.value, type: 1 });
+            }}
+          />
           <CInputGroupAppend>
             <CInputGroupText>
               <CIcon name="cil-magnifying-glass" onClick={doSearch} />

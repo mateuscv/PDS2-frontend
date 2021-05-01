@@ -24,7 +24,7 @@ import {
   CInput,
   CInputGroup,
   CInputGroupAppend,
-  CInputGroupText
+  CInputGroupText,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
@@ -32,27 +32,25 @@ import CIcon from "@coreui/icons-react";
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
 //API
-import { SearchAll, Inscribe} from "../../../util/Api";
+import { SearchAll, Inscribe } from "../../../util/Api";
 import { diffDate } from "../../../util/dateDiff";
 
-
-const ChannelSearch = ({ user, search, channel_id}) => {
-  
-    const [state, setState] = useState({
+const ChannelSearch = ({ user, search, channel_id }) => {
+  const [state, setState] = useState({
     searchText: search,
     channel_id: channel_id,
     videos: [],
   });
-  console.log(state.searchText)
+  console.log(state.searchText);
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
   };
 
-  const handleKeys = e => {      
-    if (e.keyCode === 13) {      
-        doSearch();
-    }  
+  const handleKeys = (e) => {
+    if (e.keyCode === 13) {
+      doSearch();
+    }
   };
 
   // const searchSimulator = () => {
@@ -81,34 +79,43 @@ const ChannelSearch = ({ user, search, channel_id}) => {
   // }
 
   const doSearch = () => {
-      console.log(state.searchText)
+    console.log(state.searchText);
     var data = {
-        input: state.searchText,
-        channel_id: state.channel_id
+      input: state.searchText,
+      channel_id: state.channel_id,
     };
     // data = searchSimulator()
     // setState({ ...state, fetched: true, videos:data.videos});
-    SearchAll(data).then(function (data) { 
-        setState({ ...state, videos:data.videos});
+    SearchAll(data).then(function (data) {
+      setState({ ...state, fetched: true, videos: data.videos });
     });
-  }
+  };
 
   useEffect(() => {
-    doSearch()
+    doSearch();
   }, []);
   return (
     <div>
-        <center>
-        <CInputGroup style={{ border: "1px solid red", borderRadius: "5px", width:"50%",}}>
-          <CInput placeholder="Pesquisar" onKeyUp={handleKeys} value={state.searchText} onChange={(e)=>{setState({...state, searchText:e.target.value})}}/>
+      <center>
+        <CInputGroup
+          style={{ border: "1px solid red", borderRadius: "5px", width: "50%" }}
+        >
+          <CInput
+            placeholder="Pesquisar"
+            onKeyUp={handleKeys}
+            value={state.searchText}
+            onChange={(e) => {
+              setState({ ...state, searchText: e.target.value });
+            }}
+          />
           <CInputGroupAppend>
             <CInputGroupText>
-              <CIcon name="cil-magnifying-glass" onClick={doSearch}/>
+              <CIcon name="cil-magnifying-glass" onClick={doSearch} />
             </CInputGroupText>
           </CInputGroupAppend>
         </CInputGroup>
-        </center>
-        <br/>
+      </center>
+      <br />
       {!state.fetched && (
         <div className="c-app c-default-layout" style={{ height: "100%" }}>
           <div className="div-reload">
@@ -130,7 +137,6 @@ const ChannelSearch = ({ user, search, channel_id}) => {
                   <CImg
                     onClick={() => handleClick("view", item.id)}
                     style={{
-                      
                       height: "150px",
                       cursor: "pointer",
                       float: "left",
@@ -146,9 +152,10 @@ const ChannelSearch = ({ user, search, channel_id}) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
                       >
-                        {item.title.length <= 103 ? item.name: item.title.substring(0, 100) + "..."}
+                        {item.title.length <= 103
+                          ? item.name
+                          : item.title.substring(0, 100) + "..."}
                       </h5>
-                      
                       <span
                         style={{ cursor: "pointer" }}
                         onClick={() => handleClick("view", item.id)}
@@ -163,9 +170,9 @@ const ChannelSearch = ({ user, search, channel_id}) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => handleClick("view", item.id)}
                     >
-                    <div className="float-left">
-                      {item.description.substring(0, 60) + "..."}
-                    </div>
+                      <div className="float-left">
+                        {item.description.substring(0, 60) + "..."}
+                      </div>
                     </CCardText>{" "}
                   </CCardText>
                 </CCardBody>
