@@ -314,3 +314,10 @@ export const SearchAll = (data) => {
     return data;
   });
 };
+
+export const SearchInChannel = (data) => {
+  return axios.post(API_URL + "search/channel", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};

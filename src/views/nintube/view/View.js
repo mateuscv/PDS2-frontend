@@ -57,7 +57,7 @@ const View = ({ user, history }) => {
   };
 
   const shared = (item) => {
-    // history.push("/" + route + "/" + id);
+    history.push("/search/" + "TAG:"+item);
   };
 
   const Change = (cond) => {
@@ -413,6 +413,22 @@ const View = ({ user, history }) => {
                     <CButton
                       style={{ color: "white" }}
                       onClick={() =>
+                        setState({
+                          ...state,
+                          playlistComp: (
+                            <SavePlaylist
+                              video_id={id}
+                              kill={closeSavePlaylist}
+                            />
+                          ),
+                        })
+                      }
+                    >
+                      <CIcon name="cil-playlist-add" /> Salvar
+                    </CButton>
+                    <CButton
+                      style={{ color: "white" }}
+                      onClick={() =>
                         alert(
                           "Compartilhar",
                           "http://localhost:3000/#/view/" + id,
@@ -431,22 +447,7 @@ const View = ({ user, history }) => {
                     >
                       <CIcon name="cilFlagAlt" /> Reportar
                     </CButton>
-                    <CButton
-                      style={{ color: "white" }}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          playlistComp: (
-                            <SavePlaylist
-                              video_id={id}
-                              kill={closeSavePlaylist}
-                            />
-                          ),
-                        })
-                      }
-                    >
-                      <CIcon name="cil-playlist-add" /> Salvar
-                    </CButton>
+                    
                   </div>
                 </div>
               </CBreadcrumb>
