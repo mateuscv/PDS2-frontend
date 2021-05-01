@@ -61,7 +61,7 @@ const View = ({ user, history }) => {
   };
 
   const Change = (cond) => {
-    if (user.token) {
+    if (user) {
       var data = {
         token: user.token,
         target_id: state.video.owner_id,
@@ -92,7 +92,7 @@ const View = ({ user, history }) => {
   };
 
   const Liked = (liked) => {
-    if (user.token) {
+    if (user) {
       if (!state.video.owner) {
         switch (liked) {
           case "like":
@@ -179,7 +179,7 @@ const View = ({ user, history }) => {
 
   const reportVideo = () => {
     if (!state.video.reported) {
-      if (user.token) {
+      if (user) {
         if (!state.video.owner) {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -309,7 +309,8 @@ const View = ({ user, history }) => {
       window.confirm("Error");
       history.push("/home/");
     }
-    if (user.token) {
+    console.log(user.token);
+    if (user) {
       var data = {
         video_id: id,
         token: user.token,

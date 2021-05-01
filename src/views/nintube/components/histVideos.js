@@ -41,7 +41,7 @@ const HistVideo = ({ user }) => {
   };
   useEffect(() => {
     if (!state.fetched) {
-      if (user.token) {
+      if (user) {
         var data = {
           numberSkip: 0,
           token: user.token,
