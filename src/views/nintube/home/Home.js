@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../../store/actions";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 //CoreUI
 import {
   CButton,
