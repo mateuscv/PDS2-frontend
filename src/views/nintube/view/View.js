@@ -57,11 +57,11 @@ const View = ({ user, history }) => {
   };
 
   const shared = (item) => {
-    // history.push("/" + route + "/" + id);
+    history.push("/search/" + "TAG:"+item);
   };
 
   const Change = (cond) => {
-    if (user.token) {
+    if (user) {
       var data = {
         token: user.token,
         target_id: state.video.owner_id,
@@ -92,7 +92,7 @@ const View = ({ user, history }) => {
   };
 
   const Liked = (liked) => {
-    if (user.token) {
+    if (user) {
       if (!state.video.owner) {
         switch (liked) {
           case "like":
@@ -179,7 +179,7 @@ const View = ({ user, history }) => {
 
   const reportVideo = () => {
     if (!state.video.reported) {
-      if (user.token) {
+      if (user) {
         if (!state.video.owner) {
           confirmAlert({
             customUI: ({ onClose }) => {
@@ -309,7 +309,8 @@ const View = ({ user, history }) => {
       window.confirm("Error");
       history.push("/home/");
     }
-    if (user.token) {
+    console.log(user.token);
+    if (user) {
       var data = {
         video_id: id,
         token: user.token,
@@ -413,6 +414,22 @@ const View = ({ user, history }) => {
                     <CButton
                       style={{ color: "white" }}
                       onClick={() =>
+                        setState({
+                          ...state,
+                          playlistComp: (
+                            <SavePlaylist
+                              video_id={id}
+                              kill={closeSavePlaylist}
+                            />
+                          ),
+                        })
+                      }
+                    >
+                      <CIcon name="cil-playlist-add" /> Salvar
+                    </CButton>
+                    <CButton
+                      style={{ color: "white" }}
+                      onClick={() =>
                         alert(
                           "Compartilhar",
                           "http://localhost:3000/#/view/" + id,
@@ -431,22 +448,7 @@ const View = ({ user, history }) => {
                     >
                       <CIcon name="cilFlagAlt" /> Reportar
                     </CButton>
-                    <CButton
-                      style={{ color: "white" }}
-                      onClick={() =>
-                        setState({
-                          ...state,
-                          playlistComp: (
-                            <SavePlaylist
-                              video_id={id}
-                              kill={closeSavePlaylist}
-                            />
-                          ),
-                        })
-                      }
-                    >
-                      <CIcon name="cil-playlist-add" /> Salvar
-                    </CButton>
+                    
                   </div>
                 </div>
               </CBreadcrumb>
