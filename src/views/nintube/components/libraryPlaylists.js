@@ -41,8 +41,10 @@ const LibraryPlaylists = ({ user }) => {
     today: new Date(),
   });
   let history = useHistory();
-  const handleClick = (route, id) => {
-    history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0) => {
+    playlist
+      ? history.push("/" + route + "/" + playlist + "/" + id)
+      : history.push("/" + route + "/" + id);
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -231,7 +233,9 @@ const LibraryPlaylists = ({ user }) => {
                       // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
                       >
                         <CImg
-                          onClick={() => handleClick("view", item.video_id)}
+                          onClick={() =>
+                            handleClick("viewPlaylist", item.video_id, item.id)
+                          }
                           style={{
                             width: "100%",
                             height: "150px",
@@ -281,7 +285,9 @@ const LibraryPlaylists = ({ user }) => {
                     <div>
                       <CCardBody style={{ fontSize: "80%" }}>
                         <h3
-                          onClick={() => handleClick("view", item.video_id)}
+                          onClick={() =>
+                            handleClick("viewPlaylist", item.video_id, item.id)
+                          }
                           style={{ fontSize: "120%", cursor: "pointer" }}
                         >
                           {item.name}
@@ -293,8 +299,10 @@ const LibraryPlaylists = ({ user }) => {
                             onClick={() => handleClick("playlist", item.id)}
                             style={{
                               marginBottom: "-1%",
-                              marginTop: "1.5%",
+                              marginTop: "5%",
                               cursor: "pointer",
+                              color: "black",
+                              fontWeight: "bold",
                             }}
                           >
                             Ver Playlist Completa

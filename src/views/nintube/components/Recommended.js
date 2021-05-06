@@ -139,6 +139,7 @@ const StackVideo = ({ user }) => {
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
+    window.location.reload();
   };
   useEffect(() => {
     if (!state.fetched) {
