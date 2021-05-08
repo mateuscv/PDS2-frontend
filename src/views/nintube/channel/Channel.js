@@ -22,14 +22,14 @@ import {
   CInput,
   CInputGroup,
   CInputGroupAppend,
-  CInputGroupText
+  CInputGroupText,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 //Componets
 import ShowVideos from "../components/showVideos";
 import AllPlaylists from "../components/allPlaylists";
 import ChannelVideos from "./channelVideos";
-import ChannelSearch from "./channelSearch"
+import ChannelSearch from "./channelSearch";
 //Style
 import "../styles/nintube.css";
 import "../components/componentStyle.css";
@@ -42,7 +42,7 @@ const Channel = ({ user }) => {
     fetched: false,
     content: 1,
     subscribe: false,
-    search:"",
+    search: "",
     channel: { nick: "", subs: 0, avatar: "", is_sub: false, is_owner: false },
   });
   useEffect(() => {
@@ -54,7 +54,6 @@ const Channel = ({ user }) => {
       // changeContent("video");
       channelData(data)
         .then(function (data) {
-          console.log(data);
           var channel = { ...state.channel };
           channel.nick = data.channel_nick;
           channel.avatar = data.channel_avatar;
@@ -64,7 +63,6 @@ const Channel = ({ user }) => {
           setState({ ...state, fetched: true, channel, content: 2 });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -79,7 +77,7 @@ const Channel = ({ user }) => {
   }, []);
 
   const Change = (cond) => {
-    if (user.token) {
+    if (user) {
       var data = { token: user.token, target_id: id };
       Inscribe(data)
         .then(function (data) {
@@ -99,14 +97,13 @@ const Channel = ({ user }) => {
     }
   };
   const changeContent = (component) => {
-    console.log(component);
     let contents = {
-      "init":1,
-      "video":2,
-      "playlist":3,
-      "about":4,
-      "search":5
-    }
+      init: 1,
+      video: 2,
+      playlist: 3,
+      about: 4,
+      search: 5,
+    };
     setState({ ...state, content: contents[component] });
     // eslint-disable-next-line default-case
     // switch (component) {
@@ -125,12 +122,11 @@ const Channel = ({ user }) => {
     // }
   };
 
-  const handleKeys = e => {      
-    if (e.keyCode === 13) {      
-        changeContent("search")
-    }  
+  const handleKeys = (e) => {
+    if (e.keyCode === 13) {
+      changeContent("search");
+    }
   };
-
 
   return (
     <div id="test">
@@ -283,26 +279,45 @@ const Channel = ({ user }) => {
           </CCardBody>
         </CCard>
       </header>
-      {state.content != 5 &&
-      <div>
-      <center>
-        <CInputGroup style={{ border: "1px solid red", borderRadius: "5px", width:"50%",}}>
-          <CInput placeholder="Pesquisar" onKeyUp={handleKeys} onChange={(e)=>{setState({...state, search:e.target.value})}}/>
-          <CInputGroupAppend>
-            <CInputGroupText>
-              <CIcon name="cil-magnifying-glass" onClick={()=>{changeContent("search")}}/>
-            </CInputGroupText>
-          </CInputGroupAppend>
-        </CInputGroup>
-        </center>
-        <br/>
-      </div>
-      }
+      {state.content != 5 && (
+        <div>
+          <center>
+            <CInputGroup
+              style={{
+                border: "1px solid red",
+                borderRadius: "5px",
+                width: "50%",
+              }}
+            >
+              <CInput
+                placeholder="Pesquisar"
+                onKeyUp={handleKeys}
+                onChange={(e) => {
+                  setState({ ...state, search: e.target.value });
+                }}
+              />
+              <CInputGroupAppend>
+                <CInputGroupText>
+                  <CIcon
+                    name="cil-magnifying-glass"
+                    onClick={() => {
+                      changeContent("search");
+                    }}
+                  />
+                </CInputGroupText>
+              </CInputGroupAppend>
+            </CInputGroup>
+          </center>
+          <br />
+        </div>
+      )}
       {/* {state.content === 1 ? <h1>Inicio</h1> : null} */}
       {state.content === 2 ? <ChannelVideos /> : null}
       {state.content === 3 ? <AllPlaylists /> : null}
       {/* {state.content === 4 ? <h1>Sobre</h1> : null} */}
-      {state.content === 5 ? <ChannelSearch search={state.search} channel_id={id}/> : null}
+      {state.content === 5 ? (
+        <ChannelSearch search={state.search} channel_id={id} />
+      ) : null}
     </div>
   );
 };

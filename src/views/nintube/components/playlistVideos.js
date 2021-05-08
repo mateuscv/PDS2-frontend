@@ -201,7 +201,6 @@ const PlaylistVideos = ({ user }) => {
         }
       }
     }
-    // console.log(vet_playlist);
     setState({ ...state, videos: vet_playlist, change: true });
   };
 
@@ -218,7 +217,6 @@ const PlaylistVideos = ({ user }) => {
       videos: videos,
     };
     setState({ ...state, change: false });
-    console.log(data);
     editPlaylist(data)
       .then(function (data) {
         alert("Ação", "Sua Playlist foi editada com sucesso!");
@@ -233,7 +231,6 @@ const PlaylistVideos = ({ user }) => {
 
   const Delete = (video_id, idx) => {
     var data = { token: user.token, playlist_id: id, video_id: video_id };
-    console.log(data);
     let vet_playlist = [];
     for (let index = 0; index < state.videos.length; index++) {
       if (index !== idx) {
@@ -242,7 +239,6 @@ const PlaylistVideos = ({ user }) => {
     }
     removeVideoFromPlaylist(data)
       .then(function (data) {
-        console.log(data);
         setState({ ...state, videos: vet_playlist });
         alert("Ação", "Video foi deletado com sucesso!");
       })
@@ -369,7 +365,6 @@ const PlaylistVideos = ({ user }) => {
       var data = { token: user.token, playlist_id: id };
       listPlaylist(data)
         .then(function (data) {
-          console.log(data);
           setState({
             ...state,
             fetched: true,
@@ -379,7 +374,6 @@ const PlaylistVideos = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -399,7 +393,6 @@ const PlaylistVideos = ({ user }) => {
       // });
     }
   }, []);
-  console.log(state.playlist);
 
   return (
     <div
@@ -437,8 +430,14 @@ const PlaylistVideos = ({ user }) => {
                     marginRight: "1%",
                     borderBottom: "1px solid black",
                     borderRadius: "10px",
+                    cursor: "pointer",
                   }}
                   src={state.videos[0].thumb}
+                  onClick={() =>
+                    history.push(
+                      "/viewPlaylist/" + id + "/" + state.videos[0].id
+                    )
+                  }
                 />
               </div>
 
@@ -606,59 +605,60 @@ const PlaylistVideos = ({ user }) => {
                   </p>
                   {/* <span style={{ cursor: "pointer" }}> Teste</span>{" "} */}
                 </CCardText>{" "}
-                <div style={{ display: "flex" }}>
-                  <div style={{ marginLeft: "auto", marginRight: "auto" }}>
-                    <CButton
-                      color="danger"
-                      onClick={() =>
-                        alert(
-                          "Deletar",
-                          "Tens certeza que queres deletar a playlist " +
-                            state.playlist.name +
-                            " ?",
-                          [
-                            {
-                              label: "Cancelar",
-                            },
-                            {
-                              label: "Deletar",
-                              onClick: () => {
-                                var data = {
-                                  token: user.token,
-                                  playlist_id: id,
-                                };
-                                deletPlaylist(data)
-                                  .then(function (data) {
-                                    console.log(data);
-                                    alert(
-                                      "Ação",
-                                      "Sua Playlist foi deletada com sucesso!",
-                                      [
-                                        {
-                                          label: "Confirmar",
-                                          onClick: () => {
-                                            history.push("/home");
-                                          },
-                                        },
-                                      ]
-                                    );
-                                  })
-                                  .catch((err) => {
-                                    alert(
-                                      "Ação",
-                                      "Ouve algume erro ao Deletar a playlist, por favor tentar novamente mais tarde!"
-                                    );
-                                  });
+                {state.playlist.is_owner && (
+                  <div style={{ display: "flex" }}>
+                    <div style={{ marginLeft: "auto", marginRight: "auto" }}>
+                      <CButton
+                        color="danger"
+                        onClick={() =>
+                          alert(
+                            "Deletar",
+                            "Tens certeza que queres deletar a playlist " +
+                              state.playlist.name +
+                              " ?",
+                            [
+                              {
+                                label: "Cancelar",
                               },
-                            },
-                          ]
-                        )
-                      }
-                    >
-                      Deletar Playlist
-                    </CButton>
+                              {
+                                label: "Deletar",
+                                onClick: () => {
+                                  var data = {
+                                    token: user.token,
+                                    playlist_id: id,
+                                  };
+                                  deletPlaylist(data)
+                                    .then(function (data) {
+                                      alert(
+                                        "Ação",
+                                        "Sua Playlist foi deletada com sucesso!",
+                                        [
+                                          {
+                                            label: "Confirmar",
+                                            onClick: () => {
+                                              history.push("/home");
+                                            },
+                                          },
+                                        ]
+                                      );
+                                    })
+                                    .catch((err) => {
+                                      alert(
+                                        "Ação",
+                                        "Ouve algume erro ao Deletar a playlist, por favor tentar novamente mais tarde!"
+                                      );
+                                    });
+                                },
+                              },
+                            ]
+                          )
+                        }
+                      >
+                        Deletar Playlist
+                      </CButton>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </CCardBody>
           )}

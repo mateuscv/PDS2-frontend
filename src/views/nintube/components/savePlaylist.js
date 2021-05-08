@@ -44,7 +44,7 @@ const SavePlaylist = ({ user, video_id, kill }) => {
   });
 
   const playlistsPopup = () => {
-    if (user.token) {
+    if (user) {
       confirmAlert({
         title: "Playlists",
         afterClose: kill,
@@ -196,7 +196,6 @@ const SavePlaylist = ({ user, video_id, kill }) => {
       is_public: nPlaylist.public_bool,
       video_id: video_id,
     };
-    console.log(data);
     return await createPlaylist(data);
   };
 

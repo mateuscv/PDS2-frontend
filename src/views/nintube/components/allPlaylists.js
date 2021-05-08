@@ -35,25 +35,23 @@ const AllPlaylists = ({ user }) => {
     today: new Date(),
   });
   let history = useHistory();
-  const handleClick = (route, id) => {
-    history.push("/" + route + "/" + id);
+  const handleClick = (route, id, playlist = 0) => {
+    playlist
+      ? history.push("/" + route + "/" + playlist + "/" + id)
+      : history.push("/" + route + "/" + id);
   };
   useEffect(() => {
     if (!state.fetched) {
-      console.log(id);
       var data = {
         id_target: id !== "0" && id !== undefined ? id : "",
         token: user.token,
       };
-      console.log(data);
       getPlaylists(data)
         .then(function (data) {
-          console.log(data);
           setState({ ...state, fetched: true, videos: data });
         })
 
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -92,7 +90,9 @@ const AllPlaylists = ({ user }) => {
                   // className="yt-simple-endpoint style-scope ytd-playlist-thumbnail"
                   >
                     <CImg
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() =>
+                        handleClick("viewPlaylist", item.video_id, item.id)
+                      }
                       style={{
                         width: "100%",
                         height: "150px",
@@ -142,7 +142,9 @@ const AllPlaylists = ({ user }) => {
                 <div>
                   <CCardBody style={{ fontSize: "80%" }}>
                     <h3
-                      onClick={() => handleClick("view", item.id)}
+                      onClick={() =>
+                        handleClick("viewPlaylist", item.video_id, item.id)
+                      }
                       style={{ fontSize: "120%", cursor: "pointer" }}
                     >
                       {item.name}
@@ -154,8 +156,10 @@ const AllPlaylists = ({ user }) => {
                         onClick={() => handleClick("playlist", item.id)}
                         style={{
                           marginBottom: "-1%",
-                          marginTop: "1.5%",
+                          marginTop: "5%",
                           cursor: "pointer",
+                          color: "black",
+                          fontWeight: "bold",
                         }}
                       >
                         Ver Playlist Completa

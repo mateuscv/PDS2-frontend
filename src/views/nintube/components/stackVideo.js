@@ -47,17 +47,9 @@ const StackVideo = ({ user }) => {
 
       riseVideos(data)
         .then(function (data) {
-          console.log(data);
-          // var array = new Array;
-          // console.log(data);
-          // for (let i = 0; i < aray.length; i++) {
-          //   const element = array[i];
-
-          // }
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err.message);
           setState({ ...state, fetched: true });
           alert("Houve um problema", "Por favor recarregue a pagina", [
             {
@@ -70,7 +62,6 @@ const StackVideo = ({ user }) => {
         });
     }
   }, []);
-  console.log(state.videos);
   return (
     <div>
       {!state.fetched && (
@@ -93,7 +84,7 @@ const StackVideo = ({ user }) => {
                 >
                   <CCardBody style={{ margin: "0" }}>
                     <CImg
-                      onClick={() => handleClick("view", item.v_id)}
+                      onClick={() => handleClick("view", item.id)}
                       style={{
                         width: "15%",
                         height: "150px",
@@ -109,16 +100,20 @@ const StackVideo = ({ user }) => {
                       <CCardText>
                         <h5
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleClick("view", item.v_id)}
+                          onClick={() => handleClick("view", item.id)}
                         >
                           {item.title.substring(0, 100) + "..."}
                         </h5>
-                        <span onClick={() => handleClick("channel", item.v_id)}>
+                        <span
+                          onClick={() =>
+                            handleClick("channel", item.channel_id)
+                          }
+                        >
                           {item.channel}
                         </span>
                         <span
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleClick("view", item.v_id)}
+                          onClick={() => handleClick("view", item.id)}
                         >
                           {` • ${item.views}  Visualizações • ${diffDate(
                             state.today,
@@ -128,7 +123,7 @@ const StackVideo = ({ user }) => {
                       </CCardText>
                       <CCardText
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleClick("view", item.v_id)}
+                        onClick={() => handleClick("view", item.id)}
                       >
                         {item.description}
                       </CCardText>{" "}

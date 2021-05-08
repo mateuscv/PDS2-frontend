@@ -1,5 +1,6 @@
 //REACT
 import React, { useEffect, useState } from "react";
+import { findDOMNode } from "react-dom";
 import { useParams } from "react-router-dom";
 //REDUX
 import { connect } from "react-redux";
@@ -15,11 +16,12 @@ import {
   CFormGroup,
   CLabel,
   CInputRadio,
+  CSelect,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 //Componets
-import Player from "../components/Player";
+import Player from "../components/playerPlaylist";
 import Comments from "../components/Comments";
 import Recommended from "../components/Recommended";
 import SavePlaylist from "../components/savePlaylist";
@@ -28,6 +30,7 @@ import SavePlaylist from "../components/savePlaylist";
 import Dropzone from "react-dropzone";
 import { alert } from "../../../util/alertApi";
 import {
+  getVideo,
   Inscribe,
   Report,
   watchVideo,
@@ -37,8 +40,8 @@ import {
 //Style
 import "../components/componentStyle.css";
 
-const View = ({ user, history }) => {
-  let { id } = useParams();
+const ViewPlaylist = ({ user, history }) => {
+  let { id, playlistid } = useParams();
   const [state, setState] = useState({
     fetched: false,
     subscribe: false,
@@ -325,6 +328,7 @@ const View = ({ user, history }) => {
         .then(function (data) {
           setState({
             ...state,
+            fetched: true,
             video: data.pageData,
             tags: data.tags,
             status: data.status,
@@ -357,9 +361,9 @@ const View = ({ user, history }) => {
       <div style={{ display: "flex", width: "100%" }}>
         {state.status === 1 && (
           <>
-            <div style={{ marginRight: "auto", width: "70%" }}>
+            <div style={{ marginRight: "auto", width: "100%" }}>
               <Player />
-              <CBreadcrumb style={{ width: "95%", marginLeft: "1.7%" }}>
+              <CBreadcrumb style={{ width: "90%", marginLeft: "1.7%" }}>
                 <div
                   style={{ width: "90%", marginLeft: "1.5%", color: "white" }}
                 >
@@ -430,7 +434,11 @@ const View = ({ user, history }) => {
                       onClick={() =>
                         alert(
                           "Compartilhar",
-                          "http://localhost:3000/#/view/" + id,
+                          window.location.href,
+                          // "http://localhost:3000/#/viewPlaylist/" +
+                          //   playlistid +
+                          //   "/" +
+                          //   id,
                           [{ label: "Fechar", onClick: "" }]
                         )
                       }
@@ -516,9 +524,9 @@ const View = ({ user, history }) => {
             </div>
             {/* </CCol>
         <CCol sm="4"> */}
-            <div style={{ marginLeft: "auto", width: "25%" }}>
+            {/* <div style={{ marginLeft: "auto", width: "25%" }}>
               <Recommended />
-            </div>
+            </div> */}
             {state.playlistComp}
           </>
         )}
@@ -529,4 +537,4 @@ const View = ({ user, history }) => {
 
 const mapStateToProps = (state) => ({ user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
-export default connect(mapStateToProps, mapDispatchToProps)(View);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewPlaylist);

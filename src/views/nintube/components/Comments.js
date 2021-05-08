@@ -92,7 +92,6 @@ const Comments = ({ user }) => {
         let comment = state.fiComment;
         for (let i = 0; i < comment.length; i++) {
           if (data.comment_id === comment[i].id) {
-            console.log(comment[i]);
             comment[i].comment = data.text;
             comment[i].edited = data.edited;
             comment[i].date = diffDate(new Date(), data.created_at);
@@ -136,7 +135,7 @@ const Comments = ({ user }) => {
   };
 
   const comment = () => {
-    if (user.token) {
+    if (user) {
       if (!display.showComment) {
         setState({
           ...state,
@@ -326,7 +325,7 @@ const Comments = ({ user }) => {
   };
 
   const answers = (nvl, id) => {
-    if (user.token) {
+    if (user) {
       if (nvl === 1) {
         setState({
           ...state,
@@ -354,7 +353,7 @@ const Comments = ({ user }) => {
   };
 
   const Liked = (liked, nvl, id, id2) => {
-    if (user.token) {
+    if (user) {
       if (nvl === 0) {
         let comment = state.fiComment;
         for (let i = 0; i < comment.length; i++) {
@@ -569,7 +568,6 @@ const Comments = ({ user }) => {
           });
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, fetched: true });
           alert(
             "Houve um problema nos comentarios",
@@ -589,7 +587,6 @@ const Comments = ({ user }) => {
         });
     }
   }, []);
-  // console.log(state.fiComment);
   return (
     <div>
       <CRow>

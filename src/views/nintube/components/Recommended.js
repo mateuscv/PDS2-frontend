@@ -139,6 +139,7 @@ const StackVideo = ({ user }) => {
   let history = useHistory();
   const handleClick = (route, id) => {
     history.push("/" + route + "/" + id);
+    window.location.reload();
   };
   useEffect(() => {
     if (!state.fetched) {
@@ -150,7 +151,6 @@ const StackVideo = ({ user }) => {
           setState({ ...state, fetched: true, videos: data });
         })
         .catch((err) => {
-          console.log(err);
           setState({ ...state, fetched: true });
           alert(
             "Houve um problema nos recomendados",

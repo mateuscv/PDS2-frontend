@@ -1,15 +1,8 @@
 import axios from "axios";
-<<<<<<< Updated upstream
-// export const API_URL = "http://localhost:3334/";
-// export const API_URL = "http://c8fa75e9c450.ngrok.io/";
-export const API_URL =
-  "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
-=======
- export const API_URL = "http://localhost:3334/";
-//export const API_URL = "http://8cfa887f8f37.ngrok.io/";
+export const API_URL = "http://localhost:3334/";
+//export const API_URL = "http://f51a762ef097.ngrok.io/";
 // export const API_URL =
 //   "http://ec2-18-216-193-215.us-east-2.compute.amazonaws.com:3334/";
->>>>>>> Stashed changes
 
 export const getImg = (data) => {
   return axios.post(API_URL + "nin/imgs", data).then(function (res) {
@@ -48,7 +41,6 @@ export const editProfile = (data, token) => {
   const config = {
     headers: { authorization: token },
   };
-  console.log(data, token);
   return axios
     .put(API_URL + "users/profile/edit", data, config)
     .then(function (res) {
@@ -58,7 +50,6 @@ export const editProfile = (data, token) => {
 };
 
 export const uploadVideo = (data, token) => {
-  console.log(token);
   const config = {
     headers: { authorization: token },
   };
@@ -322,8 +313,21 @@ export const SearchAll = (data) => {
   });
 };
 
+export const SearchInChannel = (data) => {
+  return axios.post(API_URL + "search/channel", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
 export const getChartValues = (data) => {
   return axios.post(API_URL + "statistic/get", data).then(function (res) {
+    let data = res.data;
+    return data;
+  });
+};
+
+export const getPlaylistView = (data) => {
+  return axios.post(API_URL + "playlist/view", data).then(function (res) {
     let data = res.data;
     return data;
   });
